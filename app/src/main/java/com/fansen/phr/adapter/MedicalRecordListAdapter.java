@@ -1,0 +1,55 @@
+package com.fansen.phr.adapter;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.fansen.phr.R;
+import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.utils.TimeFormat;
+
+import java.util.List;
+
+/**
+ * Created by Yihui Fan on 2015/10/10.
+ */
+public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecordListAdapter.MedicalRecordListViewHolder>{
+
+    private List<Encounter> encounterList;
+
+    public MedicalRecordListAdapter(List<Encounter> encounters) {
+        encounterList = encounters;
+    }
+
+    @Override
+    public MedicalRecordListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.phr_item_layout, parent, false);
+        return new MedicalRecordListViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(MedicalRecordListViewHolder holder, int position) {
+        Encounter encounter = encounterList.get(position);
+
+        holder.vDate.setText(TimeFormat.parseDate(encounter.getEncounter_date(), "yyyyMMdd"));
+    }
+
+    @Override
+    public int getItemCount() {
+        return encounterList.size();
+    }
+
+    public static class MedicalRecordListViewHolder extends RecyclerView.ViewHolder{
+
+        protected TextView vDate;
+
+        public MedicalRecordListViewHolder(View itemView) {
+            super(itemView);
+
+            vDate = (TextView) itemView.findViewById(R.id.ent_date);
+        }
+    }
+}
+
