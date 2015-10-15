@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_new_outpatient"
+    tools:context="com.fansen.phr.activities.NewOutpatientActivity"
+    android:showDividers="middle|end|beginning"
+    android:dividerPadding="1dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="门诊基本信息"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:background="#e5e5e5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/id_label_op_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:text="@string/label_outpatient_date"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/id_op_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/id_label_op_date"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:gravity="center|left"
+            android:hint="必填"
+            android:textColorHint="#e5e5e5"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+
+        <TextView
+            android:id="@+id/id_label_org"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="医院"/>
+
+        <EditText
+            android:id="@+id/id_op_org"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/id_label_org"
+            android:background="@null"
+            android:textColorHint="#e5e5e5"
+            android:hint="必填"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/id_label_dept"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="部门"/>
+
+        <EditText
+            android:id="@+id/id_op_dept"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/id_label_dept"
+            android:background="@null"
+            android:textColorHint="#e5e5e5"
+            android:hint="必填"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/id_label_diag"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="诊断"/>
+
+        <EditText
+            android:id="@+id/id_op_diag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/id_label_diag"
+            android:background="@null"
+            android:textColorHint="#e5e5e5"
+            android:hint="必填"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingTop="20dp"
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/id_btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="确定"/>
+
+        <Button
+            android:id="@+id/id_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/id_btn_ok"
+            android:gravity="center"
+            android:text="取消"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

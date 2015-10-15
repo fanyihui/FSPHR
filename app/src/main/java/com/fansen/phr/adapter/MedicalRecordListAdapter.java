@@ -10,6 +10,8 @@ import com.fansen.phr.R;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.utils.TimeFormat;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -34,6 +36,9 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         Encounter encounter = encounterList.get(position);
 
         holder.vDate.setText(TimeFormat.parseDate(encounter.getEncounter_date(), "yyyyMMdd"));
+        holder.vHospital.setText(encounter.getOrg().getOrg_name());
+        holder.vDept.setText(encounter.getDepartment().getName());
+        holder.vDiagnosis.setText(encounter.getDiagnosis());
     }
 
     @Override
@@ -44,11 +49,17 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     public static class MedicalRecordListViewHolder extends RecyclerView.ViewHolder{
 
         protected TextView vDate;
+        protected TextView vHospital;
+        protected TextView vDept;
+        protected TextView vDiagnosis;
 
         public MedicalRecordListViewHolder(View itemView) {
             super(itemView);
 
             vDate = (TextView) itemView.findViewById(R.id.ent_date);
+            vHospital = (TextView) itemView.findViewById(R.id.ent_org);
+            vDept = (TextView) itemView.findViewById(R.id.ent_dept);
+            vDiagnosis = (TextView) itemView.findViewById(R.id.ent_diagnosis);
         }
     }
 }

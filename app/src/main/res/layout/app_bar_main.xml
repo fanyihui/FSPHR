@@ -17,10 +17,30 @@
 
     <include layout="@layout/content_main" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:orientation="vertical">
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        <android.support.design.widget.FloatingActionButton android:id="@+id/action_add_op"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="top|end" android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            android:src="@drawable/ic_clinic" />
+
+        <android.support.design.widget.FloatingActionButton android:id="@+id/action_add_ip"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            android:src="@drawable/ic_add_black_24dp" />
+
+        <android.support.design.widget.FloatingActionButton android:id="@+id/action_add"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_add_black_24dp" />
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

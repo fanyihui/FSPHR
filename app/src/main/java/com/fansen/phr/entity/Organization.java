@@ -1,9 +1,11 @@
 package com.fansen.phr.entity;
 
+import java.io.Serializable;
+
 /**
- * Created by 310078142 on 2015/9/22.
+ * Created by Yihui on 2015/9/22.
  */
-public class Organization {
+public class Organization implements Serializable{
     private int org_key;
     private String org_name;
 

@@ -2,6 +2,8 @@ package com.fansen.phr;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fansen.phr.activities.NewOutpatientActivity;
+import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.fragment.AddOutpatientEncounterFragment;
 import com.fansen.phr.fragment.CarePlanFragment;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.SummaryFragment;
@@ -24,6 +29,17 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private CharSequence mTitle;
+    private boolean isfabAddTouched = false;
+    private FloatingActionButton fabAdd = null;
+    private FloatingActionButton addOutpatient = null;
+    private FloatingActionButton addInpatient = null;
+    private int navigationItemId = 0;
+
+    public static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
+    public static final int ADD_INPATIENT_REQUEST = 2;  // The request code
+    //static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
+
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +48,32 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final Context context = this;
+
+        fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
+        addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
+        addInpatient = (FloatingActionButton) findViewById(R.id.action_add_ip);
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if(!isfabAddTouched) {
+                    showFloatingActionButtons();
+                } else{
+                    hideFloatingActionButtons();
+                }
+            }
+        });
+
+        addOutpatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            //Open the add new outpatient activity and wait for result
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewOutpatientActivity.class);
+
+                startActivityForResult(intent, ADD_OUTPATIENT_REQUEST);
+
+                hideFloatingActionButtons();
             }
         });
 
@@ -49,6 +85,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+    private void showFloatingActionButtons(){
+        fabAdd.setImageResource(R.drawable.ic_clear_black_24dp);
+        addOutpatient.setVisibility(View.VISIBLE);
+        addInpatient.setVisibility(View.VISIBLE);
+        isfabAddTouched = true;
+    }
+
+    private void hideFloatingActionButtons(){
+        fabAdd.setImageResource(R.drawable.ic_add_black_24dp);
+        addOutpatient.setVisibility(View.GONE);
+        addInpatient.setVisibility(View.GONE);
+        isfabAddTouched = false;
     }
 
     @Override
@@ -87,17 +138,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        // show different Fragment based on the selected item
+        // also need to change the option items based on the selected Fragment
+        navigationItemId = item.getItemId();
+        ActionBar actionBar = getSupportActionBar();
 
-        Fragment fragment = null;
-
-        if (id == R.id.nav_summary) {
+        if (navigationItemId == R.id.nav_summary) {
             fragment = new SummaryFragment();
             mTitle = getString(R.string.title_summary);
-        } else if (id == R.id.nav_phr) {
+        } else if (navigationItemId == R.id.nav_phr) {
             fragment = new PhrFragment();
             mTitle = getString(R.string.title_phr);
-        } else if (id == R.id.nav_careplan) {
+        } else if (navigationItemId == R.id.nav_careplan) {
             fragment = new CarePlanFragment();
             mTitle = getString(R.string.title_careplan);
         }
@@ -107,7 +159,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment).commit();
 
-            ActionBar actionBar = getSupportActionBar();
+
             actionBar.setTitle(mTitle);
 
         }
@@ -115,5 +167,21 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_OUTPATIENT_REQUEST){
+            if (resultCode == RESULT_OK){
+                Bundle bundle = data.getExtras();
+                Encounter encounter = (Encounter) bundle.getSerializable(NewOutpatientActivity.ENT_KEY);
+
+                System.out.println(encounter.getOrg().getOrg_name() + encounter.getDepartment().getName() + encounter.getDiagnosis());
+                PhrFragment phrFragment = (PhrFragment) fragment;
+                phrFragment.addEncounter(encounter);
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

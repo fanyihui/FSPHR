@@ -28,6 +28,7 @@ public class PhrFragment extends Fragment {
 
     public PhrFragment() {
         // Required empty public constructor
+        encounters = new ArrayList<>();
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PhrFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        setTestData();
+        //setTestData();
 
         phrView = (RecyclerView) inflater.inflate(R.layout.fragment_phr, container, false);
         phrView.setHasFixedSize(true);
@@ -53,6 +54,12 @@ public class PhrFragment extends Fragment {
         adapter = new MedicalRecordListAdapter(encounters);
         phrView.setAdapter(adapter);
         return phrView;
+    }
+
+    public void addEncounter(Encounter encounter){
+        encounters.add(encounter);
+        adapter = new MedicalRecordListAdapter(encounters);
+        phrView.setAdapter(adapter);
     }
 
     private void setTestData(){

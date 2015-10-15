@@ -1,17 +1,21 @@
 package com.fansen.phr.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by 310078142 on 2015/9/22.
+ * Created by Yihui on 2015/9/22.
  */
-public class Encounter {
+public class Encounter implements Serializable{
+
+
     private long encounter_key;
     private String encounter_number;
     private Organization org;
     private Department department;
     private Patient patient;
     private Date encounter_date;
+    private String diagnosis;
 
     public long getEncounter_key() {
         return encounter_key;
@@ -59,5 +63,13 @@ public class Encounter {
 
     public void setEncounter_date(Date encounter_date) {
         this.encounter_date = encounter_date;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 }
