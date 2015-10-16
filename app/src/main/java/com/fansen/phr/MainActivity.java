@@ -177,8 +177,13 @@ public class MainActivity extends AppCompatActivity
                 Encounter encounter = (Encounter) bundle.getSerializable(NewOutpatientActivity.ENT_KEY);
 
                 System.out.println(encounter.getOrg().getOrg_name() + encounter.getDepartment().getName() + encounter.getDiagnosis());
-                PhrFragment phrFragment = (PhrFragment) fragment;
-                phrFragment.addEncounter(encounter);
+
+                if (navigationItemId == R.id.nav_phr) {
+                    PhrFragment phrFragment = (PhrFragment) fragment;
+                    phrFragment.addEncounter(encounter);
+                } else if(navigationItemId == R.id.nav_summary){
+                    //TODO add code here to put encounter into summary page
+                }
             }
 
         }

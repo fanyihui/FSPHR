@@ -117,7 +117,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <!--RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:paddingTop="20dp"
@@ -140,6 +140,6 @@
             android:gravity="center"
             android:text="取消"/>
 
-    </RelativeLayout>
+    </RelativeLayout-->
 
 </LinearLayout>
