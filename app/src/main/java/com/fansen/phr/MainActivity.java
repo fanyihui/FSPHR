@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
     public static final int ADD_INPATIENT_REQUEST = 2;  // The request code
+    public static final int ADD_CAREPLAN_REQUEST = 3;  // The request code
     //static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
 
     private Fragment fragment = null;
@@ -186,6 +187,10 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
+        } else if(requestCode == ADD_INPATIENT_REQUEST){
+            //TODO add inpatient
+        } else if(requestCode == ADD_CAREPLAN_REQUEST){
+            //TODO add care plan
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

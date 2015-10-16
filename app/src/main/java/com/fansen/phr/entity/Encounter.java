@@ -13,7 +13,7 @@ public class Encounter implements Serializable{
     private String encounter_number;
     private Organization org;
     private Department department;
-    private Patient patient;
+    private Person person;
     private Date encounter_date;
     private String diagnosis;
 
@@ -49,12 +49,12 @@ public class Encounter implements Serializable{
         this.department = department;
     }
 
-    public Patient getPatient() {
-        return patient;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Date getEncounter_date() {
