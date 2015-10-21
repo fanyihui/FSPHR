@@ -13,6 +13,12 @@ import com.fansen.phr.R;
 import com.fansen.phr.adapter.MedicalRecordListAdapter;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
+import com.fansen.phr.service.IDepartmentService;
+import com.fansen.phr.service.IDiagnosisDictService;
+import com.fansen.phr.service.IDiagnosisService;
+import com.fansen.phr.service.IEncounterService;
+import com.fansen.phr.service.IOrganizationService;
+import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
@@ -25,11 +31,18 @@ public class PhrFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private MedicalRecordListAdapter adapter;
 
+    private IEncounterService encounterService = null;
+    private IOrganizationService organizationService = null;
+    private IDepartmentService departmentService = null;
+    private IDiagnosisService diagnosisService = null;
+    private IDiagnosisDictService diagnosisDictService = null;
 
     public PhrFragment() {
         // Required empty public constructor
         encounters = new ArrayList<>();
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,9 @@ public class PhrFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         phrView.setLayoutManager(layoutManager);
 
+        encounterService = new EncounterServiceLocalImpl(getActivity());
+        encounters = encounterService.getAllEncounters();
+
         // specify an adapter (see also next example)
         adapter = new MedicalRecordListAdapter(encounters);
         phrView.setAdapter(adapter);
@@ -66,12 +82,12 @@ public class PhrFragment extends Fragment {
         encounters = new ArrayList<>();
 
         Encounter ent = new Encounter();
-        ent.setEncounter_date(TimeFormat.format("yyyyMMdd", "20150921"));
+        ent.setAdmit_date(TimeFormat.format("yyyyMMdd", "20150921"));
         ent.setOrg(new Organization("复旦大学附属眼耳鼻喉医院"));
         encounters.add(ent);
 
         ent = new Encounter();
-        ent.setEncounter_date(TimeFormat.format("yyyyMMdd", "20150920"));
+        ent.setAdmit_date(TimeFormat.format("yyyyMMdd", "20150920"));
         ent.setOrg(new Organization("虹梅路社区卫生服务中心"));
         encounters.add(ent);
 

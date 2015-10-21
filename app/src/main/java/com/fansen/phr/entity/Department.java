@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Yihui on 2015/9/22.
  */
 public class Department implements Serializable{
-    private int department_key;
+    private long department_key;
     private String name;
 
     public String getName() {
@@ -17,11 +17,11 @@ public class Department implements Serializable{
         this.name = name;
     }
 
-    public int getDepartment_key() {
+    public long getDepartment_key() {
         return department_key;
     }
 
-    public void setDepartment_key(int department_key) {
+    public void setDepartment_key(long department_key) {
         this.department_key = department_key;
     }
 }

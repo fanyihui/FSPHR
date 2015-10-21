@@ -6,18 +6,20 @@ import java.io.Serializable;
  * Created by Yihui on 2015/9/22.
  */
 public class Organization implements Serializable{
-    private int org_key;
+    private long org_key = 0;
     private String org_name;
+
+    public Organization(){}
 
     public Organization(String org_name){
         this.org_name = org_name;
     }
 
-    public int getOrg_key() {
+    public long getOrg_key() {
         return org_key;
     }
 
-    public void setOrg_key(int org_key) {
+    public void setOrg_key(long org_key) {
         this.org_key = org_key;
     }
 

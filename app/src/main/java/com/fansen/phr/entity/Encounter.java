@@ -2,6 +2,7 @@ package com.fansen.phr.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Yihui on 2015/9/22.
@@ -14,8 +15,17 @@ public class Encounter implements Serializable{
     private Organization org;
     private Department department;
     private Person person;
-    private Date encounter_date;
-    private String diagnosis;
+    private Date admit_date;
+    private Date discharge_date;
+    private List<Diagnosis> diagnosisList;
+
+    public Date getDischarge_date() {
+        return discharge_date;
+    }
+
+    public void setDischarge_date(Date discharge_date) {
+        this.discharge_date = discharge_date;
+    }
 
     public long getEncounter_key() {
         return encounter_key;
@@ -57,19 +67,19 @@ public class Encounter implements Serializable{
         this.person = person;
     }
 
-    public Date getEncounter_date() {
-        return encounter_date;
+    public Date getAdmit_date() {
+        return admit_date;
     }
 
-    public void setEncounter_date(Date encounter_date) {
-        this.encounter_date = encounter_date;
+    public void setAdmit_date(Date admit_date) {
+        this.admit_date = admit_date;
     }
 
-    public String getDiagnosis() {
-        return diagnosis;
+    public List<Diagnosis> getDiagnosis() {
+        return diagnosisList;
     }
 
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
+    public void setDiagnosis(List<Diagnosis> diagnosis) {
+        this.diagnosisList = diagnosis;
     }
 }

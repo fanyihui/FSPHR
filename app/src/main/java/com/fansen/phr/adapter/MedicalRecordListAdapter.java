@@ -10,8 +10,6 @@ import com.fansen.phr.R;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.utils.TimeFormat;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 /**
@@ -35,10 +33,10 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     public void onBindViewHolder(MedicalRecordListViewHolder holder, int position) {
         Encounter encounter = encounterList.get(position);
 
-        holder.vDate.setText(TimeFormat.parseDate(encounter.getEncounter_date(), "yyyyMMdd"));
+        holder.vDate.setText(TimeFormat.parseDate(encounter.getAdmit_date(), "yyyyMMdd"));
         holder.vHospital.setText(encounter.getOrg().getOrg_name());
         holder.vDept.setText(encounter.getDepartment().getName());
-        holder.vDiagnosis.setText(encounter.getDiagnosis());
+        holder.vDiagnosis.setText(encounter.getDiagnosis().get(0).getDiagnosis_dict().getName());
     }
 
     @Override

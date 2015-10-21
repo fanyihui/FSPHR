@@ -19,11 +19,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fansen.phr.activities.NewOutpatientActivity;
+import com.fansen.phr.db.FsPhrDB;
+import com.fansen.phr.entity.Department;
+import com.fansen.phr.entity.Diagnosis;
+import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.Organization;
 import com.fansen.phr.fragment.AddOutpatientEncounterFragment;
 import com.fansen.phr.fragment.CarePlanFragment;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.SummaryFragment;
+import com.fansen.phr.service.IDepartmentService;
+import com.fansen.phr.service.IDiagnosisDictService;
+import com.fansen.phr.service.IDiagnosisService;
+import com.fansen.phr.service.IEncounterService;
+import com.fansen.phr.service.IOrganizationService;
+import com.fansen.phr.service.implementation.DepartmentServiceLocalImpl;
+import com.fansen.phr.service.implementation.DiagnosisDictServiceLocalImpl;
+import com.fansen.phr.service.implementation.DiagnosisServiceLocalImpl;
+import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
+import com.fansen.phr.service.implementation.OrganizationServiceLocalImpl;
+import com.fansen.phr.utils.TimeFormat;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +61,11 @@ public class MainActivity extends AppCompatActivity
     //static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
 
     private Fragment fragment = null;
+    private IEncounterService encounterService = null;
+    private IOrganizationService organizationService = null;
+    private IDepartmentService departmentService = null;
+    private IDiagnosisService diagnosisService = null;
+    private IDiagnosisDictService diagnosisDictService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +75,13 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final Context context = this;
+
+        encounterService = new EncounterServiceLocalImpl(context);
+        organizationService = new OrganizationServiceLocalImpl(context);
+        departmentService = new DepartmentServiceLocalImpl(context);
+        diagnosisService = new DiagnosisServiceLocalImpl(context);
+        diagnosisDictService = new DiagnosisDictServiceLocalImpl(context);
+
 
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
         addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
@@ -167,6 +199,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -174,10 +207,56 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_OUTPATIENT_REQUEST){
             if (resultCode == RESULT_OK){
-                Bundle bundle = data.getExtras();
-                Encounter encounter = (Encounter) bundle.getSerializable(NewOutpatientActivity.ENT_KEY);
 
-                System.out.println(encounter.getOrg().getOrg_name() + encounter.getDepartment().getName() + encounter.getDiagnosis());
+                //Get values from NewOutpatientActivity
+                Bundle bundle = data.getExtras();
+                String organization = bundle.getString(NewOutpatientActivity.KEY_ORG);
+                String department = bundle.getString(NewOutpatientActivity.KEY_DEPT);
+                String diagnosis = bundle.getString(NewOutpatientActivity.KEY_DIAG);
+                String admit_date = bundle.getString(NewOutpatientActivity.KEY_DATE);
+
+                //Initial Encounter
+                Encounter encounter = new Encounter();
+
+                //Initial Organization
+                Organization org = new Organization(organization);
+                long org_key = organizationService.addOrganization(org);
+                org.setOrg_key(org_key);
+
+                //Initial department
+                Department dept = new Department();
+                dept.setName(department);
+                long dept_key = departmentService.addDepartment(dept);
+                dept.setDepartment_key(dept_key);
+
+                //Set the value to encounter
+                encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", admit_date));
+                encounter.setOrg(org);
+                encounter.setDepartment(dept);
+
+                // add the encounter to database, and return the key of that encounter
+                long encounter_key = encounterService.addNewEncounter(encounter);
+
+
+                //Add new Dict for diagnosis to database
+                DictDiagnosis dictDiagnosis = new DictDiagnosis();
+                dictDiagnosis.setName(diagnosis);
+                int diagnosis_dict_key = diagnosisDictService.addDiagnosisDict(dictDiagnosis);
+                dictDiagnosis.setKey(diagnosis_dict_key);
+
+                Diagnosis diag = new Diagnosis();
+                diag.setEncounter_key(encounter_key);
+                diag.setDiagnosis_dict(dictDiagnosis);
+                diag.setPrimaryIndicator(1);
+
+                //add diagnosis to database
+                int diag_key = diagnosisService.addNewDiagnosis(diag);
+                diag.setDiagnosis_key(diag_key);
+
+                List<Diagnosis> diagnosisList = new ArrayList<>();
+                diagnosisList.add(diag);
+
+                encounter.setDiagnosis(diagnosisList);
 
                 if (navigationItemId == R.id.nav_phr) {
                     PhrFragment phrFragment = (PhrFragment) fragment;

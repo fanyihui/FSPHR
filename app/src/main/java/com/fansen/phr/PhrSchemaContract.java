@@ -23,7 +23,6 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_ENT_PERSON_KEY = "person_key";
         public static final String COLUMN_NAME_ENT_ORG_KEY = "org_key";
         public static final String COLUMN_NAME_ENT_DPT_KEY = "dpt_key";
-        public static final String COLUMN_NAME_ENT_DIAGNOSIS_KEY = "diagnosis_key";
     }
 
     public static abstract class DiagnosisTable implements BaseColumns{
@@ -40,17 +39,18 @@ public final class PhrSchemaContract {
      */
     public static abstract class OrganizationTable implements BaseColumns{
         public static final String TABLE_NAME = "organization";
-        public static final String COLUMN_NAME_ORG_NAME = "name";
+        public static final String COLUMN_NAME_ORG_NAME = "org_name";
     }
 
-    public static abstract class DepartTable implements BaseColumns{
+    public static abstract class DepartmentTable implements BaseColumns{
         public static final String TABLE_NAME = "department";
-        public static final String COLUMN_NAME_DEPT_NAME = "name";
+        public static final String COLUMN_NAME_DEPT_NAME = "department_name";
     }
 
     public static abstract class DictDiagnosisTable implements BaseColumns{
         public static final String TABLE_NAME = "dict_diagnosis";
         public static final String COLUMN_NAME_DICT_NAME = "name";
         public static final String COLUMN_NAME_DICT_CODE = "code";
+        public static final String COLUMN_NAME_DICT_DESC = "description";
     }
 }

@@ -1,31 +1,23 @@
 package com.fansen.phr.activities;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fansen.phr.MainActivity;
 import com.fansen.phr.R;
 import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
 import com.fansen.phr.utils.TimeFormat;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,6 +41,10 @@ public class NewOutpatientActivity extends AppCompatActivity {
     };
 
     public static final String ENT_KEY = "com.fansen.phr.entity.encounter";
+    public static final String KEY_ORG = "organization";
+    public static final String KEY_DEPT = "department";
+    public static final String KEY_DIAG = "diagnosis";
+    public static final String KEY_DATE = "date";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,28 +88,27 @@ public class NewOutpatientActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_submit_outpatient) {
 
-            Encounter encounter = new Encounter();
-            Department department = new Department();
+            //Encounter encounter = new Encounter();
+            //Department department = new Department();
 
 
             String hospital = editTextHospital.getText().toString();
-            Organization organization = new Organization(hospital);
+            //Organization organization = new Organization(hospital);
 
             String dept = editTextDept.getText().toString();
-            department.setName(dept);
+            //department.setName(dept);
 
             String diag = editTextDiag.getText().toString();
             String date = textViewEntDate.getText().toString();
 
-            encounter.setDepartment(department);
-            encounter.setOrg(organization);
-            encounter.setDiagnosis(diag);
-            encounter.setEncounter_date(TimeFormat.format("yyyyMMdd", date));
+            Intent data = new Intent();
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ENT_KEY, encounter);
+            bundle.putString(KEY_DEPT, dept);
+            bundle.putString(KEY_ORG, hospital);
+            bundle.putString(KEY_DIAG, diag);
+            bundle.putString(KEY_DATE, date);
 
-            Intent data = new Intent();
             data.putExtras(bundle);
 
             setResult(RESULT_OK, data);
