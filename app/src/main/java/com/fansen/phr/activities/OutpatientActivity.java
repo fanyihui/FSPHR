@@ -13,16 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
-import com.fansen.phr.entity.Department;
-import com.fansen.phr.entity.Encounter;
-import com.fansen.phr.entity.Organization;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NewOutpatientActivity extends AppCompatActivity {
+public class OutpatientActivity extends AppCompatActivity {
     private TextView textViewEntDate = null;
     private EditText editTextHospital = null;
     private EditText editTextDept = null;
@@ -65,7 +62,7 @@ public class NewOutpatientActivity extends AppCompatActivity {
         textViewEntDate.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
         textViewEntDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DatePickerDialog(NewOutpatientActivity.this,listener,
+                new DatePickerDialog(OutpatientActivity.this,listener,
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,14 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fansen.phr.activities.NewOutpatientActivity;
-import com.fansen.phr.db.FsPhrDB;
+import com.fansen.phr.activities.OutpatientActivity;
 import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
-import com.fansen.phr.fragment.AddOutpatientEncounterFragment;
 import com.fansen.phr.fragment.CarePlanFragment;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.SummaryFragment;
@@ -41,7 +38,6 @@ import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
 import com.fansen.phr.service.implementation.OrganizationServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             //Open the add new outpatient activity and wait for result
             public void onClick(View v) {
-                Intent intent = new Intent(context, NewOutpatientActivity.class);
+                Intent intent = new Intent(context, OutpatientActivity.class);
 
                 startActivityForResult(intent, ADD_OUTPATIENT_REQUEST);
 
@@ -208,12 +204,12 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == ADD_OUTPATIENT_REQUEST){
             if (resultCode == RESULT_OK){
 
-                //Get values from NewOutpatientActivity
+                //Get values from OutpatientActivity
                 Bundle bundle = data.getExtras();
-                String organization = bundle.getString(NewOutpatientActivity.KEY_ORG);
-                String department = bundle.getString(NewOutpatientActivity.KEY_DEPT);
-                String diagnosis = bundle.getString(NewOutpatientActivity.KEY_DIAG);
-                String admit_date = bundle.getString(NewOutpatientActivity.KEY_DATE);
+                String organization = bundle.getString(OutpatientActivity.KEY_ORG);
+                String department = bundle.getString(OutpatientActivity.KEY_DEPT);
+                String diagnosis = bundle.getString(OutpatientActivity.KEY_DIAG);
+                String admit_date = bundle.getString(OutpatientActivity.KEY_DATE);
 
                 //Initial Encounter
                 Encounter encounter = new Encounter();

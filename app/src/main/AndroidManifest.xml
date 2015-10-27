@@ -24,8 +24,18 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".activities.NewOutpatientActivity"
+            android:name=".activities.OutpatientActivity"
             android:label="@string/title_activity_new_outpatient"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.OutpatientDetailActivity"
+            android:label="@string/title_activity_outpatient_detail"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.ChiefComplaintEditActivity"
+            android:label="@string/title_activity_chief_complaint_edit"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

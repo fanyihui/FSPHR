@@ -6,7 +6,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_new_outpatient"
-    tools:context="com.fansen.phr.activities.NewOutpatientActivity"
+    tools:context="com.fansen.phr.activities.OutpatientActivity"
     android:showDividers="middle|end|beginning"
     android:dividerPadding="1dp">
 
@@ -45,8 +45,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        >
+        android:layout_height="80dp">
 
         <TextView
             android:id="@+id/id_label_org"

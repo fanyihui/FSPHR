@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"/>
+    
+    <TextView
+        android:id="@+id/ent_date"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:paddingTop="5dp"
+        android:text="20151009"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/ent_dept"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:paddingTop="5dp"
+        android:text="心内科"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/ent_org"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/ent_dept"
+        android:paddingTop="5dp"
+        android:textStyle="bold"
+        android:text="上海复旦大学附属中山医院"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ent_org"
+        android:layout_marginTop="2dp"
+        android:background="#FFFFFF"/>
+</RelativeLayout>

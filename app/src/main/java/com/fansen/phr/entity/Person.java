@@ -1,11 +1,12 @@
 package com.fansen.phr.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by 310078142 on 2015/9/22.
  */
-public class Person {
+public class Person implements Serializable{
     private long person_key;
     private String person_name;
     private String gender_code;

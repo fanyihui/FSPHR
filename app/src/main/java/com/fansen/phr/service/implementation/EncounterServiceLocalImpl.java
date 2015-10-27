@@ -52,13 +52,13 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             int ent_key = c.getInt(c.getColumnIndex("_id"));
 
             String sql = "Select "+
-                    PhrSchemaContract.DiagnosisTable._ID + "," +
+                    PhrSchemaContract.DiagnosisTable.TABLE_NAME+"."+PhrSchemaContract.DiagnosisTable._ID + "," +
                     PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY + "," +
                     PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_PRIMARY_INDICATOR + "," +
                     PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_CODE + "," +
                     PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME + " from " +
                     PhrSchemaContract.DiagnosisTable.TABLE_NAME + "," + PhrSchemaContract.DictDiagnosisTable.TABLE_NAME + " where " +
-                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY +"=" + PhrSchemaContract.DictDiagnosisTable._ID +" and " +
+                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY +"=" + PhrSchemaContract.DiagnosisTable.TABLE_NAME+"."+PhrSchemaContract.DictDiagnosisTable._ID +" and " +
                     PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_ENT_KEY +"=" + ent_key;
 
             Cursor c1 = fsPhrDB.rawQuery(sql);

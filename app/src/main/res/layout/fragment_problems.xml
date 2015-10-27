@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fansen.phr.fragment.details.ProblemsFragment">
+
+    <TextView
+        android:id="@+id/label_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="主诉"
+        android:background="#e5e5e5"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+    <ListView
+        android:id="@+id/complaint_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label_1"/>
+
+    <Button
+        android:id="@+id/add_complaint_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/complaint_list"
+        android:drawableLeft="@drawable/ic_add_black_24dp"
+        android:background="#00000000"
+        android:text="添加症状" />
+
+    <TextView
+        android:id="@+id/label_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/add_complaint_btn"
+        android:text="现病史"
+        android:background="#e5e5e5"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+
+    <EditText
+        android:id="@+id/text_current_problems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:editable="false"
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+        android:layout_below="@+id/label_2"
+        android:hint="描述当前疾病的发展过程"/>
+
+
+</RelativeLayout>

@@ -18,6 +18,7 @@ import java.util.List;
 public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecordListAdapter.MedicalRecordListViewHolder>{
 
     private List<Encounter> encounterList;
+    private MedicalRecordItemClickListener itemClickListener = null;
 
     public MedicalRecordListAdapter(List<Encounter> encounters) {
         encounterList = encounters;
@@ -44,7 +45,13 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         return encounterList.size();
     }
 
-    public static class MedicalRecordListViewHolder extends RecyclerView.ViewHolder{
+    public void setItemClickListener(MedicalRecordItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
+
+
+    public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         protected TextView vDate;
         protected TextView vHospital;
@@ -54,11 +61,25 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         public MedicalRecordListViewHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
+
             vDate = (TextView) itemView.findViewById(R.id.ent_date);
             vHospital = (TextView) itemView.findViewById(R.id.ent_org);
             vDept = (TextView) itemView.findViewById(R.id.ent_dept);
             vDiagnosis = (TextView) itemView.findViewById(R.id.ent_diagnosis);
         }
+
+        @Override
+        public void onClick(View v) {
+            if(itemClickListener != null){
+                itemClickListener.itemClicked(v, getAdapterPosition());
+            }
+
+        }
+    }
+
+    public interface MedicalRecordItemClickListener{
+        public void itemClicked(View v, int position);
     }
 }
 

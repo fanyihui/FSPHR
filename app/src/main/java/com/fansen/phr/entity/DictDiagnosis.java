@@ -1,9 +1,11 @@
 package com.fansen.phr.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by 310078142 on 2015/10/20.
  */
-public class DictDiagnosis {
+public class DictDiagnosis implements Serializable {
     private String code;
     private String name;
     private String description;

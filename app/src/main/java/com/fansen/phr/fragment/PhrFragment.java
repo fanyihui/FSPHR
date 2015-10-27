@@ -1,5 +1,7 @@
 package com.fansen.phr.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fansen.phr.R;
+import com.fansen.phr.activities.OutpatientDetailActivity;
 import com.fansen.phr.adapter.MedicalRecordListAdapter;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
@@ -24,7 +27,9 @@ import com.fansen.phr.utils.TimeFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhrFragment extends Fragment {
+public class PhrFragment extends Fragment implements MedicalRecordListAdapter.MedicalRecordItemClickListener{
+
+    private Context context;
 
     private RecyclerView phrView = null;
     private List<Encounter> encounters;
@@ -36,6 +41,8 @@ public class PhrFragment extends Fragment {
     private IDepartmentService departmentService = null;
     private IDiagnosisService diagnosisService = null;
     private IDiagnosisDictService diagnosisDictService = null;
+
+    public static final String OPEN_ENT_KEY = "open_encounter";
 
     public PhrFragment() {
         // Required empty public constructor
@@ -52,7 +59,7 @@ public class PhrFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        context = getActivity();
 
         //setTestData();
 
@@ -68,6 +75,7 @@ public class PhrFragment extends Fragment {
 
         // specify an adapter (see also next example)
         adapter = new MedicalRecordListAdapter(encounters);
+        adapter.setItemClickListener(this);
         phrView.setAdapter(adapter);
         return phrView;
     }
@@ -78,6 +86,9 @@ public class PhrFragment extends Fragment {
         phrView.setAdapter(adapter);
     }
 
+    /*
+    * For test only, should be move to JUnit code
+    * */
     private void setTestData(){
         encounters = new ArrayList<>();
 
@@ -91,6 +102,17 @@ public class PhrFragment extends Fragment {
         ent.setOrg(new Organization("虹梅路社区卫生服务中心"));
         encounters.add(ent);
 
+    }
+
+    @Override
+    public void itemClicked(View v, int position) {
+        Intent intent = new Intent(context, OutpatientDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(OPEN_ENT_KEY, encounters.get(position));
+        intent.putExtras(bundle);
+
+
+        context.startActivity(intent);
     }
 
     /**
