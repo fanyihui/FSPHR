@@ -37,7 +37,8 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         holder.vDate.setText(TimeFormat.parseDate(encounter.getAdmit_date(), "yyyyMMdd"));
         holder.vHospital.setText(encounter.getOrg().getOrg_name());
         holder.vDept.setText(encounter.getDepartment().getName());
-        holder.vDiagnosis.setText(encounter.getDiagnosis().get(0).getDiagnosis_dict().getName());
+        holder.vDiagnosis.setText(encounter.getPrimaryDiagnosis().getName());
+        holder.vAttendingDoctor.setText(encounter.getAttendingDoctor().getPhysicianName());
     }
 
     @Override
@@ -57,6 +58,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         protected TextView vHospital;
         protected TextView vDept;
         protected TextView vDiagnosis;
+        protected TextView vAttendingDoctor;
 
         public MedicalRecordListViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +69,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
             vHospital = (TextView) itemView.findViewById(R.id.ent_org);
             vDept = (TextView) itemView.findViewById(R.id.ent_dept);
             vDiagnosis = (TextView) itemView.findViewById(R.id.ent_diagnosis);
+            vAttendingDoctor = (TextView) itemView.findViewById(R.id.ent_attending_doctor);
         }
 
         @Override

@@ -21,7 +21,8 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="tab_name_basic">病情描述</string>
-    <string name="tab_name_procedure">检查检验</string>
+    <string name="tab_name_exam">检查检验</string>
     <string name="tab_name_prescription">处方</string>
+    <string name="tab_name_procedure">处置</string>
     <string name="title_activity_chief_complaint_edit">添加主诉</string>
 </resources>

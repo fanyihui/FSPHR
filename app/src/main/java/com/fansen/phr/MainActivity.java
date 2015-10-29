@@ -23,6 +23,7 @@ import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
+import com.fansen.phr.entity.Physician;
 import com.fansen.phr.fragment.CarePlanFragment;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.SummaryFragment;
@@ -31,11 +32,13 @@ import com.fansen.phr.service.IDiagnosisDictService;
 import com.fansen.phr.service.IDiagnosisService;
 import com.fansen.phr.service.IEncounterService;
 import com.fansen.phr.service.IOrganizationService;
+import com.fansen.phr.service.IPhysicianService;
 import com.fansen.phr.service.implementation.DepartmentServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisServiceLocalImpl;
 import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
 import com.fansen.phr.service.implementation.OrganizationServiceLocalImpl;
+import com.fansen.phr.service.implementation.PhysicianServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     private IDepartmentService departmentService = null;
     private IDiagnosisService diagnosisService = null;
     private IDiagnosisDictService diagnosisDictService = null;
+    private IPhysicianService physicianService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         departmentService = new DepartmentServiceLocalImpl(context);
         diagnosisService = new DiagnosisServiceLocalImpl(context);
         diagnosisDictService = new DiagnosisDictServiceLocalImpl(context);
+        physicianService = new PhysicianServiceLocalImpl(context);
 
 
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
@@ -210,6 +215,7 @@ public class MainActivity extends AppCompatActivity
                 String department = bundle.getString(OutpatientActivity.KEY_DEPT);
                 String diagnosis = bundle.getString(OutpatientActivity.KEY_DIAG);
                 String admit_date = bundle.getString(OutpatientActivity.KEY_DATE);
+                String attending_doctor = bundle.getString(OutpatientActivity.KEY_DOCTOR);
 
                 //Initial Encounter
                 Encounter encounter = new Encounter();
@@ -225,34 +231,29 @@ public class MainActivity extends AppCompatActivity
                 long dept_key = departmentService.addDepartment(dept);
                 dept.setDepartment_key(dept_key);
 
+
+
+                //Add new Dict to database if not exist
+                DictDiagnosis primaryDiagnosis = new DictDiagnosis();
+                primaryDiagnosis.setName(diagnosis);
+                int diagnosis_dict_key = diagnosisDictService.addDiagnosisDict(primaryDiagnosis);
+                primaryDiagnosis.setKey(diagnosis_dict_key);
+
+                //Add new physician to database if not exist
+                Physician physician = new Physician();
+                physician.setPhysicianName(attending_doctor);
+                int attending_doctor_key = physicianService.addPhysician(physician);
+                physician.setPhysicianKey(attending_doctor_key);
+
                 //Set the value to encounter
                 encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", admit_date));
                 encounter.setOrg(org);
                 encounter.setDepartment(dept);
+                encounter.setPrimaryDiagnosis(primaryDiagnosis);
+                encounter.setAttendingDoctor(physician);
 
                 // add the encounter to database, and return the key of that encounter
                 long encounter_key = encounterService.addNewEncounter(encounter);
-
-
-                //Add new Dict for diagnosis to database
-                DictDiagnosis dictDiagnosis = new DictDiagnosis();
-                dictDiagnosis.setName(diagnosis);
-                int diagnosis_dict_key = diagnosisDictService.addDiagnosisDict(dictDiagnosis);
-                dictDiagnosis.setKey(diagnosis_dict_key);
-
-                Diagnosis diag = new Diagnosis();
-                diag.setEncounter_key(encounter_key);
-                diag.setDiagnosis_dict(dictDiagnosis);
-                diag.setPrimaryIndicator(1);
-
-                //add diagnosis to database
-                int diag_key = diagnosisService.addNewDiagnosis(diag);
-                diag.setDiagnosis_key(diag_key);
-
-                List<Diagnosis> diagnosisList = new ArrayList<>();
-                diagnosisList.add(diag);
-
-                encounter.setDiagnosis(diagnosisList);
 
                 if (navigationItemId == R.id.nav_phr) {
                     PhrFragment phrFragment = (PhrFragment) fragment;

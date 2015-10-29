@@ -20,7 +20,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/id_label_op_date"
@@ -45,7 +45,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/id_label_org"
@@ -69,7 +69,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/id_label_dept"
@@ -94,7 +94,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/id_label_diag"
@@ -113,6 +113,30 @@
             android:background="@null"
             android:textColorHint="#e5e5e5"
             android:hint="必填"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/id_label_doct"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:text="医生"/>
+
+        <EditText
+            android:id="@+id/id_attending_doct"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/id_label_doct"
+            android:background="@null"
+            android:textColorHint="#e5e5e5"
+            android:hint="可选"/>
 
     </RelativeLayout>
 

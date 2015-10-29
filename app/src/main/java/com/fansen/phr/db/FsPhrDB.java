@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 3;
+    private final static int DATABASE_VERSION = 5;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -32,7 +32,9 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.EncounterTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + TEXT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PERSON_KEY + LONG_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PERSON_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY + INT_TYPE + ")";
 
@@ -62,6 +64,11 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_CODE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_DESC + TEXT_TYPE + ")";
+
+    private final static String SQL_CREATE_PHYSICIAN = "CREATE TABLE " + PhrSchemaContract.PhysicianTable.TABLE_NAME + "(" +
+            PhrSchemaContract.PhysicianTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_ID + TEXT_TYPE + ")";
 
     private final static String SQL_CREATE_PROCEDURE = "";
 
@@ -93,6 +100,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_DEPARTMENT);
         db.execSQL(SQL_CREATE_DIAGNOSIS);
         db.execSQL(SQL_CREATE_DICT_DIAGNOSIS);
+        db.execSQL(SQL_CREATE_PHYSICIAN);
     }
 
     @Override
@@ -104,6 +112,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE "+PhrSchemaContract.DepartmentTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.DiagnosisTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.DictDiagnosisTable.TABLE_NAME);
+        db.execSQL("DROP TABLE "+PhrSchemaContract.PhysicianTable.TABLE_NAME);
 
         onCreate(db);
     }

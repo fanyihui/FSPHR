@@ -20,6 +20,8 @@ public final class PhrSchemaContract {
         public static final String TABLE_NAME = "encounter";
         public static final String COLUMN_NAME_ENT_ADMIT_DATE = "ent_admit_date";
         public static final String COLUMN_NAME_ENT_DISCHARGE_DATE = "ent_discharge_date";
+        public static final String COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY = "primary_diagnosis_key";
+        public static final String COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY = "attending_doctor_key";
         public static final String COLUMN_NAME_ENT_PERSON_KEY = "person_key";
         public static final String COLUMN_NAME_ENT_ORG_KEY = "org_key";
         public static final String COLUMN_NAME_ENT_DPT_KEY = "dpt_key";
@@ -49,8 +51,14 @@ public final class PhrSchemaContract {
 
     public static abstract class DictDiagnosisTable implements BaseColumns{
         public static final String TABLE_NAME = "dict_diagnosis";
-        public static final String COLUMN_NAME_DICT_NAME = "name";
-        public static final String COLUMN_NAME_DICT_CODE = "code";
-        public static final String COLUMN_NAME_DICT_DESC = "description";
+        public static final String COLUMN_NAME_DICT_NAME = "diagnosis_name";
+        public static final String COLUMN_NAME_DICT_CODE = "diagnosis_code";
+        public static final String COLUMN_NAME_DICT_DESC = "diagnosis_desc";
+    }
+
+    public static abstract class PhysicianTable implements BaseColumns{
+        public static final String TABLE_NAME = "physician";
+        public static final String COLUMN_NAME_PHYSICIAN_NAME = "physician_name";
+        public static final String COLUMN_NAME_PHYSICIAN_ID = "physician_id";
     }
 }

@@ -1,10 +1,6 @@
 package com.fansen.phr.activities;
 
-import android.app.ActionBar;
-import android.app.Notification;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,10 +23,8 @@ import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
 import com.fansen.phr.fragment.details.ProblemsFragment;
-import com.fansen.phr.fragment.details.ProcedureFragment;
+import com.fansen.phr.fragment.details.RequestedProcedureFragment;
 import com.fansen.phr.utils.TimeFormat;
-
-import org.w3c.dom.Text;
 
 public class OutpatientDetailActivity extends AppCompatActivity {
 
@@ -40,6 +34,10 @@ public class OutpatientDetailActivity extends AppCompatActivity {
     private TextView textDepartmentView;
     private TextView textOrgView;
     private TextView textAdmitDateView;
+
+    private ProblemsFragment problemsFragment;
+    private RequestedProcedureFragment requestedProcedureFragment;
+    private PrescriptionFragment prescriptionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,12 @@ public class OutpatientDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        problemsFragment = ProblemsFragment.newInstance();
+        requestedProcedureFragment = RequestedProcedureFragment.newInstance();
+        prescriptionFragment = PrescriptionFragment.newInstance();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -77,6 +81,7 @@ public class OutpatientDetailActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
     }
 
 
@@ -117,11 +122,11 @@ public class OutpatientDetailActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new ProblemsFragment();
+                    return problemsFragment;
                 case 1:
-                    return new ProcedureFragment();
+                    return requestedProcedureFragment;
                 case 2:
-                    return new PrescriptionFragment();
+                    return prescriptionFragment;
             }
 
             return null;
@@ -129,8 +134,7 @@ public class OutpatientDetailActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -139,9 +143,11 @@ public class OutpatientDetailActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.tab_name_basic);
                 case 1:
-                    return getString(R.string.tab_name_procedure);
+                    return getString(R.string.tab_name_exam);
                 case 2:
                     return getString(R.string.tab_name_prescription);
+                case 3:
+                    return getString(R.string.tab_name_procedure);
             }
             return null;
         }

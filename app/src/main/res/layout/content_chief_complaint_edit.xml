@@ -47,6 +47,7 @@
         android:layout_toRightOf="@+id/lab_2"/>
     
     <Spinner
+        android:id="@+id/spinner_duration_unit"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_below="@+id/lab_1"

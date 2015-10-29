@@ -24,6 +24,7 @@ public class OutpatientActivity extends AppCompatActivity {
     private EditText editTextHospital = null;
     private EditText editTextDept = null;
     private EditText editTextDiag = null;
+    private EditText editTextDoctor = null;
     private Calendar cal = Calendar.getInstance();
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
@@ -42,6 +43,7 @@ public class OutpatientActivity extends AppCompatActivity {
     public static final String KEY_DEPT = "department";
     public static final String KEY_DIAG = "diagnosis";
     public static final String KEY_DATE = "date";
+    public static final String KEY_DOCTOR = "attending_doctor";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class OutpatientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -62,7 +64,7 @@ public class OutpatientActivity extends AppCompatActivity {
         textViewEntDate.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
         textViewEntDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DatePickerDialog(OutpatientActivity.this,listener,
+                new DatePickerDialog(OutpatientActivity.this, listener,
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
                         cal.get(Calendar.DAY_OF_MONTH)
@@ -73,6 +75,7 @@ public class OutpatientActivity extends AppCompatActivity {
         editTextHospital = (EditText) findViewById(R.id.id_op_org);
         editTextDept = (EditText) findViewById(R.id.id_op_dept);
         editTextDiag = (EditText) findViewById(R.id.id_op_diag);
+        editTextDoctor = (EditText) findViewById(R.id.id_attending_doct);
     }
 
     @Override
@@ -90,13 +93,10 @@ public class OutpatientActivity extends AppCompatActivity {
 
 
             String hospital = editTextHospital.getText().toString();
-            //Organization organization = new Organization(hospital);
-
             String dept = editTextDept.getText().toString();
-            //department.setName(dept);
-
             String diag = editTextDiag.getText().toString();
             String date = textViewEntDate.getText().toString();
+            String doctor = editTextDoctor.getText().toString();
 
             Intent data = new Intent();
 
@@ -105,6 +105,7 @@ public class OutpatientActivity extends AppCompatActivity {
             bundle.putString(KEY_ORG, hospital);
             bundle.putString(KEY_DIAG, diag);
             bundle.putString(KEY_DATE, date);
+            bundle.putString(KEY_DOCTOR, doctor);
 
             data.putExtras(bundle);
 

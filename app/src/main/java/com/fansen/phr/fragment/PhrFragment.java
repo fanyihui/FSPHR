@@ -82,8 +82,11 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
 
     public void addEncounter(Encounter encounter){
         encounters.add(encounter);
-        adapter = new MedicalRecordListAdapter(encounters);
-        phrView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+
+        //adapter = new MedicalRecordListAdapter(encounters);
+        //phrView.setAdapter(adapter);
     }
 
     /*

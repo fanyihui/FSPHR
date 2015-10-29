@@ -10,15 +10,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.fansen.phr.R;
 import com.fansen.phr.activities.ChiefComplaintEditActivity;
-import com.fansen.phr.entity.ChiefComplaint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,7 +29,11 @@ public class ProblemsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Button addComplaintBtn;
     private ListView complaintListView;
-    private List<ChiefComplaint> complaintList;
+    private List<String> complaintList;
+
+    private ArrayAdapter<String> complainListAdapter;
+    private Context context;
+
     //private EditText currentProblemsEditText;
     private RelativeLayout problemsView;
 
@@ -51,10 +55,10 @@ public class ProblemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Context context = this.getActivity();
+        context = this.getActivity();
 
         problemsView = (RelativeLayout) inflater.inflate(R.layout.fragment_problems, container, false);
-        addComplaintBtn = (Button) problemsView.findViewById(R.id.add_complaint_btn);
+        addComplaintBtn = (Button) problemsView.findViewById(R.id.id_problems_add_complaint_btn);
         addComplaintBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -66,7 +70,12 @@ public class ProblemsFragment extends Fragment {
             }
         });
 
-        complaintListView = (ListView) problemsView.findViewById(R.id.complaint_list);
+        complaintListView = (ListView) problemsView.findViewById(R.id.id_problems_complaint_list);
+        complaintList = new ArrayList<>();
+
+        complainListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,complaintList);
+        complaintListView.setAdapter(complainListAdapter);
+
         /*complaintEditText = (EditText) problemsView.findViewById(R.id.text_complaint);
         complaintEditText.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -91,7 +100,14 @@ public class ProblemsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SUBMIT_COMPLAINT_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
+                String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
+                String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
 
+                complaintList.add(complaint+"持续"+duration+unit);
+
+                complainListAdapter.notifyDataSetChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

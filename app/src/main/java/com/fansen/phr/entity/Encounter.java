@@ -18,6 +18,8 @@ public class Encounter implements Serializable{
     private Date admit_date;
     private Date discharge_date;
     private List<Diagnosis> diagnosisList;
+    private DictDiagnosis primaryDiagnosis;
+    private Physician attendingDoctor;
 
     public Date getDischarge_date() {
         return discharge_date;
@@ -81,5 +83,21 @@ public class Encounter implements Serializable{
 
     public void setDiagnosis(List<Diagnosis> diagnosis) {
         this.diagnosisList = diagnosis;
+    }
+
+    public DictDiagnosis getPrimaryDiagnosis() {
+        return primaryDiagnosis;
+    }
+
+    public void setPrimaryDiagnosis(DictDiagnosis primaryDiagnosis) {
+        this.primaryDiagnosis = primaryDiagnosis;
+    }
+
+    public Physician getAttendingDoctor() {
+        return attendingDoctor;
+    }
+
+    public void setAttendingDoctor(Physician attendingDoctor) {
+        this.attendingDoctor = attendingDoctor;
     }
 }
