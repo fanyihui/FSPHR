@@ -129,7 +129,7 @@
             android:text="医生"/>
 
         <EditText
-            android:id="@+id/id_attending_doct"
+            android:id="@+id/id_bar_attending_doct"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="30dp"

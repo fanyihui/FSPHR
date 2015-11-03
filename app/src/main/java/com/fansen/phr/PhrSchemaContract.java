@@ -2,6 +2,11 @@ package com.fansen.phr;
 
 import android.provider.BaseColumns;
 
+import com.fansen.phr.service.implementation.BaseServiceLocal;
+
+import java.net.PortUnreachableException;
+import java.security.PublicKey;
+
 /**
  * Created by 310078142 on 2015/10/16.
  */
@@ -25,6 +30,22 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_ENT_PERSON_KEY = "person_key";
         public static final String COLUMN_NAME_ENT_ORG_KEY = "org_key";
         public static final String COLUMN_NAME_ENT_DPT_KEY = "dpt_key";
+        public static final String COLUMN_NAME_ENT_PROBLEMS_DESC = "problems_description";
+    }
+
+    public static abstract class MedicationOrderTable implements BaseColumns{
+        public static final String TABLE_NAME = "medication_order";
+        public static final String COLUMN_NAME_MED_ORDER_ENT_KEY = "ent_key";
+        public static final String COLUMN_NAME_MED_ORDER_MED_KEY = "med_key";
+        public static final String COLUMN_NAME_MED_ORDER_QUANTITY = "";
+        public static final String COLUMN_NAME_MED_ORDER_QUANTITY_UNIT = "";
+        public static final String COLUMN_NAME_MED_ORDER_DOSAGE = "";
+        public static final String COLUMN_NAME_MED_ORDER_DOSAGE_UNIT = "";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL = "";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT = "";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES = "";
+        public static final String COLUMN_NAME_MED_ORDER_ROUTE = "";
+        public static final String COLUMN_NAME_MED_ORDER_PRN = "";
     }
 
     public static abstract class DiagnosisTable implements BaseColumns{
@@ -35,6 +56,14 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_DIG_PRIMARY_INDICATOR = "primary_indicator";
     }
 
+
+    public static abstract class ChiefComplaintTable implements BaseColumns{
+        public static final String TABLE_NAME = "chief_complaints";
+        public static final String COLUMN_NAME_COMPLAINT_ENT_KEY = "ent_key";
+        public static final String COLUMN_NAME_SYMPTOM = "symptom";
+        public static final String COLUMN_NAME_DURATION = "duration";
+        public static final String COLUMN_NAME_DURATION_UNIT = "duration_unit";
+    }
 
     /**
      * Master file tables, like organization, department, terminologies
@@ -54,6 +83,13 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_DICT_NAME = "diagnosis_name";
         public static final String COLUMN_NAME_DICT_CODE = "diagnosis_code";
         public static final String COLUMN_NAME_DICT_DESC = "diagnosis_desc";
+    }
+
+    public static abstract class MedicationDictTable implements BaseColumns{
+        public static final String TABLE_NAME = "dict_medication";
+        public static final String COLUMN_NAME_DICT_MED_NAME = "name";
+        public static final String COLUMN_NAME_DICT_MED_CODE = "code";
+        public static final String COLUMN_NAME_DICT_MED_SPEC = "spec";
     }
 
     public static abstract class PhysicianTable implements BaseColumns{

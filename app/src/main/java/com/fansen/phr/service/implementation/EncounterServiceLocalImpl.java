@@ -34,6 +34,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         String ent_sql = "select " + PhrSchemaContract.EncounterTable.TABLE_NAME+"."+PhrSchemaContract.EncounterTable._ID + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + "," +
+                PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY + "," +
@@ -51,7 +52,11 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
                 " where encounter.org_key=organization._id and " +
                 "encounter.dpt_key=department._id and "+
                 "encounter.attending_doctor_key=physician._id and " +
-                PhrSchemaContract.EncounterTable.TABLE_NAME+"."+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY +"="+ PhrSchemaContract.DictDiagnosisTable.TABLE_NAME+"."+PhrSchemaContract.DictDiagnosisTable._ID;
+                PhrSchemaContract.EncounterTable.TABLE_NAME+"."+
+                PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY +"="+
+                PhrSchemaContract.DictDiagnosisTable.TABLE_NAME+"."+
+                PhrSchemaContract.DictDiagnosisTable._ID +
+                " order by "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE +" desc";
 
         Cursor c = fsPhrDB.rawQuery(ent_sql);
 
@@ -59,39 +64,6 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
 
         while (!c.isAfterLast()) {
             int ent_key = c.getInt(c.getColumnIndex("_id"));
-
-            /*String sql = "Select "+
-                    PhrSchemaContract.DiagnosisTable.TABLE_NAME+"."+PhrSchemaContract.DiagnosisTable._ID + "," +
-                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY + "," +
-                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_PRIMARY_INDICATOR + "," +
-                    PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_CODE + "," +
-                    PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME + " from " +
-                    PhrSchemaContract.DiagnosisTable.TABLE_NAME + "," + PhrSchemaContract.DictDiagnosisTable.TABLE_NAME + " where " +
-                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY +"=" + PhrSchemaContract.DiagnosisTable.TABLE_NAME+"."+PhrSchemaContract.DictDiagnosisTable._ID +" and " +
-                    PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_ENT_KEY +"=" + ent_key;
-
-            Cursor c1 = fsPhrDB.rawQuery(sql);
-
-            List<Diagnosis> diagnosisList = new ArrayList<>();
-
-            c1.moveToFirst();
-            if (!c1.isAfterLast()) {
-                Diagnosis diagnosis = new Diagnosis();
-                DictDiagnosis dict = new DictDiagnosis();
-                dict.setName(c1.getString(c1.getColumnIndex("name")));
-                dict.setCode(c1.getString(c1.getColumnIndex("code")));
-
-                diagnosis.setEncounter_key(ent_key);
-                diagnosis.setPrimaryIndicator(c1.getInt(c1.getColumnIndex("primary_indicator")));
-                diagnosis.setDiagnosis_dict(dict);
-
-                diagnosisList.add(diagnosis);
-
-                c1.moveToNext();
-            }
-
-            c1.close();
-            */
 
             Organization org = new Organization();
             Department dept = new Department();
@@ -112,6 +84,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             physician.setPhysicianKey(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
             physician.setPhysicianName(c.getString(c.getColumnIndex(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME)));
 
+            encounter.setProblem_description(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC)));
             encounter.setDepartment(dept);
             encounter.setOrg(org);
             encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
@@ -153,5 +126,34 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
     @Override
     public boolean deleteEncounter(long ent_key) {
         return false;
+    }
+
+    @Override
+    public void updateProblemsDescription(long ent_key, String problemsDescription) {
+        ContentValues cv = new ContentValues();
+        cv.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC, problemsDescription);
+
+        String[] args = {String.valueOf(ent_key)};
+
+        fsPhrDB.update(PhrSchemaContract.EncounterTable.TABLE_NAME, cv, "_id=?", args);
+    }
+
+    @Override
+    public String getProblemsDescription(long ent_key) {
+        String sql = "select "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC +
+                " from " + PhrSchemaContract.EncounterTable.TABLE_NAME +
+                " where _id="+ent_key;
+
+        Cursor c = fsPhrDB.rawQuery(sql);
+
+        c.moveToFirst();
+
+        String desc = c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC));
+
+        c.close();
+
+        fsPhrDB.closeDatabase();
+
+        return desc;
     }
 }

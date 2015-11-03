@@ -20,6 +20,7 @@ public class Encounter implements Serializable{
     private List<Diagnosis> diagnosisList;
     private DictDiagnosis primaryDiagnosis;
     private Physician attendingDoctor;
+    private String problem_description;
 
     public Date getDischarge_date() {
         return discharge_date;
@@ -99,5 +100,21 @@ public class Encounter implements Serializable{
 
     public void setAttendingDoctor(Physician attendingDoctor) {
         this.attendingDoctor = attendingDoctor;
+    }
+
+    public String getProblem_description() {
+        return problem_description;
+    }
+
+    public void setProblem_description(String problem_description) {
+        this.problem_description = problem_description;
+    }
+
+    public List<Diagnosis> getDiagnosisList() {
+        return diagnosisList;
+    }
+
+    public void setDiagnosisList(List<Diagnosis> diagnosisList) {
+        this.diagnosisList = diagnosisList;
     }
 }

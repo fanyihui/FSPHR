@@ -20,11 +20,15 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.Procedure;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
 import com.fansen.phr.fragment.details.ProblemsFragment;
+import com.fansen.phr.fragment.details.ProcedureFragment;
 import com.fansen.phr.fragment.details.RequestedProcedureFragment;
 import com.fansen.phr.utils.TimeFormat;
+
+import org.w3c.dom.Text;
 
 public class OutpatientDetailActivity extends AppCompatActivity {
 
@@ -34,10 +38,15 @@ public class OutpatientDetailActivity extends AppCompatActivity {
     private TextView textDepartmentView;
     private TextView textOrgView;
     private TextView textAdmitDateView;
+    private TextView textAttendingDoctor;
+    private TextView textPrimaryDiagnosis;
 
     private ProblemsFragment problemsFragment;
     private RequestedProcedureFragment requestedProcedureFragment;
     private PrescriptionFragment prescriptionFragment;
+    private ProcedureFragment procedureFragment;
+
+    private Encounter selectedEncounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +63,15 @@ public class OutpatientDetailActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        selectedEncounter = (Encounter) bundle.getSerializable(PhrFragment.OPEN_ENT_KEY);
+        System.out.println("selected encounter is " + selectedEncounter.getEncounter_key());
 
-        problemsFragment = ProblemsFragment.newInstance();
+        problemsFragment = ProblemsFragment.newInstance(selectedEncounter);
         requestedProcedureFragment = RequestedProcedureFragment.newInstance();
         prescriptionFragment = PrescriptionFragment.newInstance();
+        procedureFragment = new ProcedureFragment();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -70,14 +84,15 @@ public class OutpatientDetailActivity extends AppCompatActivity {
         textDepartmentView = (TextView) findViewById(R.id.ent_dept);
         textOrgView = (TextView) findViewById(R.id.ent_org);
         textAdmitDateView = (TextView) findViewById(R.id.ent_date);
+        textPrimaryDiagnosis = (TextView) findViewById(R.id.id_ent_primary_diagnosis);
+        textAttendingDoctor = (TextView) findViewById(R.id.id_bar_attending_doct);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        Encounter encounter = (Encounter) bundle.getSerializable(PhrFragment.OPEN_ENT_KEY);
 
-        textAdmitDateView.setText(TimeFormat.parseDate(encounter.getAdmit_date(), "yyyyMMdd"));
-        textOrgView.setText(encounter.getOrg().getOrg_name());
-        textDepartmentView.setText(encounter.getDepartment().getName());
+        textAdmitDateView.setText(TimeFormat.parseDate(selectedEncounter.getAdmit_date(), "yyyyMMdd"));
+        textOrgView.setText(selectedEncounter.getOrg().getOrg_name());
+        textDepartmentView.setText(selectedEncounter.getDepartment().getName());
+        textAttendingDoctor.setText(selectedEncounter.getAttendingDoctor().getPhysicianName());
+        textPrimaryDiagnosis.setText(selectedEncounter.getPrimaryDiagnosis().getName());
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -127,6 +142,8 @@ public class OutpatientDetailActivity extends AppCompatActivity {
                     return requestedProcedureFragment;
                 case 2:
                     return prescriptionFragment;
+                case 3:
+                    return procedureFragment;
             }
 
             return null;

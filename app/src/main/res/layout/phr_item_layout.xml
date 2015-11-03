@@ -4,14 +4,12 @@
     android:id="@+id/ent_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFC9ECCC"
     app:cardCornerRadius="8dp"
-    android:layout_margin="5dp">
+    android:layout_margin="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#FFC9ECCC"
         android:padding="5dp" >
 
         <TextView
@@ -40,8 +38,6 @@
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/ent_dept"
             android:text="上海复旦大学附属中山医院"/>
-
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -84,8 +80,12 @@
                 android:text="心悸"/>
         </LinearLayout>
 
-
-
+        <LinearLayout
+            android:id="@+id/id_phr_item_service_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        </LinearLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

@@ -7,8 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.fansen.phr.R;
+import com.fansen.phr.adapter.MedicationOrderListAdapter;
+import com.fansen.phr.entity.MedicationOrder;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +29,15 @@ import com.fansen.phr.R;
  * create an instance of this fragment.
  */
 public class PrescriptionFragment extends Fragment {
+    private RelativeLayout prescriptionView;
+
+    private ListView medicationListView;
+    private MedicationOrderListAdapter medicationOrderListAdapter;
+    private List<MedicationOrder> medicationOrders;
+
+    private Button addMedicationOrderBtn;
+
+    private GridView prescriptionImagesView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -47,8 +66,28 @@ public class PrescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_prescription, container, false);
+        prescriptionView = (RelativeLayout) inflater.inflate(R.layout.fragment_prescription, container, false);
+
+        medicationListView = (ListView) prescriptionView.findViewById(R.id.id_prescription_med_list);
+        medicationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+
+        addMedicationOrderBtn = (Button) prescriptionView.findViewById(R.id.id_prescription_add);
+        addMedicationOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add code here to open add medication order activity
+            }
+        });
+
+        prescriptionImagesView = (GridView) prescriptionView.findViewById(R.id.id_fragment_prescription_images);
+
+        return prescriptionView;
     }
 
 

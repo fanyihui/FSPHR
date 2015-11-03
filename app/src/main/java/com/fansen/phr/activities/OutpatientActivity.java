@@ -75,7 +75,7 @@ public class OutpatientActivity extends AppCompatActivity {
         editTextHospital = (EditText) findViewById(R.id.id_op_org);
         editTextDept = (EditText) findViewById(R.id.id_op_dept);
         editTextDiag = (EditText) findViewById(R.id.id_op_diag);
-        editTextDoctor = (EditText) findViewById(R.id.id_attending_doct);
+        editTextDoctor = (EditText) findViewById(R.id.id_bar_attending_doct);
     }
 
     @Override

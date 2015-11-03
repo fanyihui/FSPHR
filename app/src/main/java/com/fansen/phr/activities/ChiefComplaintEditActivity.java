@@ -2,8 +2,6 @@ package com.fansen.phr.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,18 +9,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.fansen.phr.R;
+import com.fansen.phr.entity.ChiefComplaint;
+import com.fansen.phr.fragment.details.ProblemsFragment;
+import com.fansen.phr.utils.SpinnerUtil;
 
 public class ChiefComplaintEditActivity extends AppCompatActivity {
     public static final String COMPLAINT_KEY = "complaint";
     public static final String DURATION_KEY = "duration";
     public static final String DURATION_UNIT_KEY = "duration_unit";
+    public static final String ID_KEY = "key";
 
     private EditText complaintTextView;
     private EditText durationTextView;
     private Spinner spinnerUnit;
+
+    private int selectedChiefComplaintKey = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,17 @@ public class ChiefComplaintEditActivity extends AppCompatActivity {
         complaintTextView = (EditText) findViewById(R.id.text_symptom);
         durationTextView = (EditText) findViewById(R.id.text_symptom_duration);
         spinnerUnit = (Spinner) findViewById(R.id.spinner_duration_unit);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        ChiefComplaint chiefComplaint = (ChiefComplaint) bundle.getSerializable(ProblemsFragment.BUNDLE_KEY_SELECTED_COMPLAINT);
+        if(chiefComplaint != null) {
+            complaintTextView.setText(chiefComplaint.getSymptom());
+            durationTextView.setText(chiefComplaint.getDuration());
+            SpinnerUtil.setSpinnerItemSelectedByValue(spinnerUnit, chiefComplaint.getDuration_unit());
+            selectedChiefComplaintKey = chiefComplaint.getKey();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,6 +77,7 @@ public class ChiefComplaintEditActivity extends AppCompatActivity {
             bundle.putString(COMPLAINT_KEY, complaint);
             bundle.putString(DURATION_KEY, duration);
             bundle.putString(DURATION_UNIT_KEY, unit);
+            bundle.putInt(ID_KEY, selectedChiefComplaintKey);
 
             data.putExtras(bundle);
 

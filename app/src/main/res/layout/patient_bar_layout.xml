@@ -20,12 +20,35 @@
 
     <TextView
         android:id="@+id/ent_dept"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:paddingTop="5dp"
         android:text="心内科"
         android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/ent_dept"
+        android:layout_marginLeft="60dp"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="诊断："
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/id_ent_primary_diagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="感冒"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/ent_org"
@@ -36,6 +59,30 @@
         android:paddingTop="5dp"
         android:textStyle="bold"
         android:text="上海复旦大学附属中山医院"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:paddingTop="5dp"
+        android:layout_below="@+id/ent_dept">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="医生："
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/id_bar_attending_doct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="范益辉"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
 
     <View
         android:layout_width="match_parent"

@@ -81,12 +81,7 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
     }
 
     public void addEncounter(Encounter encounter){
-        encounters.add(encounter);
-
-        adapter.notifyDataSetChanged();
-
-        //adapter = new MedicalRecordListAdapter(encounters);
-        //phrView.setAdapter(adapter);
+        adapter.addEncounter(encounter);
     }
 
     /*
@@ -113,7 +108,6 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
         Bundle bundle = new Bundle();
         bundle.putSerializable(OPEN_ENT_KEY, encounters.get(position));
         intent.putExtras(bundle);
-
 
         context.startActivity(intent);
     }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:id="@+id/id_med_order_item_name_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_med_order_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="药品名称"/>
+
+        <TextView
+            android:id="@+id/id_med_order_item_spec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="规格"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_med_order_item_quantity_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@+id/id_med_order_item_name_section"
+        android:layout_marginLeft="30dp">
+
+        <TextView
+            android:id="@+id/id_med_order_item_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"/>
+
+        <TextView
+            android:id="@+id/id_med_order_item_quantity_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="盒"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_med_order_item_frequency_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@+id/id_med_order_item_quantity_section"
+        android:layout_marginLeft="30dp">
+
+        <TextView
+            android:id="@+id/id_med_order_item_interval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"/>
+
+        <TextView
+            android:id="@+id/id_med_order_item_interval_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天"/>
+
+        <TextView
+            android:id="@+id/id_med_order_item_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="次"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_med_order_item_dosage_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@+id/id_med_order_item_frequency_section"
+        android:layout_marginLeft="30dp">
+
+        <TextView
+            android:id="@+id/id_med_order_item_dosage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"/>
+
+        <TextView
+            android:id="@+id/id_med_order_item_dosage_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ml"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_med_order_item_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/id_med_order_item_dosage_section"
+        android:layout_marginLeft="30dp"
+        android:text="口服"/>
+</RelativeLayout>

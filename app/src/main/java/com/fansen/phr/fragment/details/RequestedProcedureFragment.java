@@ -136,7 +136,7 @@ public class RequestedProcedureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_procedure, container, false);
+        return inflater.inflate(R.layout.fragment_requested_procedure, container, false);
     }
 
 

@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by 310078142 on 2015/10/27.
  */
 public class ChiefComplaint implements Serializable{
+    private int key;
     private String symptom;
     private String duration;
     private String duration_unit;
@@ -32,5 +33,13 @@ public class ChiefComplaint implements Serializable{
 
     public void setDuration_unit(String duration_unit) {
         this.duration_unit = duration_unit;
+    }
+
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
     }
 }

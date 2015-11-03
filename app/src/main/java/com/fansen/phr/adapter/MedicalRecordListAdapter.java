@@ -50,6 +50,13 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         this.itemClickListener = itemClickListener;
     }
 
+    public void addEncounter(Encounter encounter){
+        if (encounterList != null){
+            encounterList.add(0, encounter);
+        }
+        notifyDataSetChanged();
+    }
+
 
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

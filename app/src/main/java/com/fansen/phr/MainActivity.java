@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity
 
                 // add the encounter to database, and return the key of that encounter
                 long encounter_key = encounterService.addNewEncounter(encounter);
+                encounter.setEncounter_key(encounter_key);
 
                 if (navigationItemId == R.id.nav_phr) {
                     PhrFragment phrFragment = (PhrFragment) fragment;

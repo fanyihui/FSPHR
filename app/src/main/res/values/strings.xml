@@ -25,4 +25,5 @@
     <string name="tab_name_prescription">处方</string>
     <string name="tab_name_procedure">处置</string>
     <string name="title_activity_chief_complaint_edit">添加主诉</string>
+    <string name="title_activity_problem_description_edit">编辑现病史</string>
 </resources>

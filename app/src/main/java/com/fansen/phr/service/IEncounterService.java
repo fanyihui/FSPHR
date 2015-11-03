@@ -12,4 +12,6 @@ public interface IEncounterService {
     public long addNewEncounter(Encounter encounter);
     public boolean updateEncounter(Encounter encounter);
     public boolean deleteEncounter(long ent_key);
+    public void updateProblemsDescription(long ent_key, String problemsDescription);
+    public String getProblemsDescription(long ent_key);
 }

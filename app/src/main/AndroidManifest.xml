@@ -38,6 +38,11 @@
             android:label="@string/title_activity_chief_complaint_edit"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.ProblemDescriptionEditActivity"
+            android:label="@string/title_activity_problem_description_edit"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
