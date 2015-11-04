@@ -49,9 +49,9 @@ public class ChiefComplaintEditActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+        if(bundle != null) {
+            ChiefComplaint chiefComplaint = (ChiefComplaint) bundle.getSerializable(ProblemsFragment.BUNDLE_KEY_SELECTED_COMPLAINT);
 
-        ChiefComplaint chiefComplaint = (ChiefComplaint) bundle.getSerializable(ProblemsFragment.BUNDLE_KEY_SELECTED_COMPLAINT);
-        if(chiefComplaint != null) {
             complaintTextView.setText(chiefComplaint.getSymptom());
             durationTextView.setText(chiefComplaint.getDuration());
             SpinnerUtil.setSpinnerItemSelectedByValue(spinnerUnit, chiefComplaint.getDuration_unit());

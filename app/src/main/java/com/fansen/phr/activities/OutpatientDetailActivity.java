@@ -70,7 +70,7 @@ public class OutpatientDetailActivity extends AppCompatActivity {
 
         problemsFragment = ProblemsFragment.newInstance(selectedEncounter);
         requestedProcedureFragment = RequestedProcedureFragment.newInstance();
-        prescriptionFragment = PrescriptionFragment.newInstance();
+        prescriptionFragment = PrescriptionFragment.newInstance(selectedEncounter);
         procedureFragment = new ProcedureFragment();
 
         // Create the adapter that will return a fragment for each of the three

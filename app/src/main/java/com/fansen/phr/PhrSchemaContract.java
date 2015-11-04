@@ -37,15 +37,17 @@ public final class PhrSchemaContract {
         public static final String TABLE_NAME = "medication_order";
         public static final String COLUMN_NAME_MED_ORDER_ENT_KEY = "ent_key";
         public static final String COLUMN_NAME_MED_ORDER_MED_KEY = "med_key";
-        public static final String COLUMN_NAME_MED_ORDER_QUANTITY = "";
-        public static final String COLUMN_NAME_MED_ORDER_QUANTITY_UNIT = "";
-        public static final String COLUMN_NAME_MED_ORDER_DOSAGE = "";
-        public static final String COLUMN_NAME_MED_ORDER_DOSAGE_UNIT = "";
-        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL = "";
-        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT = "";
-        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES = "";
-        public static final String COLUMN_NAME_MED_ORDER_ROUTE = "";
-        public static final String COLUMN_NAME_MED_ORDER_PRN = "";
+        public static final String COLUMN_NAME_MED_ORDER_QUANTITY = "quantity";
+        public static final String COLUMN_NAME_MED_ORDER_QUANTITY_UNIT = "quantity_unit";
+        public static final String COLUMN_NAME_MED_ORDER_DOSAGE = "dosage";
+        public static final String COLUMN_NAME_MED_ORDER_DOSAGE_UNIT = "dosage_unit";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL = "frequency_interval";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT = "frequency_interval_unit";
+        public static final String COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES = "frequency_times";
+        public static final String COLUMN_NAME_MED_ORDER_ROUTE = "route";
+        public static final String COLUMN_NAME_MED_ORDER_PRN = "prn_indicator";
+        public static final String COLUMN_NAME_MED_ORDER_START_TIME = "start_time";
+
     }
 
     public static abstract class DiagnosisTable implements BaseColumns{

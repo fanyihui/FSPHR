@@ -25,7 +25,7 @@ public class DiagnosisDictServiceLocalImpl extends BaseServiceLocal implements I
         int id = 0;
 
         if (c.getCount() > 0)
-            id = c.getInt(c.getColumnIndex(PhrSchemaContract.DepartmentTable._ID));
+            id = c.getInt(c.getColumnIndex(PhrSchemaContract.DictDiagnosisTable._ID));
         else {
             ContentValues values = new ContentValues();
             values.put(PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME, name);
@@ -34,6 +34,7 @@ public class DiagnosisDictServiceLocalImpl extends BaseServiceLocal implements I
         }
 
         c.close();
+        fsPhrDB.closeDatabase();
 
         return id;
     }

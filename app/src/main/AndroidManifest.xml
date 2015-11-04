@@ -43,6 +43,11 @@
             android:label="@string/title_activity_problem_description_edit"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.MedicationOrderEditActivity"
+            android:label="@string/title_activity_medication_order_edit"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

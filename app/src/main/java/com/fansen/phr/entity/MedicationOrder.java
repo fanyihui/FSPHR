@@ -17,6 +17,7 @@ public class MedicationOrder implements Serializable{
     private String frequency_interval_unit;
     private String route;
     private int PRNIndicator;
+    private String start_time;
 
     public MedicationDict getMedication() {
         return medication;
@@ -104,5 +105,13 @@ public class MedicationOrder implements Serializable{
 
     public void setFrequency_interval_unit(String frequency_interval_unit) {
         this.frequency_interval_unit = frequency_interval_unit;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
     }
 }

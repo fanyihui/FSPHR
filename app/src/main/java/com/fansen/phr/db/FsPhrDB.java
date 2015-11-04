@@ -13,10 +13,11 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 7;
+    private final static int DATABASE_VERSION = 12;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
+    private static final String REAL_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
     private SQLiteDatabase database = null;
 
@@ -41,15 +42,19 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     //TODO modify
     private final static String SQL_CREATE_MEDICATION_ORDER = "CREATE TABLE " + PhrSchemaContract.MedicationOrderTable.TABLE_NAME + "(" +
-            PhrSchemaContract.EncounterTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + TEXT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + TEXT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + TEXT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + INT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PERSON_KEY + INT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY + INT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY + INT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY + INT_TYPE + ")";
+            PhrSchemaContract.MedicationOrderTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ENT_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY + REAL_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY_UNIT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE + REAL_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL + REAL_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN + INT_TYPE + ")";
 
     private final static String SQL_CREATE_DIAGNOSIS = "CREATE TABLE " + PhrSchemaContract.DiagnosisTable.TABLE_NAME + "(" +
             PhrSchemaContract.DiagnosisTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
@@ -128,6 +133,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_PHYSICIAN);
         db.execSQL(SQL_CREATE_CHIEF_COMPLAINTS);
         db.execSQL(SQL_CREATE_DICT_MEDICATION);
+        db.execSQL(SQL_CREATE_MEDICATION_ORDER);
     }
 
     @Override
@@ -141,6 +147,8 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE "+PhrSchemaContract.DictDiagnosisTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.PhysicianTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.ChiefComplaintTable.TABLE_NAME);
+        db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME);
+        db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationDictTable.TABLE_NAME);
 
         onCreate(db);
     }

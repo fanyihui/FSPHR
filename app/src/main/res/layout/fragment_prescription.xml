@@ -15,6 +15,7 @@
             android:padding="5dp"
             android:gravity="center"
             android:text="用药清单"
+            android:background="#e5e5e5"
             android:textStyle="bold"/>
 
         <ListView
@@ -39,6 +40,7 @@
         android:gravity="center"
         android:layout_below="@+id/id_fragment_prescription_med_list_section"
         android:text="处方单"
+        android:background="#e5e5e5"
         android:textStyle="bold"/>
 
     <GridView

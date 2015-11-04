@@ -90,9 +90,9 @@ public class MedicationOrderListAdapter extends BaseAdapter{
         viewHolder.medicationSpecTextView.setText(medicationOrder.getMedication().getSpec());
         viewHolder.quantityTextView.setText(medicationOrder.getQuantity()+"");
         viewHolder.quantityUnitTextView.setText(medicationOrder.getQuantity_unit());
-        viewHolder.intervalTextView.setText(medicationOrder.getFrequency_interval());
+        viewHolder.intervalTextView.setText(medicationOrder.getFrequency_interval()+"");
         viewHolder.intervalUnitTextView.setText(medicationOrder.getFrequency_interval_unit());
-        viewHolder.timesTextView.setText(medicationOrder.getFrequency_times());
+        viewHolder.timesTextView.setText(medicationOrder.getFrequency_times()+"");
         viewHolder.dosageTextView.setText(medicationOrder.getDosage()+"");
         viewHolder.dosageUnitTextView.setText(medicationOrder.getDosage_unit());
         viewHolder.routeTextView.setText(medicationOrder.getRoute());

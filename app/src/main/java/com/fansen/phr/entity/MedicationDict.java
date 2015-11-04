@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by Yihui Fan on 2015/11/3.
  */
 public class MedicationDict implements Serializable{
+    int _id;
     private String name;
     private String code;
     private String spec;
@@ -32,5 +33,13 @@ public class MedicationDict implements Serializable{
 
     public void setSpec(String spec) {
         this.spec = spec;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 }
