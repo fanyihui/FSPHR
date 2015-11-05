@@ -26,7 +26,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
     @Override
     public MedicalRecordListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.phr_item_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encounter_layout, parent, false);
         return new MedicalRecordListViewHolder(itemView);
     }
 

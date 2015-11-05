@@ -60,7 +60,7 @@ public class ChiefComplaintListAdapter extends BaseAdapter{
         ViewHolder viewHolder = null;
 
         if (convertView == null){
-            convertView = layoutInflater.inflate(R.layout.chief_complaint_item_layout, null);
+            convertView = layoutInflater.inflate(R.layout.item_chief_complaint_layout, null);
 
             viewHolder = new ViewHolder();
             viewHolder.symptomView = (TextView) convertView.findViewById(R.id.id_cc_item_symptom);

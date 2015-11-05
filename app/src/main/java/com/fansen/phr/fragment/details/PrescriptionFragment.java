@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.fansen.phr.service.IMedicationDictService;
 import com.fansen.phr.service.IMedicationOrderService;
 import com.fansen.phr.service.implementation.MedicationDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationOrderServiceLocalImpl;
+import com.fansen.phr.view.SelectPicPopWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ public class PrescriptionFragment extends Fragment {
     private List<MedicationOrder> medicationOrders;
 
     private Button addMedicationOrderBtn;
+    private Button addPrescriptionImageBtn;
 
     private GridView prescriptionImagesView;
 
@@ -62,6 +65,9 @@ public class PrescriptionFragment extends Fragment {
     private Encounter encounter;
 
     public static final String BUNDLE_KEY_ENT = "encounter";
+    public static final String BUNDLE_KEY_SELECTED_MED_ORDER = "selected_med_order";
+
+    private int selectedMedicationOrderPosition = -1;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -80,6 +86,7 @@ public class PrescriptionFragment extends Fragment {
     public PrescriptionFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,24 +115,43 @@ public class PrescriptionFragment extends Fragment {
         medicationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO add code here to open one medication order to modify
+                selectedMedicationOrderPosition = position;
+                MedicationOrder medicationOrder = (MedicationOrder) medicationOrderListAdapter.getItem(position);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable(BUNDLE_KEY_SELECTED_MED_ORDER, medicationOrder);
                 Intent intent = new Intent(context, MedicationOrderEditActivity.class);
+                intent.putExtras(bundle1);
                 startActivityForResult(intent, EDIT_MED_REQUEST);
             }
         });
 
 
-        addMedicationOrderBtn = (Button) prescriptionView.findViewById(R.id.id_prescription_add);
+        addMedicationOrderBtn = (Button) prescriptionView.findViewById(R.id.id_prescription_add_med_btn);
         addMedicationOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO add code here to open add medication order activity
                 Intent intent = new Intent(context, MedicationOrderEditActivity.class);
                 startActivityForResult(intent, ADD_MED_REQUEST);
             }
         });
 
         prescriptionImagesView = (GridView) prescriptionView.findViewById(R.id.id_fragment_prescription_images);
+        addPrescriptionImageBtn = (Button) prescriptionView.findViewById(R.id.id_clinical_image_add_btn);
+        addPrescriptionImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectPicPopWindow window = new SelectPicPopWindow(PrescriptionFragment.this.getActivity(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+                //window.showAtLocation(PrescriptionFragment.this.getActivity().findViewById(R.layout.fragment_prescription), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                //
+            }
+        });
+
 
         return prescriptionView;
     }
@@ -197,9 +223,50 @@ public class PrescriptionFragment extends Fragment {
                 medicationOrderListAdapter.addMedicationOrder(medicationOrder);
             }
         } else if(requestCode == EDIT_MED_REQUEST){
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                String name = bundle.getString(MedicationOrderEditActivity.MED_NAME);
+                String spec = bundle.getString(MedicationOrderEditActivity.MED_SPEC);
+                String quantity = bundle.getString(MedicationOrderEditActivity.QUANTITY);
+                String quantity_unit = bundle.getString(MedicationOrderEditActivity.QUANTITY_UNIT);
+                String interval = bundle.getString(MedicationOrderEditActivity.FREQ_INTERVAL);
+                String interval_unit = bundle.getString(MedicationOrderEditActivity.FREQ_INTERVAL_UNIT);
+                String times = bundle.getString(MedicationOrderEditActivity.FREQ_TIMES);
+                String dosage = bundle.getString(MedicationOrderEditActivity.DOSAGE);
+                String dosage_unit = bundle.getString(MedicationOrderEditActivity.DOSAGE_UNIT);
+                String route = bundle.getString(MedicationOrderEditActivity.ROUTE);
+                boolean prnChecked = bundle.getBoolean(MedicationOrderEditActivity.PRN);
+                String start_time = bundle.getString(MedicationOrderEditActivity.START_TIME);
+
+                MedicationDict medicationDict = new MedicationDict();
+                medicationDict.setName(name);
+                medicationDict.setCode(name);
+                medicationDict.setSpec(spec);
+                int med_dict_id = medicationDictService.addMedicationDict(medicationDict);
+                medicationDict.set_id(med_dict_id);
+
+                MedicationOrder medicationOrder = (MedicationOrder) medicationOrderListAdapter.getItem(selectedMedicationOrderPosition);
+
+                medicationOrder.setMedication(medicationDict);
+                medicationOrder.setQuantity(Float.valueOf(quantity));
+                medicationOrder.setQuantity_unit(quantity_unit);
+                medicationOrder.setFrequency_interval(Integer.valueOf(interval));
+                medicationOrder.setFrequency_interval_unit(interval_unit);
+                medicationOrder.setFrequency_times(Integer.valueOf(times));
+                medicationOrder.setDosage(Float.valueOf(dosage));
+                medicationOrder.setDosage_unit(dosage_unit);
+                medicationOrder.setRoute(route);
+                medicationOrder.setPRNIndicator(prnChecked ? 1 : 0);
+                medicationOrder.setStart_time(start_time);
+
+                medicationOrderService.updateMedicationOrder(medicationOrder);
+                medicationOrderListAdapter.updateMedicationOrder(selectedMedicationOrderPosition, medicationOrder);
+            }
 
         } else if(requestCode == ADD_IMAGE_REQUEST){
+            if (resultCode == Activity.RESULT_OK) {
 
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

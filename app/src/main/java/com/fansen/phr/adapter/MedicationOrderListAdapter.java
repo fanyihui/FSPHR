@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.fansen.phr.R;
 import com.fansen.phr.entity.MedicationOrder;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +64,7 @@ public class MedicationOrderListAdapter extends BaseAdapter{
         ViewHolder viewHolder = null;
 
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.medication_order_item_layout, null);
+            convertView = layoutInflater.inflate(R.layout.item_medication_order_layout, null);
 
             viewHolder = new ViewHolder();
             viewHolder.medicationNameTextView = (TextView) convertView.findViewById(R.id.id_med_order_item_name);

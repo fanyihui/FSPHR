@@ -106,4 +106,25 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
 
         return id;
     }
+
+    @Override
+    public void updateMedicationOrder(MedicationOrder medicationOrder) {
+        ContentValues values = new ContentValues();
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY, medicationOrder.getMedication().get_id());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE, medicationOrder.getDosage());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT, medicationOrder.getDosage_unit());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL, medicationOrder.getFrequency_interval());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT, medicationOrder.getFrequency_interval_unit());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES, medicationOrder.getFrequency_times());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY, medicationOrder.getQuantity());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY_UNIT, medicationOrder.getQuantity_unit());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE, medicationOrder.getRoute());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN, medicationOrder.getPRNIndicator());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME, medicationOrder.getStart_time());
+
+
+        String[] args = {String.valueOf(medicationOrder.get_id())};
+
+        fsPhrDB.update(PhrSchemaContract.MedicationOrderTable.TABLE_NAME, values, "_id=?", args);
+    }
 }

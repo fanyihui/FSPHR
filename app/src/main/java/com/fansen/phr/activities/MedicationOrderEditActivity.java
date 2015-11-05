@@ -15,6 +15,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
+import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.fragment.details.PrescriptionFragment;
+import com.fansen.phr.utils.SpinnerUtil;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.text.SimpleDateFormat;
@@ -104,6 +107,23 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle != null) {
+            MedicationOrder medicationOrder = (MedicationOrder)bundle.getSerializable(PrescriptionFragment.BUNDLE_KEY_SELECTED_MED_ORDER);
+
+            medicationNameEditText.setText(medicationOrder.getMedication().getName());
+            medicationSpecEditText.setText(medicationOrder.getMedication().getSpec());
+            quantityEditText.setText(medicationOrder.getQuantity()+"");
+            SpinnerUtil.setSpinnerItemSelectedByValue(quantityUnitSpinner, medicationOrder.getQuantity_unit());
+            frequencyIntervalEditText.setText(medicationOrder.getFrequency_interval() + "");
+            SpinnerUtil.setSpinnerItemSelectedByValue(intervalUnitSpinner, medicationOrder.getFrequency_interval_unit());
+            frequencyTimesEditText.setText(medicationOrder.getFrequency_times() + "");
+            dosageEditText.setText(medicationOrder.getDosage() + "");
+            SpinnerUtil.setSpinnerItemSelectedByValue(dosageUnitSpinner, medicationOrder.getDosage_unit());
+            SpinnerUtil.setSpinnerItemSelectedByValue(routeSpinner, medicationOrder.getRoute());
+            prnCheckBox.setChecked(medicationOrder.getPRNIndicator()==1);
+        }
     }
 
     @Override

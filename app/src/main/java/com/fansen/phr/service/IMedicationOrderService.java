@@ -10,4 +10,5 @@ import java.util.List;
 public interface IMedicationOrderService {
     public List<MedicationOrder> getMedicationOrders(long ent_key);
     public int addMedicationOrder(long ent_key, MedicationOrder medicationOrder);
+    public void updateMedicationOrder(MedicationOrder medicationOrder);
 }

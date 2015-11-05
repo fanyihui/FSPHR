@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/id_prescription_add"
+            android:id="@+id/id_prescription_add_med_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_24dp"
@@ -43,16 +43,30 @@
         android:background="#e5e5e5"
         android:textStyle="bold"/>
 
-    <GridView
-        android:id="@+id/id_fragment_prescription_images"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id_fragment_prescription_images_label"
-        android:columnWidth="90dp"
-        android:numColumns="auto_fit"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"/>
+        android:layout_below="@+id/id_fragment_prescription_images_label">
+
+        <GridView
+            android:id="@+id/id_fragment_prescription_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="90dp"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/id_clinical_image_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:background="#00000000"
+            android:text="添加处方图片" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
