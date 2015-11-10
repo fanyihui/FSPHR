@@ -53,8 +53,6 @@ public class ChiefComplaintServiceLocalImpl extends BaseServiceLocal implements 
                 " from " + PhrSchemaContract.ChiefComplaintTable.TABLE_NAME +
                 " where " + PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_COMPLAINT_ENT_KEY +"=" +encounter_key;
 
-        System.out.println(sql);
-
         Cursor c = fsPhrDB.rawQuery(sql);
 
         c.moveToFirst();

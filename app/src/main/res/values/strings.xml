@@ -27,4 +27,5 @@
     <string name="title_activity_chief_complaint_edit">添加主诉</string>
     <string name="title_activity_problem_description_edit">编辑现病史</string>
     <string name="title_activity_medication_order_edit">编辑用药记录</string>
+    <string name="title_fragment_prescription_add_image">添加处方图片</string>
 </resources>

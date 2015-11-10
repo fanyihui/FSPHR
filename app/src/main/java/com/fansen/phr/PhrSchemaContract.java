@@ -50,6 +50,16 @@ public final class PhrSchemaContract {
 
     }
 
+    public static abstract class ClinicalDocumentTable implements BaseColumns{
+        public static final String TABLE_NAME = "clinical_document";
+        public static final String COLUMN_NAME_DOC_ENT_KEY = "ent_key";
+        public static final String COLUMN_NAME_DOC_IMAGE_URI = "image_uri";
+        public static final String COLUMN_NAME_DOC_TYPE = "type";
+        public static final String COLUMN_NAME_DOC_CREATING_DATE = "creating_date";
+        public static final String COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY = "authentication_key";
+        public static final String COLUMN_NAME_DOC_AUTHENTICATION_DATE = "authentication_date";
+    }
+
     public static abstract class DiagnosisTable implements BaseColumns{
         public static final String TABLE_NAME = "diagnosis";
         public static final String COLUMN_NAME_DIG_ENT_KEY = "ent_key";

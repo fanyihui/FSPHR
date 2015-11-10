@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 12;
+    private final static int DATABASE_VERSION = 15;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -69,6 +69,15 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_SYMPTOM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_DURATION + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_DURATION_UNIT + TEXT_TYPE + ")";
+
+    private final static String SQL_CREATE_CLINICAL_DOCUMENT = "CREATE TABLE " + PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME + "(" +
+            PhrSchemaContract.ClinicalDocumentTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_ENT_KEY + LONG_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_AUTHENTICATION_DATE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_IMAGE_URI + TEXT_TYPE + ")";
 
     //sql for create org table
     private final static String SQL_CREATE_ORGANIZATION = "CREATE TABLE " + PhrSchemaContract.OrganizationTable.TABLE_NAME + "(" +
@@ -134,6 +143,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_CHIEF_COMPLAINTS);
         db.execSQL(SQL_CREATE_DICT_MEDICATION);
         db.execSQL(SQL_CREATE_MEDICATION_ORDER);
+        db.execSQL(SQL_CREATE_CLINICAL_DOCUMENT);
     }
 
     @Override
@@ -149,6 +159,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE "+PhrSchemaContract.ChiefComplaintTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationDictTable.TABLE_NAME);
+        db.execSQL("DROP TABLE "+PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME);
 
         onCreate(db);
     }

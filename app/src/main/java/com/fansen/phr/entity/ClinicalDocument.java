@@ -7,7 +7,7 @@ import java.net.URI;
  */
 public class ClinicalDocument {
     private int _id;
-    private URI captureImageUri;
+    private String captureImageUri;
     private String documentType;
     private String creatingDate;
     private Physician legalAuthentication;
@@ -21,11 +21,11 @@ public class ClinicalDocument {
         this._id = _id;
     }
 
-    public URI getCaptureImageUri() {
+    public String getCaptureImageUri() {
         return captureImageUri;
     }
 
-    public void setCaptureImageUri(URI captureImageUri) {
+    public void setCaptureImageUri(String captureImageUri) {
         this.captureImageUri = captureImageUri;
     }
 
