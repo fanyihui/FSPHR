@@ -8,6 +8,7 @@ import java.net.URI;
 public class ClinicalDocument {
     private int _id;
     private String captureImageUri;
+    private String thumbnailImageUri;
     private String documentType;
     private String creatingDate;
     private Physician legalAuthentication;
@@ -59,5 +60,13 @@ public class ClinicalDocument {
 
     public void setAuthenticationDateTime(String authenticationDateTime) {
         this.authenticationDateTime = authenticationDateTime;
+    }
+
+    public String getThumbnailImageUri() {
+        return thumbnailImageUri;
+    }
+
+    public void setThumbnailImageUri(String thumbnailImageUri) {
+        this.thumbnailImageUri = thumbnailImageUri;
     }
 }

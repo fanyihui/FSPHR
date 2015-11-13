@@ -40,6 +40,11 @@ public class MedicationOrderListAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    public void setMedicationOrders(List<MedicationOrder> medicationOrders){
+        this.medicationOrders = medicationOrders;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         if (medicationOrders == null){

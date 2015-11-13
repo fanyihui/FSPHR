@@ -28,6 +28,7 @@ public class ClinicalDocumentServiceLocalImpl extends BaseServiceLocal implement
         }
 
         String imagePath = clinicalDocument.getCaptureImageUri();
+        String thumbnailImagePath = clinicalDocument.getThumbnailImageUri();
         String type = clinicalDocument.getDocumentType();
         String creatingDate = clinicalDocument.getCreatingDate();
         Physician authentication = clinicalDocument.getLegalAuthentication();
@@ -36,6 +37,7 @@ public class ClinicalDocumentServiceLocalImpl extends BaseServiceLocal implement
         ContentValues values = new ContentValues();
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_ENT_KEY, ent_key);
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_IMAGE_URI, imagePath);
+        values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_THUMBNAIL_IMAGE_URI, thumbnailImagePath);
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE, type);
         if(authentication != null){
             values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY, authentication.getPhysicianKey());
@@ -55,6 +57,7 @@ public class ClinicalDocumentServiceLocalImpl extends BaseServiceLocal implement
         String sql = "select "+
                 PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME+"."+"_id"+ "," +
                 PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_IMAGE_URI + "," +
+                PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_THUMBNAIL_IMAGE_URI + "," +
                 PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE + "," +
                 PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE +
                 " from " +
@@ -71,6 +74,7 @@ public class ClinicalDocumentServiceLocalImpl extends BaseServiceLocal implement
             ClinicalDocument clinicalDocument = new ClinicalDocument();
             clinicalDocument.setDocumentType(c.getString(c.getColumnIndex(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE)));
             clinicalDocument.setCaptureImageUri(c.getString(c.getColumnIndex(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_IMAGE_URI)));
+            clinicalDocument.setThumbnailImageUri(c.getString(c.getColumnIndex(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_THUMBNAIL_IMAGE_URI)));
             clinicalDocument.set_id(c.getInt(c.getColumnIndex(PhrSchemaContract.ClinicalDocumentTable._ID)));
             clinicalDocument.setCreatingDate(c.getString(c.getColumnIndex(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE)));
 

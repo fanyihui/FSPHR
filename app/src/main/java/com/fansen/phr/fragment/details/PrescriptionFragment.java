@@ -1,15 +1,20 @@
 package com.fansen.phr.fragment.details;
 
 import android.app.Activity;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.DeniedByServerException;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.fansen.phr.R;
+import com.fansen.phr.activities.ImageViewActivity;
 import com.fansen.phr.activities.MedicationOrderEditActivity;
 import com.fansen.phr.adapter.ClinicalDocumentCaptureImageAdapter;
 import com.fansen.phr.adapter.ImageAdapterModel;
@@ -38,12 +44,15 @@ import com.fansen.phr.service.IMedicationOrderService;
 import com.fansen.phr.service.implementation.ClinicalDocumentServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationOrderServiceLocalImpl;
+import com.fansen.phr.utils.DensityUtil;
 import com.fansen.phr.utils.FileUtil;
+import com.fansen.phr.utils.ImageUtil;
 import com.fansen.phr.utils.TimeFormat;
 import com.fansen.phr.view.SelectPicPopWindow;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +71,10 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     public static final int TAKE_IMAGE_REQUEST = 9;
     public static final int SELECT_IMAGE_REQUEST = 10;
 
+    public static final String BUNDLE_KEY_MED_ORDERS = "med_orders";
+    public static final String BUNDLE_KEY_IMAGES_MODELS = "image_models";
+    public static final String BUNDLE_KEY_VIEW_IMAGE = "view_image";
+
     private RelativeLayout prescriptionView;
 
     private ListView medicationListView;
@@ -73,7 +86,6 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private GridView prescriptionImagesView;
     private ClinicalDocumentCaptureImageAdapter imageAdapter;
-    private List<ClinicalDocument> clinicalDocuments = new ArrayList<>();
     private List<ImageAdapterModel> imageAdapterModels = new ArrayList<>();
 
     private SelectPicPopWindow popWindow;
@@ -94,7 +106,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     private int selectedMedicationOrderPosition = -1;
 
     private String currentImageFilePath;
-    private int columnWidth = 128;
+    private int columnWidth = 0;
 
     /**
      * Use this factory method to create a new instance of
@@ -119,26 +131,43 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getActivity();
+
+        medicationOrderService = new MedicationOrderServiceLocalImpl(context);
+        medicationDictService = new MedicationDictServiceLocalImpl(context);
+        clinicalDocumentService = new ClinicalDocumentServiceLocalImpl(context);
+
+        columnWidth = DensityUtil.dip2px(context, getResources().getDimension(R.dimen.grid_view_column_width));
+
+        final Bundle bundle = getArguments();
+        encounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_ENT);
+
+        medicationOrders = medicationOrderService.getMedicationOrders(encounter.getEncounter_key());
+        if (medicationOrders == null) {
+            medicationOrders = new ArrayList<>();
+        }
+
+        List<ClinicalDocument> clinicalDocuments = clinicalDocumentService.getClinicalDocuments(encounter.getEncounter_key(), ClinicalDocumentType.PRESCRIPTION.getName());
+        if (clinicalDocuments != null) {
+            for (int i = 0; i < clinicalDocuments.size(); i++) {
+                ClinicalDocument cd = clinicalDocuments.get(i);
+                String thumbnailImagePath = cd.getThumbnailImageUri();
+                String imagePath = cd.getCaptureImageUri();
+                Bitmap bitmap = FileUtil.getBitmap(thumbnailImagePath);
+
+                imageAdapterModels.add(new ImageAdapterModel(imagePath, bitmap));
+            }
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = getActivity();
-        medicationOrderService = new MedicationOrderServiceLocalImpl(context);
-        medicationDictService = new MedicationDictServiceLocalImpl(context);
-        clinicalDocumentService = new ClinicalDocumentServiceLocalImpl(context);
-
-        final Bundle bundle = getArguments();
-        encounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_ENT);
 
         prescriptionView = (RelativeLayout) inflater.inflate(R.layout.fragment_prescription, container, false);
 
         medicationListView = (ListView) prescriptionView.findViewById(R.id.id_prescription_med_list);
-        medicationOrders = medicationOrderService.getMedicationOrders(encounter.getEncounter_key());
-        if (medicationOrders == null) {
-            medicationOrders = new ArrayList<>();
-        }
         medicationOrderListAdapter = new MedicationOrderListAdapter(context, medicationOrders);
         medicationListView.setAdapter(medicationOrderListAdapter);
         medicationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -164,20 +193,22 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        clinicalDocuments = clinicalDocumentService.getClinicalDocuments(encounter.getEncounter_key(), ClinicalDocumentType.PRESCRIPTION.getName());
-        if (clinicalDocuments != null){
-            for (int i=0; i<clinicalDocuments.size();i++){
-                ClinicalDocument cd = clinicalDocuments.get(i);
-                String imagePath = cd.getCaptureImageUri();
-                Bitmap bitmap = setPic(imagePath);
-
-                imageAdapterModels.add(new ImageAdapterModel(imagePath, bitmap));
-            }
-        }
-
         prescriptionImagesView = (GridView) prescriptionView.findViewById(R.id.id_fragment_prescription_images);
         imageAdapter = new ClinicalDocumentCaptureImageAdapter(context, imageAdapterModels, this);
         prescriptionImagesView.setAdapter(imageAdapter);
+
+        prescriptionImagesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ImageAdapterModel imageAdapterModel = imageAdapterModels.get(position);
+                String path = imageAdapterModel.getImagePath();
+
+                Intent intent = new Intent(context, ImageViewActivity.class);
+                intent.putExtra(BUNDLE_KEY_VIEW_IMAGE, path);
+
+                startActivity(intent);
+            }
+        });
 
         addPrescriptionImageBtn = (Button) prescriptionView.findViewById(R.id.id_clinical_image_add_btn);
         addPrescriptionImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -188,13 +219,26 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             }
         });
 
+
         return prescriptionView;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //outState.putSerializable(BUNDLE_KEY_MED_ORDERS, (Serializable) medicationOrders);
+        //outState.putSerializable(BUNDLE_KEY_IMAGES_MODELS, (Serializable) imageAdapterModels);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     /**
@@ -220,9 +264,9 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
             } else if (requestCode == EDIT_MED_REQUEST) {
                 handleEditMedOrder(data);
             } else if (requestCode == TAKE_IMAGE_REQUEST) {
-                handleCameraPhoto(data);
+                handleCameraPhoto();
             } else if (requestCode == SELECT_IMAGE_REQUEST) {
-
+                handleSelectedPhoto(data);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -309,18 +353,67 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrderListAdapter.updateMedicationOrder(selectedMedicationOrderPosition, medicationOrder);
     }
 
-    private void handleCameraPhoto(Intent data){
+    private void handleCameraPhoto(){
+        try {
+            final File thumFile = FileUtil.createClinicalDocImageThumFile(currentImageFilePath);
+            final Bitmap bitmap = setPic(currentImageFilePath);
+
+            newClinicalDocumentPhoto(currentImageFilePath, thumFile.getAbsolutePath());
+            imageAdapter.addImage(new ImageAdapterModel(currentImageFilePath, bitmap));
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FileUtil.saveBitmapToFile(bitmap, thumFile);
+                }
+            });
+            thread.start();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
+    }
+
+    private void handleSelectedPhoto(Intent data){
+        Uri selectedImage = data.getData();
+        ContentResolver contentResolver = context.getContentResolver();
+
+        try{
+            final File tempFile = FileUtil.createClinicalDocImageFile(context, encounter.getEncounter_key());
+            final File thumFile = FileUtil.createClinicalDocImageThumFile(tempFile.getAbsolutePath());
+            final Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage);
+            final Bitmap bm = ImageUtil.getBitmap(bitmap, columnWidth, columnWidth);
+
+            currentImageFilePath = tempFile.getAbsolutePath();
+
+            newClinicalDocumentPhoto(tempFile.getAbsolutePath(), thumFile.getAbsolutePath());
+            imageAdapter.addImage(new ImageAdapterModel(currentImageFilePath, bm));
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    FileUtil.saveBitmapToFile(bitmap, tempFile);
+                    FileUtil.saveBitmapToFile(bm, thumFile);
+                    bitmap.recycle();
+                }
+            });
+
+            thread.start();
+
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+    }
+
+    private void newClinicalDocumentPhoto(String filePath, String thumFilePath){
         ClinicalDocument clinicalDocument = new ClinicalDocument();
-        clinicalDocument.setCaptureImageUri(currentImageFilePath);
+        clinicalDocument.setCaptureImageUri(filePath);
+        clinicalDocument.setThumbnailImageUri(thumFilePath);
         clinicalDocument.setDocumentType(ClinicalDocumentType.PRESCRIPTION.getName());
         clinicalDocument.setCreatingDate(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
 
         int id = clinicalDocumentService.addClinicalDocument(encounter.getEncounter_key(), clinicalDocument);
         clinicalDocument.set_id(id);
-        clinicalDocuments.add(clinicalDocument);
-
-        Bitmap bitmap = setPic(currentImageFilePath);
-        imageAdapter.addImage(new ImageAdapterModel(currentImageFilePath, bitmap));
     }
 
     private void dispatchTakePictureIntent(){
@@ -341,14 +434,15 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         startActivityForResult(intent, TAKE_IMAGE_REQUEST);
     }
 
+    private void dispatchSelectPicturesIntent(){
+        Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT);
+        intent1.addCategory(Intent.CATEGORY_OPENABLE);
+        intent1.setType("image/jpeg");
+        startActivityForResult(intent1, SELECT_IMAGE_REQUEST);
+    }
+
     private Bitmap setPic(String imagePath) {
-        //int targetW = prescriptionImagesView.getColumnWidth();
-
-        //if(targetW <=0){
-        //    targetW = 128;
-        //}
-
-		/* Get the size of the image */
+        /* Get the size of the image */
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(imagePath, bmOptions);
@@ -373,15 +467,14 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         return bitmap;
     }
 
+
+
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
         switch (viewId) {
             case R.id.btn_pick_photo:
-                Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT);
-                intent1.addCategory(Intent.CATEGORY_OPENABLE);
-                intent1.setType("image/jpeg");
-                startActivityForResult(intent1, SELECT_IMAGE_REQUEST);
+                dispatchSelectPicturesIntent();
                 popWindow.dismiss();
                 break;
             case R.id.btn_take_photo:

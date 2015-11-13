@@ -1,23 +1,16 @@
 package com.fansen.phr.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.fansen.phr.R;
-import com.fansen.phr.entity.ClinicalDocument;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Yihui Fan on 2015/11/5.
@@ -51,6 +44,11 @@ public class ClinicalDocumentCaptureImageAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    public void setImages(List<ImageAdapterModel> images){
+        this.images = images;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return images.size();
@@ -77,14 +75,14 @@ public class ClinicalDocumentCaptureImageAdapter extends BaseAdapter{
 
             viewHolder = new ViewHolder();
             viewHolder.capturedImageView = (ImageView) convertView.findViewById(R.id.id_clinical_doc_image);
-            viewHolder.capturedImageView.setOnClickListener(onClickListener);
+            //viewHolder.capturedImageView.setOnClickListener(onClickListener);
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.capturedImageView.setImageBitmap(imageAdapterModel.getBitmap());
+        viewHolder.capturedImageView.setImageBitmap(imageAdapterModel.getThumbnailBitmap());
 
         return convertView;
     }

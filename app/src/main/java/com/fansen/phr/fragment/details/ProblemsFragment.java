@@ -54,6 +54,7 @@ public class ProblemsFragment extends Fragment {
 
     private Context context;
     private Encounter encounter;
+    private String problemsDescription;
 
     private int selectChiefComplaintPosition = 0;
 
@@ -69,17 +70,12 @@ public class ProblemsFragment extends Fragment {
     }
 
     public ProblemsFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         context = this.getActivity();
 
         final Bundle bundle = getArguments();
@@ -87,6 +83,14 @@ public class ProblemsFragment extends Fragment {
 
         chiefComplaintService = new ChiefComplaintServiceLocalImpl(context);
         encounterService = new EncounterServiceLocalImpl(context);
+
+        chiefComplaints = chiefComplaintService.getComplaints(encounter.getEncounter_key());
+        problemsDescription = encounterService.getProblemsDescription(encounter.getEncounter_key());
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         problemsView = (RelativeLayout) inflater.inflate(R.layout.fragment_problems, container, false);
 
@@ -101,7 +105,7 @@ public class ProblemsFragment extends Fragment {
         });
 
         complaintListView = (ListView) problemsView.findViewById(R.id.id_problems_complaint_list);
-        chiefComplaints = chiefComplaintService.getComplaints(encounter.getEncounter_key());
+
         chiefComplaintListAdapter = new ChiefComplaintListAdapter(context, chiefComplaints);
         complaintListView.setAdapter(chiefComplaintListAdapter);
         complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,8 +138,7 @@ public class ProblemsFragment extends Fragment {
             }
         });
 
-        String desc = encounterService.getProblemsDescription(encounter.getEncounter_key());
-        problemDescriptionTextView.setText(desc);
+        problemDescriptionTextView.setText(problemsDescription);
 
         //initial history problem view
         historyProblemTextView = (TextView) problemsView.findViewById(R.id.id_problems_history_problem);

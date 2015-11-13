@@ -2,19 +2,21 @@ package com.fansen.phr.adapter;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by 310078142 on 2015/11/10.
  */
-public class ImageAdapterModel {
+public class ImageAdapterModel implements Serializable{
     private String imagePath;
-    private Bitmap bitmap;
+    private Bitmap thumbnailBitmap;
 
     public ImageAdapterModel() {
     }
 
     public ImageAdapterModel(String imagePath, Bitmap bitmap) {
         this.imagePath = imagePath;
-        this.bitmap = bitmap;
+        this.thumbnailBitmap = bitmap;
     }
 
     public String getImagePath() {
@@ -25,11 +27,11 @@ public class ImageAdapterModel {
         this.imagePath = imagePath;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public Bitmap getThumbnailBitmap() {
+        return thumbnailBitmap;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setThumbnailBitmap(Bitmap thumbnailBitmap) {
+        this.thumbnailBitmap = thumbnailBitmap;
     }
 }

@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 15;
+    private final static int DATABASE_VERSION = 16;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -77,6 +77,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_AUTHENTICATION_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_THUMBNAIL_IMAGE_URI + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_IMAGE_URI + TEXT_TYPE + ")";
 
     //sql for create org table
