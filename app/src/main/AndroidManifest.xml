@@ -50,8 +50,8 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".activities.ProblemDescriptionEditActivity"
-            android:label="@string/title_activity_problem_description_edit"
+            android:name=".activities.EncounterProblemEditActivity"
+            android:label="@string/title_activity_encounter_problem_current"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" >
         </activity>

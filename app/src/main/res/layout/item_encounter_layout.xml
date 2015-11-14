@@ -4,13 +4,13 @@
     android:id="@+id/ent_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="2dp"
     android:layout_margin="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:padding="5dp" >
+        android:padding="1dp" >
 
         <TextView
             android:id="@+id/ent_date"

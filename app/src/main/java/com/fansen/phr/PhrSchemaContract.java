@@ -27,6 +27,8 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_ENT_DISCHARGE_DATE = "ent_discharge_date";
         public static final String COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY = "primary_diagnosis_key";
         public static final String COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY = "attending_doctor_key";
+        public static final String COLUMN_NAME_ENT_HISTORICAL_PROBLEMS = "historical_problems";
+        public static final String COLUMN_NAME_ENT_PHYSICAL_EXAM = "physical_exam";
         public static final String COLUMN_NAME_ENT_PERSON_KEY = "person_key";
         public static final String COLUMN_NAME_ENT_ORG_KEY = "org_key";
         public static final String COLUMN_NAME_ENT_DPT_KEY = "dpt_key";

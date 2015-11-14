@@ -21,12 +21,18 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="tab_name_basic">病情描述</string>
-    <string name="tab_name_exam">检查检验</string>
+    <string name="tab_name_exam">影像检查</string>
     <string name="tab_name_prescription">处方</string>
-    <string name="tab_name_procedure">处置</string>
+    <string name="tab_name_procedure">检验报告</string>
     <string name="title_activity_chief_complaint_edit">添加主诉</string>
-    <string name="title_activity_problem_description_edit">编辑现病史</string>
+    <string name="title_activity_encounter_problem_current">编辑现病史</string>
+    <string name="title_activity_encounter_problem_historical">编辑既往史</string>
+    <string name="title_activity_encounter_problem_physical_exam">编辑体格检查</string>
     <string name="title_activity_medication_order_edit">编辑用药记录</string>
     <string name="title_fragment_prescription_add_image">添加处方图片</string>
     <string name="title_activity_image_view">图片浏览</string>
+    <string name="hint_current_problems_guide">此处用来描述当前疾病的发展过程，比如什么时候开始，有些什么样的症状，什么情况下会加剧，什么情况下会缓解等。</string>
+    <string name="hint_historical_problems_guide">此处用来描述本人的过往史，过去发生了什么疾病、做过检查、手术等</string>
+    <string name="hint_physical_exam_guide">编辑体格检查信息</string>
+
 </resources>

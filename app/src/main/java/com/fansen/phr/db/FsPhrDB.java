@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 16;
+    private final static int DATABASE_VERSION = 17;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -34,6 +34,8 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PERSON_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY + INT_TYPE + COMMA_SEP +
@@ -115,7 +117,10 @@ public class FsPhrDB extends SQLiteOpenHelper{
     private final static String SQL_CREATE_DOCUMENT = "";
 
 
-    private final static String SQL_UPGRADE_DB = "";
+    private final static String SQL_ADD_HISTORICAL_PROBLEMS_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
+            " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE;
+    private final static String SQL_ADD_PHYSICAL_EXAM_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
+            " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE;
 
     private static FsPhrDB instance = null;
 
@@ -149,8 +154,10 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL(SQL_UPGRADE_DB);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.PersonTable.TABLE_NAME);
+        db.execSQL(SQL_ADD_HISTORICAL_PROBLEMS_COLUMN);
+        db.execSQL(SQL_ADD_PHYSICAL_EXAM_COLUMN);
+
+        /*db.execSQL("DROP TABLE "+PhrSchemaContract.PersonTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.EncounterTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.OrganizationTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.DepartmentTable.TABLE_NAME);
@@ -162,7 +169,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationDictTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME);
 
-        onCreate(db);
+        onCreate(db);*/
     }
 
     public long insert(String table, ContentValues values){

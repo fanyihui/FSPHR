@@ -21,6 +21,8 @@ public class Encounter implements Serializable{
     private DictDiagnosis primaryDiagnosis;
     private Physician attendingDoctor;
     private String problem_description;
+    private String historicalProblems;
+    private String physicalExam;
 
     public Date getDischarge_date() {
         return discharge_date;
@@ -116,5 +118,21 @@ public class Encounter implements Serializable{
 
     public void setDiagnosisList(List<Diagnosis> diagnosisList) {
         this.diagnosisList = diagnosisList;
+    }
+
+    public String getHistoricalProblems() {
+        return historicalProblems;
+    }
+
+    public void setHistoricalProblems(String historicalProblems) {
+        this.historicalProblems = historicalProblems;
+    }
+
+    public String getPhysicalExam() {
+        return physicalExam;
+    }
+
+    public void setPhysicalExam(String physicalExam) {
+        this.physicalExam = physicalExam;
     }
 }

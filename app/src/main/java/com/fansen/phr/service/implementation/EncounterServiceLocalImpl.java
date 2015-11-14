@@ -156,4 +156,62 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
 
         return desc;
     }
+
+    @Override
+    public void updateHistoricalProblems(long ent_key, String historicalProblems) {
+        ContentValues cv = new ContentValues();
+        cv.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS, historicalProblems);
+
+        String[] args = {String.valueOf(ent_key)};
+
+        fsPhrDB.update(PhrSchemaContract.EncounterTable.TABLE_NAME, cv, "_id=?", args);
+    }
+
+    @Override
+    public void updatePhysicalExamDetails(long ent_key, String physicalExamDetails) {
+        ContentValues cv = new ContentValues();
+        cv.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM, physicalExamDetails);
+
+        String[] args = {String.valueOf(ent_key)};
+
+        fsPhrDB.update(PhrSchemaContract.EncounterTable.TABLE_NAME, cv, "_id=?", args);
+    }
+
+    @Override
+    public String getHistoricalProblems(long ent_key) {
+        String sql = "select "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS +
+                " from " + PhrSchemaContract.EncounterTable.TABLE_NAME +
+                " where _id="+ent_key;
+
+        Cursor c = fsPhrDB.rawQuery(sql);
+
+        c.moveToFirst();
+
+        String desc = c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS));
+
+        c.close();
+
+        fsPhrDB.closeDatabase();
+
+        return desc;
+    }
+
+    @Override
+    public String getPhysicalExamDetails(long ent_key) {
+        String sql = "select "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM +
+                " from " + PhrSchemaContract.EncounterTable.TABLE_NAME +
+                " where _id="+ent_key;
+
+        Cursor c = fsPhrDB.rawQuery(sql);
+
+        c.moveToFirst();
+
+        String desc = c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM));
+
+        c.close();
+
+        fsPhrDB.closeDatabase();
+
+        return desc;
+    }
 }

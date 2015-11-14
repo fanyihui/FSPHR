@@ -18,16 +18,15 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.activities.ChiefComplaintEditActivity;
-import com.fansen.phr.activities.ProblemDescriptionEditActivity;
+import com.fansen.phr.activities.EncounterProblemEditActivity;
 import com.fansen.phr.adapter.ChiefComplaintListAdapter;
 import com.fansen.phr.entity.ChiefComplaint;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.ObservationType;
 import com.fansen.phr.service.IChiefComplaintService;
 import com.fansen.phr.service.IEncounterService;
 import com.fansen.phr.service.implementation.ChiefComplaintServiceLocalImpl;
 import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,8 +35,12 @@ public class ProblemsFragment extends Fragment {
     public static final int ADD_COMPLAINT_REQUEST = 4;  // The request code
     public static final int EDIT_PROBLEM_DESC_REQUEST = 5;  // The request code
     public static final int EDIT_COMPLAINT_REQUEST = 6;
+    public static final int EDIT_HISTORICAL_PROBLEM_REQUEST = 1001;
+    public static final int EDIT_PHYSICAL_EXAM_REQUEST = 1002;
+
     public static final String BUNDLE_KEY_ENT = "encounter";
-    public static final String BUNDLE_KEY_DESC = "edit_problems_description";
+    public static final String BUNDLE_KEY_PROBLEM_VALUE = "problem_value";
+    public static final String BUNDLE_KEY_PROBLEM_TYPE = "problem_type";
     public static final String BUNDLE_KEY_SELECTED_COMPLAINT_POSITION = "complaint_position";
     public static final String BUNDLE_KEY_SELECTED_COMPLAINT = "selected_complaint";
 
@@ -55,6 +58,8 @@ public class ProblemsFragment extends Fragment {
     private Context context;
     private Encounter encounter;
     private String problemsDescription;
+    private String historicalProblems;
+    private String physicalExamDetails;
 
     private int selectChiefComplaintPosition = 0;
 
@@ -86,6 +91,8 @@ public class ProblemsFragment extends Fragment {
 
         chiefComplaints = chiefComplaintService.getComplaints(encounter.getEncounter_key());
         problemsDescription = encounterService.getProblemsDescription(encounter.getEncounter_key());
+        historicalProblems = encounterService.getHistoricalProblems(encounter.getEncounter_key());
+        physicalExamDetails = encounterService.getPhysicalExamDetails(encounter.getEncounter_key());
     }
 
     @Override
@@ -129,72 +136,155 @@ public class ProblemsFragment extends Fragment {
         problemDescriptionTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProblemDescriptionEditActivity.class);
+                dispatchProblemEditIntent(ObservationType.CURRENT_PROBLEM.getName(),
+                        problemDescriptionTextView.getText().toString(),
+                        EDIT_PROBLEM_DESC_REQUEST);
+                /*Intent intent = new Intent(context, EncounterProblemEditActivity.class);
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(BUNDLE_KEY_DESC, problemDescriptionTextView.getText().toString());
+                bundle1.putString(BUNDLE_KEY_PROBLEM_TYPE, ObservationType.CURRENT_PROBLEM.getName());
+                bundle1.putString(BUNDLE_KEY_PROBLEM_VALUE, problemDescriptionTextView.getText().toString());
                 intent.putExtras(bundle1);
 
-                startActivityForResult(intent, EDIT_PROBLEM_DESC_REQUEST);
+                startActivityForResult(intent, EDIT_PROBLEM_DESC_REQUEST);*/
             }
         });
-
         problemDescriptionTextView.setText(problemsDescription);
 
         //initial history problem view
         historyProblemTextView = (TextView) problemsView.findViewById(R.id.id_problems_history_problem);
+        historyProblemTextView.setText(historicalProblems);
+        historyProblemTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchProblemEditIntent(ObservationType.HISTORICAL_PROBLEM.getName(),
+                        historyProblemTextView.getText().toString(),
+                        EDIT_HISTORICAL_PROBLEM_REQUEST);
+                /*
+                Intent intent = new Intent(context, EncounterProblemEditActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(BUNDLE_KEY_PROBLEM_TYPE, ObservationType.CURRENT_PROBLEM.getName());
+                bundle1.putString(BUNDLE_KEY_PROBLEM_VALUE, problemDescriptionTextView.getText().toString());
+                intent.putExtras(bundle1);
+
+                startActivityForResult(intent, );*/
+            }
+        });
 
         //initial physical exam section
         physicalExamTextView = (TextView) problemsView.findViewById(R.id.id_problems_physical_exam);
+        physicalExamTextView.setText(physicalExamDetails);
+        physicalExamTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchProblemEditIntent(ObservationType.PHYSICAL_EXAM.getName(),
+                        physicalExamTextView.getText().toString(),
+                        EDIT_PHYSICAL_EXAM_REQUEST);
+            }
+        });
 
         return problemsView;
     }
 
+    private void dispatchProblemEditIntent(String type, String value, int requestCode){
+        Intent intent = new Intent(context, EncounterProblemEditActivity.class);
+        Bundle bundle1 = new Bundle();
+        bundle1.putString(BUNDLE_KEY_PROBLEM_TYPE, type);
+        bundle1.putString(BUNDLE_KEY_PROBLEM_VALUE, value);
+        intent.putExtras(bundle1);
+
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void handleComplaintAdded(Intent data){
+        Bundle bundle = data.getExtras();
+        String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
+        String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
+        String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
+
+        ChiefComplaint chiefComplaint = new ChiefComplaint();
+        chiefComplaint.setSymptom(complaint);
+        chiefComplaint.setDuration(duration);
+        chiefComplaint.setDuration_unit(unit);
+
+        int key = chiefComplaintService.addComplaint(encounter.getEncounter_key(), chiefComplaint);
+        chiefComplaint.setKey(key);
+
+        chiefComplaintListAdapter.addComplaint(chiefComplaint);
+    }
+
+    private void handleProblemDescEdit(Intent data){
+        long ent_key = encounter.getEncounter_key();
+        Bundle bundle = data.getExtras();
+        String problem_desc = bundle.getString(EncounterProblemEditActivity.BUNDLE_KEY_PROBLEM_VALUE);
+        if(problem_desc!=null && !problem_desc.equals(problemsDescription)){
+            problemsDescription = problem_desc;
+            problemDescriptionTextView.setText(problemsDescription);
+            encounter.setProblem_description(problemsDescription);
+            encounterService.updateProblemsDescription(ent_key, problemsDescription);
+        }
+    }
+
+    private void handleEditComplaint(Intent data){
+        Bundle bundle = data.getExtras();
+        String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
+        String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
+        String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
+        int key = bundle.getInt(ChiefComplaintEditActivity.ID_KEY);
+
+        ChiefComplaint chiefComplaint = new ChiefComplaint();
+        chiefComplaint.setSymptom(complaint);
+        chiefComplaint.setDuration(duration);
+        chiefComplaint.setDuration_unit(unit);
+        chiefComplaint.setKey(key);
+
+        chiefComplaintListAdapter.updateComplaint(selectChiefComplaintPosition, chiefComplaint);
+        chiefComplaintService.updateChiefComplaint(chiefComplaint);
+    }
+
+    private void handleEditHistoricalProblem(Intent data){
+        long ent_key = encounter.getEncounter_key();
+        Bundle bundle = data.getExtras();
+        String value = bundle.getString(EncounterProblemEditActivity.BUNDLE_KEY_PROBLEM_VALUE);
+        if (value!=null && !value.equals(historicalProblems)){
+            historicalProblems = value;
+            historyProblemTextView.setText(historicalProblems);
+            encounter.setHistoricalProblems(historicalProblems);
+            encounterService.updateHistoricalProblems(ent_key, historicalProblems);
+        }
+    }
+
+    private void handleEditPhysicalExam(Intent data){
+        long ent_key = encounter.getEncounter_key();
+        Bundle bundle = data.getExtras();
+        String value = bundle.getString(EncounterProblemEditActivity.BUNDLE_KEY_PROBLEM_VALUE);
+        if (value !=null && !value.equals(physicalExamDetails)){
+            physicalExamDetails = value;
+            physicalExamTextView.setText(physicalExamDetails);
+            encounter.setPhysicalExam(physicalExamDetails);
+            encounterService.updatePhysicalExamDetails(ent_key, physicalExamDetails);
+        }
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        long ent_key = encounter.getEncounter_key();
-
-        if (requestCode == ADD_COMPLAINT_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bundle bundle = data.getExtras();
-                String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
-                String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
-                String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
-
-                ChiefComplaint chiefComplaint = new ChiefComplaint();
-                chiefComplaint.setSymptom(complaint);
-                chiefComplaint.setDuration(duration);
-                chiefComplaint.setDuration_unit(unit);
-
-                int key = chiefComplaintService.addComplaint(encounter.getEncounter_key(), chiefComplaint);
-                chiefComplaint.setKey(key);
-
-                chiefComplaintListAdapter.addComplaint(chiefComplaint);
-            }
-        } else if (requestCode == EDIT_PROBLEM_DESC_REQUEST){
-            if(resultCode == Activity.RESULT_OK){
-                Bundle bundle = data.getExtras();
-                String problem_desc = bundle.getString(ProblemDescriptionEditActivity.PROBLEM_DESC_KEY);
-
-                problemDescriptionTextView.setText(problem_desc);
-                encounter.setProblem_description(problem_desc);
-                encounterService.updateProblemsDescription(ent_key, problem_desc);
-            }
-        } else if(requestCode == EDIT_COMPLAINT_REQUEST){
-            if(resultCode == Activity.RESULT_OK){
-                Bundle bundle = data.getExtras();
-                String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
-                String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
-                String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
-                int key = bundle.getInt(ChiefComplaintEditActivity.ID_KEY);
-
-                ChiefComplaint chiefComplaint = new ChiefComplaint();
-                chiefComplaint.setSymptom(complaint);
-                chiefComplaint.setDuration(duration);
-                chiefComplaint.setDuration_unit(unit);
-                chiefComplaint.setKey(key);
-
-                chiefComplaintListAdapter.updateComplaint(selectChiefComplaintPosition, chiefComplaint);
-                chiefComplaintService.updateChiefComplaint(chiefComplaint);
+        if (resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case ADD_COMPLAINT_REQUEST:
+                    handleComplaintAdded(data);
+                    break;
+                case EDIT_PROBLEM_DESC_REQUEST:
+                    handleProblemDescEdit(data);
+                    break;
+                case EDIT_COMPLAINT_REQUEST:
+                    handleEditComplaint(data);
+                    break;
+                case EDIT_HISTORICAL_PROBLEM_REQUEST:
+                    handleEditHistoricalProblem(data);
+                    break;
+                case EDIT_PHYSICAL_EXAM_REQUEST:
+                    handleEditPhysicalExam(data);
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
