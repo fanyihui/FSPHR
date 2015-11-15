@@ -10,6 +10,7 @@ import com.fansen.phr.R;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.utils.TimeFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,11 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     private MedicalRecordItemClickListener itemClickListener = null;
 
     public MedicalRecordListAdapter(List<Encounter> encounters) {
-        encounterList = encounters;
+        if (encounters == null){
+            encounterList = new ArrayList<>();
+        } else {
+            encounterList = encounters;
+        }
     }
 
     @Override
@@ -56,8 +61,6 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         }
         notifyDataSetChanged();
     }
-
-
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

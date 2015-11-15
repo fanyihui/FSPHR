@@ -53,29 +53,23 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        context = getActivity();
+        encounterService = new EncounterServiceLocalImpl(getActivity());
+        encounters = encounterService.getAllEncounters();
+        adapter = new MedicalRecordListAdapter(encounters);
+        adapter.setItemClickListener(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = getActivity();
-
-        //setTestData();
-
         phrView = (RecyclerView) inflater.inflate(R.layout.fragment_phr, container, false);
         phrView.setHasFixedSize(true);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         phrView.setLayoutManager(layoutManager);
-
-        encounterService = new EncounterServiceLocalImpl(getActivity());
-        encounters = encounterService.getAllEncounters();
-
-        // specify an adapter (see also next example)
-        adapter = new MedicalRecordListAdapter(encounters);
-        adapter.setItemClickListener(this);
         phrView.setAdapter(adapter);
         return phrView;
     }

@@ -1,36 +1,41 @@
 package com.fansen.phr.fragment.details;
 
+import android.content.Context;
+import android.net.LinkAddress;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fansen.phr.R;
+import com.fansen.phr.adapter.RequestedProcedureListAdapter;
+import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.RequestedProcedure;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RequestedProcedureFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RequestedProcedureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RequestedProcedureFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class RequestedProcedureFragment extends Fragment implements RequestedProcedureListAdapter.RequestedProcedureItemClickListener{
+    private static final String ARG_CURRENT_ENCOUNTER = "current_encounter";
+
+    private Encounter currentEncounter;
+
+    private Context context;
+    private RecyclerView requestedProcedureView;
+    private RequestedProcedureListAdapter requestedProcedureListAdapter;
+    private List<RequestedProcedure> requestedProcedureList;
+    private RecyclerView.LayoutManager layoutManager;
 
     private OnFragmentInteractionListener mListener;
 
-    public static RequestedProcedureFragment newInstance() {
+    public static RequestedProcedureFragment newInstance(Encounter encounter) {
         RequestedProcedureFragment fragment = new RequestedProcedureFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_CURRENT_ENCOUNTER, encounter);
+        fragment.setArguments(bundle);
+
         return fragment;
     }
 
@@ -42,103 +47,30 @@ public class RequestedProcedureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //mParam1 = getArguments().getString(ARG_PARAM1);
+            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //TODO add code here to initial variables
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requested_procedure, container, false);
+        requestedProcedureView = (RecyclerView) inflater.inflate(R.layout.fragment_requested_procedure, container, false);
+        requestedProcedureView.setHasFixedSize(true);
+        requestedProcedureView.setAdapter(requestedProcedureListAdapter);
+
+        return requestedProcedureView;
     }
 
+
+    @Override
+    public void itemClicked(View v, int position) {
+        //TODO add code here to open requestedprocedure detail activity
+    }
 
     @Override
     public void onDetach() {
