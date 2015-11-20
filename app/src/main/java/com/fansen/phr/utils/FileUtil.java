@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -137,5 +138,21 @@ public class FileUtil {
     public static boolean fileExists(String filePath) {
         File file = new File(filePath);
         return file.exists();
+    }
+
+    public static byte[] decodeBitmapToBytes(Bitmap bitmap){
+        if (bitmap == null){
+            return null;
+        }
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        return byteArray;
+    }
+
+    public static Bitmap encodeBytesToBitmap(byte[] bytes){
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }

@@ -17,8 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,44 +28,54 @@
         <activity
             android:name=".activities.NewInpatientActivity"
             android:label="@string/title_activity_new_inpatient"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.OutpatientActivity"
             android:label="@string/title_activity_new_outpatient"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.OutpatientDetailActivity"
             android:label="@string/title_activity_outpatient_detail"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.ChiefComplaintEditActivity"
             android:label="@string/title_activity_chief_complaint_edit"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.EncounterProblemEditActivity"
             android:label="@string/title_activity_encounter_problem_current"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.MedicationOrderEditActivity"
             android:label="@string/title_activity_medication_order_edit"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.ImageViewActivity"
             android:label="@string/title_activity_image_view"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.ImagingReportDetailActivity"
+            android:label="@string/title_activity_imaging_report_detail"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.FreeTextEditActivity"
+            android:label="@string/title_activity_free_text_edit"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

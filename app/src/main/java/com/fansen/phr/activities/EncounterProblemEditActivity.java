@@ -25,8 +25,7 @@ public class EncounterProblemEditActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,19 +39,24 @@ public class EncounterProblemEditActivity extends AppCompatActivity {
         String type = bundle.getString(ProblemsFragment.BUNDLE_KEY_PROBLEM_TYPE);
         String value = bundle.getString(ProblemsFragment.BUNDLE_KEY_PROBLEM_VALUE);
 
+        String title = null;
+        String hint = null;
+
         encounterProblemEditText = (EditText) findViewById(R.id.id_encounter_problem_edit_text);
 
         if (type.equals(ObservationType.CURRENT_PROBLEM.getName())){
-            toolbar.setTitle(R.string.title_activity_encounter_problem_current);
-            encounterProblemEditText.setHint(R.string.hint_current_problems_guide);
+            title = getResources().getString(R.string.title_activity_encounter_problem_current);
+            hint = getResources().getString(R.string.hint_current_problems_guide);
         } else if (type.equals(ObservationType.HISTORICAL_PROBLEM.getName())){
-            toolbar.setTitle(R.string.title_activity_encounter_problem_historical);
-            encounterProblemEditText.setHint(R.string.hint_historical_problems_guide);
+            title = getResources().getString(R.string.title_activity_encounter_problem_historical);
+            hint = getResources().getString(R.string.hint_historical_problems_guide);
         } else if (type.equals(ObservationType.PHYSICAL_EXAM.getName())){
-            toolbar.setTitle(R.string.title_activity_encounter_problem_physical_exam);
-            encounterProblemEditText.setHint(R.string.hint_physical_exam_guide);
+            title = getResources().getString(R.string.title_activity_encounter_problem_physical_exam);
+            hint = getResources().getString(R.string.hint_physical_exam_guide);
         }
 
+        getSupportActionBar().setTitle(title);
+        encounterProblemEditText.setHint(hint);
         encounterProblemEditText.setText(value);
     }
 
@@ -64,7 +68,6 @@ public class EncounterProblemEditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.id_action_submit_problem_desc){
-            //TODO add code here to get the problem description and send back to ProblemsFragment
             String value = encounterProblemEditText.getText().toString();
 
             Intent data = new Intent();

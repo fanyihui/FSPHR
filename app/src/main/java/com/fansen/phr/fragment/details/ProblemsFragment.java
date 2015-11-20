@@ -139,13 +139,6 @@ public class ProblemsFragment extends Fragment {
                 dispatchProblemEditIntent(ObservationType.CURRENT_PROBLEM.getName(),
                         problemDescriptionTextView.getText().toString(),
                         EDIT_PROBLEM_DESC_REQUEST);
-                /*Intent intent = new Intent(context, EncounterProblemEditActivity.class);
-                Bundle bundle1 = new Bundle();
-                bundle1.putString(BUNDLE_KEY_PROBLEM_TYPE, ObservationType.CURRENT_PROBLEM.getName());
-                bundle1.putString(BUNDLE_KEY_PROBLEM_VALUE, problemDescriptionTextView.getText().toString());
-                intent.putExtras(bundle1);
-
-                startActivityForResult(intent, EDIT_PROBLEM_DESC_REQUEST);*/
             }
         });
         problemDescriptionTextView.setText(problemsDescription);
@@ -159,14 +152,6 @@ public class ProblemsFragment extends Fragment {
                 dispatchProblemEditIntent(ObservationType.HISTORICAL_PROBLEM.getName(),
                         historyProblemTextView.getText().toString(),
                         EDIT_HISTORICAL_PROBLEM_REQUEST);
-                /*
-                Intent intent = new Intent(context, EncounterProblemEditActivity.class);
-                Bundle bundle1 = new Bundle();
-                bundle1.putString(BUNDLE_KEY_PROBLEM_TYPE, ObservationType.CURRENT_PROBLEM.getName());
-                bundle1.putString(BUNDLE_KEY_PROBLEM_VALUE, problemDescriptionTextView.getText().toString());
-                intent.putExtras(bundle1);
-
-                startActivityForResult(intent, );*/
             }
         });
 

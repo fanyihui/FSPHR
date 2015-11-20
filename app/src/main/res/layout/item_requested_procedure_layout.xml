@@ -4,14 +4,98 @@
     android:id="@+id/id_requested_procedure_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="2dp"
-    android:layout_margin="2dp" >
+    app:cardCornerRadius="4dp"
+    android:layout_margin="4dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/rp_cardview_height"
+        android:padding="1dp">
+
+        <ImageView
+            android:id="@+id/id_rp_cardview_image_view"
+            android:layout_width="@dimen/grid_view_column_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="2dp"
+            android:src="@drawable/ic_skeleton"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/id_rp_cardview_image_view">
+
+            <TextView
+                android:id="@+id/id_rp_cardview_date_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:text="20151116"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/id_rp_cardview_result_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/id_rp_cardview_date_view"
+                android:text="未见异常"
+                android:textSize="24dp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="bottom|left"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/id_rp_cardview_result_view">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#000000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:id="@+id/id_rp_cardview_modality_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CT" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/" />
+                    <TextView
+                        android:id="@+id/id_rp_cardview_bodypart_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="胸部" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/" />
+                    <TextView
+                        android:id="@+id/id_rp_cardview_rptype_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CT胸片" />
+
+                </LinearLayout>
 
 
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

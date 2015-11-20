@@ -12,6 +12,10 @@
 
     <string name="label_diagnosis">诊断：</string>
     <string name="label_outpatient_date">日期</string>
+    <string name="label_diagnostic_imaging_detail_date">检查日期</string>
+    <string name="label_diagnostic_imaging_detail_modality">检查设备</string>
+    <string name="label_diagnostic_imaging_detail_requested_procedure">检查方法</string>
+    <string name="label_diagnostic_imaging_detail_body">检查部位</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -31,8 +35,24 @@
     <string name="title_activity_medication_order_edit">编辑用药记录</string>
     <string name="title_fragment_prescription_add_image">添加处方图片</string>
     <string name="title_activity_image_view">图片浏览</string>
+
     <string name="hint_current_problems_guide">此处用来描述当前疾病的发展过程，比如什么时候开始，有些什么样的症状，什么情况下会加剧，什么情况下会缓解等。</string>
     <string name="hint_historical_problems_guide">此处用来描述本人的过往史，过去发生了什么疾病、做过检查、手术等</string>
     <string name="hint_physical_exam_guide">编辑体格检查信息</string>
+    <string name="hint_diagnostic_imaging_finding">编辑影像检查所见</string>
+    <string name="hint_diagnostic_imaging_result">编辑检查结果</string>
+    <string name="hint_diagnostic_imaging_recommendation">编辑处置建议</string>
+    <string name="hint_diagnostic_imaging_rp_type">编辑检查方法</string>
+    <string name="hint_diagnostic_imaging_body">编辑检查部位</string>
 
+
+    <string name="tip_for_empty_diagnostic_image_report">当前没有影像检查报告，请通过右下角的按钮添加一个新的影像检查报告</string>
+    <string name="title_activity_imaging_report_detail">医学影像报告编辑</string>
+    <string name="action_submit">提交</string>
+    <string name="seperate_name_dir_basic">基本信息</string>
+    <string name="seperate_name_dir_finding">检查所见</string>
+    <string name="seperate_name_dir_result">检查结果</string>
+    <string name="seperate_name_dir_recommend">建议</string>
+    <string name="seperate_name_dir_reference_images">报告单和参考图像</string>
+    <string name="title_activity_free_text_edit">FreeTextEditActivity</string>
 </resources>

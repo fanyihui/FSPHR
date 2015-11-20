@@ -9,6 +9,10 @@ import java.util.Date;
  */
 public class TimeFormat {
     public static String parseDate(Date date, String format){
+        if(date == null){
+            return "";
+        }
+
         SimpleDateFormat df = new SimpleDateFormat(format);
         return df.format(date);
     }

@@ -51,7 +51,7 @@ public class OutpatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_outpatient);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_newoutpatient);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

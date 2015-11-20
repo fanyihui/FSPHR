@@ -16,8 +16,10 @@
         android:layout_height="wrap_content"
         android:text="用药信息"
         android:gravity="center_vertical"
+        android:paddingTop="@dimen/seperate_padding_margin"
+        android:paddingBottom="@dimen/seperate_padding_margin"
         android:textAlignment="center"
-        android:background="#e5e5e5"
+        android:background="@color/colorSeperateBackground"
         android:textStyle="bold"/>
 
     <LinearLayout

@@ -1,0 +1,246 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fansen.phr.fragment.details.ImagingReportDetailFragment">
+
+    <RelativeLayout
+        android:id="@+id/id_imaging_report_detail_section_basic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/id_seperate_dir_basic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_dir_basic"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:id="@+id/id_imaging_report_detail_subsection_date"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/id_seperate_dir_basic">
+
+            <TextView
+                android:id="@+id/id_label_rp_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_diagnostic_imaging_detail_date"/>
+
+            <TextView
+                android:id="@+id/id_imaging_report_detail_textview_rp_date"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:gravity="center|left"
+                android:hint="必填"
+                android:layout_toRightOf="@+id/id_label_rp_date"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_imaging_report_detail_subsection_modality"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/id_imaging_report_detail_subsection_date"
+            android:layout_below="@+id/id_seperate_dir_basic">
+
+            <TextView
+                android:id="@+id/id_label_rp_modality"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_diagnostic_imaging_detail_modality"/>
+
+            <Spinner
+                android:id="@+id/id_imaging_report_detail_modality_spinner"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:entries="@array/modality"
+                android:layout_marginRight="@dimen/activity_horizontal_margin">
+            </Spinner>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_imaging_report_detail_subsection_body"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/id_imaging_report_detail_subsection_date">
+
+            <TextView
+                android:id="@+id/id_label_body"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_diagnostic_imaging_detail_body"/>
+
+            <TextView
+                android:id="@+id/id_imaging_report_detail_textview_body"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center|left"
+                android:hint="必填"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:layout_toRightOf="@+id/id_label_body"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_imaging_report_detail_subsection_rp_type"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/id_imaging_report_detail_subsection_body"
+            android:layout_below="@+id/id_imaging_report_detail_subsection_modality">
+
+            <TextView
+                android:id="@+id/id_label_rp_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_diagnostic_imaging_detail_requested_procedure"/>
+
+            <TextView
+                android:id="@+id/id_imaging_report_detail_textview_rp_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center|left"
+                android:hint="必填"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:layout_toRightOf="@+id/id_label_rp_type"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/id_imaging_report_detail_section_finding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_imaging_report_detail_section_basic">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_dir_finding"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/id_imaging_report_detail_textview_finding"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_diagnostic_imaging_finding"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_imaging_report_detail_section_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_imaging_report_detail_section_finding">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_dir_result"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/id_imaging_report_detail_textview_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_diagnostic_imaging_result"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_imaging_report_detail_section_recommendation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_imaging_report_detail_section_result">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_dir_recommend"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/id_imaging_report_detail_textview_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_diagnostic_imaging_recommendation"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_imaging_report_detail_section_reference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_imaging_report_detail_section_recommendation">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_dir_reference_images"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <GridView
+            android:id="@+id/id_imaging_report_detail_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="@dimen/grid_view_column_width"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/id_imaging_report_detail_btn_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:background="#00000000"
+            android:text="添加处方图片" />
+    </LinearLayout>
+</RelativeLayout>

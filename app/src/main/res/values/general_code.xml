@@ -30,4 +30,13 @@
         <item>涂抹</item>
         <item>外贴</item>
     </string-array>
+
+    <string-array name="modality">
+        <item>CT</item>
+        <item>MRI</item>
+        <item>CR</item>
+        <item>DR</item>
+        <item>US</item>
+        <item>DSA</item>
+    </string-array>
 </resources>

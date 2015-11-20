@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 17;
+    private final static int DATABASE_VERSION = 20;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -112,15 +112,78 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_ID + TEXT_TYPE + ")";
 
-    private final static String SQL_CREATE_PROCEDURE = "";
 
-    private final static String SQL_CREATE_DOCUMENT = "";
+    //start for version 18
+    private final static String SQL_CREATE_DI_REPORT = "CREATE TABLE "+ PhrSchemaContract.DiagnosticImagingReportTable.TABLE_NAME + "(" +
+            PhrSchemaContract.DiagnosticImagingReportTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_DATE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_FINDINGS + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RESULT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RECOMMENDATION + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_MODALITY + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_ENT_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RPDEF_KEY + INT_TYPE + ")";
 
+    private final static String SQL_CREATE_DIAGNOSTIC_IMAGE = "CREATE TABLE " + PhrSchemaContract.DiagnosticImageTable.TABLE_NAME + "("+
+            PhrSchemaContract.DiagnosticImageTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_DIR_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_IMAGE_URI + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_THUMBNAIL_IMAGE_URI + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_CREATING_DATE + TEXT_TYPE +")";
 
+    private final static String SQL_CREATE_IMAGING_OBR = "CREATE TABLE " + PhrSchemaContract.ImagingObservationTable.TABLE_NAME + "("+
+            PhrSchemaContract.ImagingObservationTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.ImagingObservationTable.COLUMN_NAME_IMAGE_OBR_DATE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ImagingObservationTable.COLUMN_NAME_IMAGE_OBR_VALUE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ImagingObservationTable.COLUMN_NAME_IMAGE_OBR_DI_REPORT_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ImagingObservationTable.COLUMN_NAME_IMAGE_OBR_DEF_KEY + INT_TYPE +")";
+
+    private final static String SQL_OBR_DEF = "CREATE TABLE "+ PhrSchemaContract.ObservationDefTable.TABLE_NAME + "("+
+            PhrSchemaContract.ObservationDefTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_CODE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_NORMAL_RANGE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_CODE_SYSTEM_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_CODE_SYSTEM_OID + TEXT_TYPE +")";
+
+    private final static String SQL_CREATE_RP_TYPE_DEF = "CREATE TABLE " + PhrSchemaContract.RequestedProcedureTypeDefTable.TABLE_NAME + "("+
+            PhrSchemaContract.RequestedProcedureTypeDefTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_CODE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_CODE_SYSTEM_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_CODE_SYSTEM_OID + TEXT_TYPE +")";
+
+    //end of version 18
+
+    /*
+    * Following SQL scripts are used for upgrading db schema
+    * */
+    /*
     private final static String SQL_ADD_HISTORICAL_PROBLEMS_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
             " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE;
     private final static String SQL_ADD_PHYSICAL_EXAM_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
             " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE;
+    */
+
+
+    /**
+     * version 19 add a column in diagnostic imaging report to refer to bodypart definition table.
+     * Add a new table for the body part definition
+     * */
+
+    private final static String SQL_CREATE_BODY_PART_DEF = "CREATE TABLE " + PhrSchemaContract.BodypartDefTable.TABLE_NAME + "("+
+            PhrSchemaContract.BodypartDefTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_CODE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_OID + TEXT_TYPE +")";
+
+    private final static String SQL_ADD_BODY_PART_DEF_KEY = "alter table "+PhrSchemaContract.DiagnosticImagingReportTable.TABLE_NAME +
+            " add "+PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_BODY_PART_DEF_KEY + INT_TYPE;
+
+    private final static String SQL_ADD_DIAGNOSTIC_IMAGE_DIR_KEY = "alter table "+PhrSchemaContract.DiagnosticImageTable.TABLE_NAME +
+            " add "+PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_DIR_KEY + INT_TYPE;
+
 
     private static FsPhrDB instance = null;
 
@@ -150,12 +213,34 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_DICT_MEDICATION);
         db.execSQL(SQL_CREATE_MEDICATION_ORDER);
         db.execSQL(SQL_CREATE_CLINICAL_DOCUMENT);
+        //version 18
+        db.execSQL(SQL_CREATE_DIAGNOSTIC_IMAGE);
+        db.execSQL(SQL_CREATE_DI_REPORT);
+        db.execSQL(SQL_CREATE_IMAGING_OBR);
+        db.execSQL(SQL_OBR_DEF);
+        db.execSQL(SQL_CREATE_RP_TYPE_DEF);
+        //version 19
+        db.execSQL(SQL_CREATE_BODY_PART_DEF);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_ADD_HISTORICAL_PROBLEMS_COLUMN);
-        db.execSQL(SQL_ADD_PHYSICAL_EXAM_COLUMN);
+        //upgrade for version 19
+        db.execSQL(SQL_CREATE_BODY_PART_DEF);
+        db.execSQL(SQL_ADD_BODY_PART_DEF_KEY);
+        //version 20
+        db.execSQL(SQL_ADD_DIAGNOSTIC_IMAGE_DIR_KEY);
+
+        /*upgrade for version 18
+        db.execSQL(SQL_CREATE_DIAGNOSTIC_IMAGE);
+        db.execSQL(SQL_CREATE_DI_REPORT);
+        db.execSQL(SQL_CREATE_IMAGING_OBR);
+        db.execSQL(SQL_OBR_DEF);
+        db.execSQL(SQL_CREATE_RP_TYPE_DEF);
+        end of version 18*/
+
+        //db.execSQL(SQL_ADD_HISTORICAL_PROBLEMS_COLUMN);
+        //db.execSQL(SQL_ADD_PHYSICAL_EXAM_COLUMN);
 
         /*db.execSQL("DROP TABLE "+PhrSchemaContract.PersonTable.TABLE_NAME);
         db.execSQL("DROP TABLE "+PhrSchemaContract.EncounterTable.TABLE_NAME);

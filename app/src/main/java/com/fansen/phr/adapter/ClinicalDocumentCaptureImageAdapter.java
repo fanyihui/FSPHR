@@ -75,7 +75,6 @@ public class ClinicalDocumentCaptureImageAdapter extends BaseAdapter{
 
             viewHolder = new ViewHolder();
             viewHolder.capturedImageView = (ImageView) convertView.findViewById(R.id.id_clinical_doc_image);
-            //viewHolder.capturedImageView.setOnClickListener(onClickListener);
 
             convertView.setTag(viewHolder);
         } else {

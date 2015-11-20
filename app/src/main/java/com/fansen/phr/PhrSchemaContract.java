@@ -49,7 +49,6 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_MED_ORDER_ROUTE = "route";
         public static final String COLUMN_NAME_MED_ORDER_PRN = "prn_indicator";
         public static final String COLUMN_NAME_MED_ORDER_START_TIME = "start_time";
-
     }
 
     public static abstract class ClinicalDocumentTable implements BaseColumns{
@@ -61,6 +60,35 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_DOC_CREATING_DATE = "creating_date";
         public static final String COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY = "authentication_key";
         public static final String COLUMN_NAME_DOC_AUTHENTICATION_DATE = "authentication_date";
+    }
+
+    public static abstract class DiagnosticImagingReportTable implements BaseColumns{
+        public static final String TABLE_NAME = "diagnostic_imaging_report";
+        public static final String COLUMN_NAME_DI_ENT_KEY = "ent_key";
+        public static final String COLUMN_NAME_DI_RPDEF_KEY = "rp_def_key";
+        public static final String COLUMN_NAME_DI_BODY_PART_DEF_KEY = "body_part_def_key";
+        public static final String COLUMN_NAME_DI_DATE = "date";
+        public static final String COLUMN_NAME_DI_RESULT = "result";
+        public static final String COLUMN_NAME_DI_FINDINGS = "findings";
+        public static final String COLUMN_NAME_DI_RECOMMENDATION = "recommendation";
+        public static final String COLUMN_NAME_DI_MODALITY = "modality";
+    }
+
+    public static abstract class ImagingObservationTable implements BaseColumns{
+        public static final String TABLE_NAME = "imaging_observation";
+        public static final String COLUMN_NAME_IMAGE_OBR_VALUE = "value";
+        public static final String COLUMN_NAME_IMAGE_OBR_DATE = "date";
+        public static final String COLUMN_NAME_IMAGE_OBR_DEF_KEY = "obr_def_key";
+        public static final String COLUMN_NAME_IMAGE_OBR_DI_REPORT_KEY = "di_key"; // key reference to diagnostic_imaging_report
+    }
+
+    public static abstract class DiagnosticImageTable implements BaseColumns{
+        public static final String TABLE_NAME = "diagnostic_image";
+        public static final String COLUMN_NAME_DI_DIR_KEY = "dir_key";
+        public static final String COLUMN_NAME_DI_IMAGE_URI = "image_uri";
+        public static final String COLUMN_NAME_DI_THUMBNAIL_IMAGE_URI = "thumbnail_image_uri";
+        public static final String COLUMN_NAME_DI_CREATING_DATE = "creating_date";
+
     }
 
     public static abstract class DiagnosisTable implements BaseColumns{
@@ -111,5 +139,30 @@ public final class PhrSchemaContract {
         public static final String TABLE_NAME = "physician";
         public static final String COLUMN_NAME_PHYSICIAN_NAME = "physician_name";
         public static final String COLUMN_NAME_PHYSICIAN_ID = "physician_id";
+    }
+
+    public static abstract class ObservationDefTable implements BaseColumns{
+        public static final String TABLE_NAME = "observation_def";
+        public static final String COLUMN_NAME_OBR_DEF_NAME = "name";
+        public static final String COLUMN_NAME_OBR_DEF_CODE = "code";
+        public static final String COLUMN_NAME_OBR_DEF_NORMAL_RANGE = "normal_range";
+        public static final String COLUMN_NAME_OBR_DEF_CODE_SYSTEM_OID = "code_system_oid";
+        public static final String COLUMN_NAME_OBR_DEF_CODE_SYSTEM_NAME = "code_system_name";
+    }
+
+    public static abstract class RequestedProcedureTypeDefTable implements BaseColumns{
+        public static final String TABLE_NAME = "rp_type_def";
+        public static final String COLUMN_NAME_RP_DEF_NAME = "name";
+        public static final String COLUMN_NAME_RP_DEF_CODE = "code";
+        public static final String COLUMN_NAME_RP_DEF_CODE_SYSTEM_OID = "code_system_oid";
+        public static final String COLUMN_NAME_RP_DEF_CODE_SYSTEM_NAME = "code_system_name";
+    }
+
+    public static abstract class BodypartDefTable implements BaseColumns{
+        public static final String TABLE_NAME = "body_part_def";
+        public static final String COLUMN_NAME_BODY_PART_DEF_NAME = "name";
+        public static final String COLUMN_NAME_BODY_PART_DEF_CODE = "code";
+        public static final String COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_OID = "code_system_oid";
+        public static final String COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_NAME = "code_system_name";
     }
 }

@@ -1,11 +1,12 @@
 package com.fansen.phr.entity;
 
+import java.io.Serializable;
 import java.net.URI;
 
 /**
  * Created by Yihui Fan on 2015/9/22.
  */
-public class ClinicalDocument {
+public class ClinicalDocument implements Serializable{
     private int _id;
     private String captureImageUri;
     private String thumbnailImageUri;
