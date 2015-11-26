@@ -77,6 +77,7 @@ public final class PhrSchemaContract {
     public static abstract class ImagingObservationTable implements BaseColumns{
         public static final String TABLE_NAME = "imaging_observation";
         public static final String COLUMN_NAME_IMAGE_OBR_VALUE = "value";
+        public static final String COLUMN_NAME_IMAGE_OBR_UNIT = "unit";
         public static final String COLUMN_NAME_IMAGE_OBR_DATE = "date";
         public static final String COLUMN_NAME_IMAGE_OBR_DEF_KEY = "obr_def_key";
         public static final String COLUMN_NAME_IMAGE_OBR_DI_REPORT_KEY = "di_key"; // key reference to diagnostic_imaging_report
@@ -88,7 +89,30 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_DI_IMAGE_URI = "image_uri";
         public static final String COLUMN_NAME_DI_THUMBNAIL_IMAGE_URI = "thumbnail_image_uri";
         public static final String COLUMN_NAME_DI_CREATING_DATE = "creating_date";
+    }
 
+    public static abstract class LabReportReferenceImageTable implements BaseColumns{
+        public static final String TABLE_NAME = "lab_report_ref_images";
+        public static final String COLUMN_NAME_LAB_REPORT_KEY = "lab_report_key";
+        public static final String COLUMN_NAME_LAB_REPORT_REF_IMAGE_URI = "image_uri";
+        public static final String COLUMN_NAME_LAB_REPORT_THUMBNAIL_IMAGE_URI = "thumbnail_image_uri";
+        public static final String COLUMN_NAME_LAB_REPORT_CREATING_DATE = "creating_date";
+    }
+
+    public static abstract class LabObservationTable implements BaseColumns{
+        public static final String TABLE_NAME = "lab_observation";
+        public static final String COLUMN_NAME_LAB_OBR_VALUE = "value";
+        public static final String COLUMN_NAME_LAB_OBR_UNIT = "unit";
+        public static final String COLUMN_NAME_LAB_OBR_DEF_KEY = "obr_def_key";
+        public static final String COLUMN_NAME_LAB_OBR_LAB_REPORT_KEY = "lab_report_key"; // key reference to LabReport
+    }
+
+    public static abstract class LabReportTable implements BaseColumns{
+        public static final String TABLE_NAME = "lab_report";
+        public static final String COLUMN_NAME_LAB_REPORT_ORDER_DEF_KEY = "order_def_key";
+        public static final String COLUMN_NAME_LAB_SPECIMEN_KEY = "specimen_def_key";
+        public static final String COLUMN_NAME_LAB_COLLECTED_DATE = "specimen_collected_date";
+        public static final String COLUMN_NAME_LAB_REPORTING_DATE = "reporting_date";
     }
 
     public static abstract class DiagnosisTable implements BaseColumns{
@@ -146,8 +170,7 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_OBR_DEF_NAME = "name";
         public static final String COLUMN_NAME_OBR_DEF_CODE = "code";
         public static final String COLUMN_NAME_OBR_DEF_NORMAL_RANGE = "normal_range";
-        public static final String COLUMN_NAME_OBR_DEF_CODE_SYSTEM_OID = "code_system_oid";
-        public static final String COLUMN_NAME_OBR_DEF_CODE_SYSTEM_NAME = "code_system_name";
+        public static final String COLUMN_NAME_OBR_DEF_CODE_SYSTEM_KEY = "code_system_key";
     }
 
     public static abstract class RequestedProcedureTypeDefTable implements BaseColumns{
@@ -164,5 +187,25 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_BODY_PART_DEF_CODE = "code";
         public static final String COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_OID = "code_system_oid";
         public static final String COLUMN_NAME_BODY_PART_DEF_CODE_SYSTEM_NAME = "code_system_name";
+    }
+
+    public static abstract class OrderCodeDefTable implements BaseColumns{
+        public static final String TABLE_NAME = "order_code_def";
+        public static final String COLUMN_NAME_ORDER_CODE_DEF_NAME = "order_name";
+        public static final String COLUMN_NAME_ORDER_CODE_DEF_CODE = "order_code";
+        public static final String COLUMN_NAME_ORDER_CODE_DEF_CODE_SYSTEM_KEY = "code_system_key";
+    }
+
+    public static abstract class SpecimenTypeCodeDefTable implements BaseColumns{
+        public static final String TABLE_NAME = "specimen_code_def";
+        public static final String COLUMN_NAME_SPECIMEN_CODE_DEF_NAME = "specimen_type_name";
+        public static final String COLUMN_NAME_SPECIMEN_CODE_DEF_CODE = "specimen_type_code";
+        public static final String COLUMN_NAME_SPECIMEN_CODE_DEF_CODE_SYSTEM_KEY = "code_system_key";
+    }
+
+    public static abstract class CodeSystemTable implements BaseColumns{
+        public static final String TABLE_NAME = "code_system";
+        public static final String COLUMN_NAME_CODE_SYSTEM_OID = "code_system_oid";
+        public static final String COLUMN_NAME_CODE_SYSTEM_NAME = "code_system_name";
     }
 }

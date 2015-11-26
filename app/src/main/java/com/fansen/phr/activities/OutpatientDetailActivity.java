@@ -1,7 +1,6 @@
 package com.fansen.phr.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
-import com.fansen.phr.adapter.DiagnosticImagingReportListAdapter;
 import com.fansen.phr.entity.BodyPartDef;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
@@ -26,23 +24,24 @@ import com.fansen.phr.entity.RequestedProcedureTypeDef;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
 import com.fansen.phr.fragment.details.ProblemsFragment;
-import com.fansen.phr.fragment.details.ProcedureFragment;
+import com.fansen.phr.fragment.details.LabResultFragment;
 import com.fansen.phr.fragment.details.DiagnosticImagingReportListFragment;
-import com.fansen.phr.service.IDiagnosisDictService;
 import com.fansen.phr.service.IDiagnosticImageService;
 import com.fansen.phr.service.IDiagnosticImagingReportService;
 import com.fansen.phr.service.ITerminologyService;
 import com.fansen.phr.service.implementation.DiagnosticImageServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosticImagingReportServiceLocalImpl;
 import com.fansen.phr.service.implementation.TermilologyServiceLocalImpl;
-import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.List;
 
-public class OutpatientDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener{
+public class OutpatientDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener,
+        LabResultFragment.OnLabResultFragmentInteractionListener{
     public static final int ADD_DIR_REQUEST_CODE = 1000;
     public static final int EDIT_DIR_REQUEST_CODE = 1001;
+    public static final int ADD_LAB_REPORT_REQUEST_CODE = 1002;
+    public static final int EDIT_LAB_REPORT_REQUEST_CODE = 1003;
 
     public static final String BUNDLE_KEY_SELECTED_ENCOUNTER = "selected_encounter";
     public static final String BUNDLE_KEY_SELECTED_REPORT = "selected_di_report";
@@ -62,7 +61,8 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
 
 
     private Encounter selectedEncounter;
-    private int currentEditingItemPosition = 0;
+    private int currentImagingReportItemPosition = 0;
+    private int currentLabReportItemPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,10 +144,19 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
             case 2:
                 break;
             case 3:
+                dispatchAddLabReportRequestIntent();
                 break;
             default:
                 break;
         }
+    }
+
+    private void dispatchAddLabReportRequestIntent(){
+        Intent intent = new Intent(this, LabReportDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_KEY_SELECTED_ENCOUNTER, selectedEncounter);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, ADD_LAB_REPORT_REQUEST_CODE);
     }
 
     private void dispatchAddDirRequestIntent(){
@@ -177,6 +186,12 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
                 case EDIT_DIR_REQUEST_CODE:
                     handleEditingDirRequest(data);
                     break;
+                case ADD_LAB_REPORT_REQUEST_CODE:
+                    handleAddLabReportRequest(data);
+                    break;
+                case EDIT_LAB_REPORT_REQUEST_CODE:
+                    handleEditLabReportRequest(data);
+                    break;
                 default:
                     break;
             }
@@ -185,11 +200,28 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void handleAddLabReportRequest(Intent data){
+
+    }
+
+    private void handleEditLabReportRequest(Intent data){
+        //TODO
+    }
+
+
+
     @Override
     public void onDIRItemSelected(int position, DiagnosticImagingReport diagnosticImagingReport) {
         //This is an implementation from DiagnosticImagingReportFragment.OnDIRItemSelectedListener
-        currentEditingItemPosition = position;
+        currentImagingReportItemPosition = position;
         dispatchEditDirRequestIntent(diagnosticImagingReport);
+    }
+
+    @Override
+    public void onLabResultItemSelected(int position) {
+        //This is an implementation from LabResultFragment.OnLabResultFragmentInteractionListener
+        currentLabReportItemPosition = position;
+        //TODO
     }
 
     private void handleAddDirRequest(Intent data){
@@ -222,7 +254,7 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
 
         DiagnosticImagingReportListFragment fragment  =
                 (DiagnosticImagingReportListFragment) mSectionsPagerAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
-        fragment.updateDiagnosticImagingReport(currentEditingItemPosition, diagnosticImagingReport);
+        fragment.updateDiagnosticImagingReport(currentImagingReportItemPosition, diagnosticImagingReport);
 
 
         RequestedProcedureTypeDef requestedProcedureTypeDef = diagnosticImagingReport.getRequestedProcedureTypeDef();
@@ -259,7 +291,7 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
                 case 2:
                     return PrescriptionFragment.newInstance(selectedEncounter);
                 case 3:
-                    return new ProcedureFragment();
+                    return LabResultFragment.newInstance(selectedEncounter);
             }
 
             return null;

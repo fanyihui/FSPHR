@@ -9,7 +9,6 @@
 
     <android.support.design.widget.AppBarLayout android:id="@+id/appbar"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
@@ -22,7 +21,7 @@
         <include layout="@layout/patient_bar_layout" />
 
         <android.support.design.widget.TabLayout android:id="@+id/tabs"
-            android:layout_width="match_parent" android:layout_height="wrap_content" />
+            android:layout_width="match_parent" android:layout_height="40dp" />
 
     </android.support.design.widget.AppBarLayout>
 

@@ -13,7 +13,6 @@ import com.fansen.phr.service.IDiagnosticImageService;
 import com.fansen.phr.service.IDiagnosticImagingReportService;
 import com.fansen.phr.utils.TimeFormat;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 

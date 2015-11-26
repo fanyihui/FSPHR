@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">凡森健康</string>
 
+    <string name="fansen_code_system_name">凡森健康</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -44,9 +46,12 @@
     <string name="hint_diagnostic_imaging_recommendation">编辑处置建议</string>
     <string name="hint_diagnostic_imaging_rp_type">编辑检查方法</string>
     <string name="hint_diagnostic_imaging_body">编辑检查部位</string>
+    <string name="hint_lab_report_order">编辑检验医嘱</string>
+    <string name="hint_lab_report_specimen">编辑标本类型</string>
 
 
     <string name="tip_for_empty_diagnostic_image_report">当前没有影像检查报告，请通过右下角的按钮添加一个新的影像检查报告</string>
+    <string name="tip_for_empty_lab_report">当前没有检验报告，请通过右下角的按钮添加一个新的检验报告</string>
     <string name="title_activity_imaging_report_detail">医学影像报告编辑</string>
     <string name="action_submit">提交</string>
     <string name="seperate_name_dir_basic">基本信息</string>
@@ -54,5 +59,23 @@
     <string name="seperate_name_dir_result">检查结果</string>
     <string name="seperate_name_dir_recommend">建议</string>
     <string name="seperate_name_dir_reference_images">报告单和参考图像</string>
+    <string name="seperate_name_lab_obr_list">检验结果清单</string>
+    <string name="seperate_name_lab_report_reference_images">检验报告单图像</string>
     <string name="title_activity_free_text_edit">FreeTextEditActivity</string>
+    <string name="title_activity_lab_report_detail">编辑检验报告</string>
+    <string name="hint_mandatory">必填</string>
+    <string name="label_lab_report_order">医嘱内容</string>
+    <string name="label_lab_report_specimen">标本类型</string>
+    <string name="label_lab_report_specimen_collected_date">采集时间</string>
+    <string name="label_lab_report_reporting_date">报告时间</string>
+
+    <string name="btn_lab_report_item_add">添加检验项</string>
+    <string name="btn_lab_report_image_add">扫描检验报告单</string>
+
+    <string name="lab_item_list_header_column_name_code">缩写/编码</string>
+    <string name="lab_item_list_header_column_name_name">检验项目</string>
+    <string name="lab_item_list_header_column_name_value">结果</string>
+    <string name="lab_item_list_header_column_name_unit">单位</string>
+    <string name="lab_item_list_header_column_name_range">参考值</string>
+
 </resources>

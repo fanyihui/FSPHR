@@ -1,0 +1,193 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fansen.phr.fragment.details.LabReportDetailFragment">
+
+    <TextView
+        android:id="@+id/id_seperate_lab_basic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/seperate_name_dir_basic"
+        android:gravity="center"
+        android:paddingTop="@dimen/seperate_padding_margin"
+        android:paddingBottom="@dimen/seperate_padding_margin"
+        android:background="@color/colorSeperateBackground"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:id="@+id/id_lab_report_fragment_section_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/id_seperate_lab_basic">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/label_lab_report_order"/>
+
+        <TextView
+            android:id="@+id/id_lab_report_fragment_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_mandatory"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_lab_report_fragment_section_specimen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/id_lab_report_fragment_section_order">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/label_lab_report_specimen"/>
+
+        <TextView
+            android:id="@+id/id_lab_report_fragment_specimen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_mandatory"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_lab_report_fragment_section_specimen_collecting_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/id_lab_report_fragment_section_specimen">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/label_lab_report_specimen_collected_date"/>
+
+        <TextView
+            android:id="@+id/id_lab_report_fragment_specimen_collecting_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_mandatory"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_lab_report_fragment_section_reporting_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/id_lab_report_fragment_section_specimen_collecting_date">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/label_lab_report_reporting_date"/>
+
+        <TextView
+            android:id="@+id/id_lab_report_fragment_reporting_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="15dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_mandatory"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_lab_report_fragment_section_item_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_lab_report_fragment_section_reporting_date">
+
+        <TextView
+            android:id="@+id/id_seperate_lab_observation_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_lab_obr_list"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <ListView
+            android:id="@+id/id_lab_result_item_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/id_lab_result_item_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:text="@string/btn_lab_report_item_add"
+            android:background="#00000000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_imaging_report_detail_section_image_reference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/id_lab_report_fragment_section_item_list">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seperate_name_lab_report_reference_images"
+            android:gravity="center"
+            android:paddingTop="@dimen/seperate_padding_margin"
+            android:paddingBottom="@dimen/seperate_padding_margin"
+            android:background="@color/colorSeperateBackground"
+            android:textStyle="bold"/>
+
+        <GridView
+            android:id="@+id/id_lab_report_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="@dimen/grid_view_column_width"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/id_lab_report_btn_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_add_black_24dp"
+            android:background="#00000000"
+            android:text="" />
+    </LinearLayout>
+
+</RelativeLayout>

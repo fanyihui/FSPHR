@@ -77,6 +77,11 @@
             android:label="@string/title_activity_free_text_edit"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.LabReportDetailActivity"
+            android:label="@string/title_activity_lab_report_detail"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

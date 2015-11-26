@@ -1,6 +1,5 @@
 package com.fansen.phr.adapter;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
 import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.TimeFormat;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +82,7 @@ public class DiagnosticImagingReportListAdapter extends RecyclerView.Adapter<Dia
 
         holder.diDateTextView.setText(TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate(), "yyyyMMdd"));
         holder.diResultTextView.setText(diagnosticImagingReport.getResult());
+        holder.diFindingTextView.setText(diagnosticImagingReport.getFindings());
         holder.diModalityTextView.setText(diagnosticImagingReport.getModality());
         holder.diRpTypeTextView.setText(diagnosticImagingReport.getRequestedProcedureTypeDef().getName());
         holder.bodypartTextView.setText(diagnosticImagingReport.getBodypart().getName());
@@ -99,6 +97,7 @@ public class DiagnosticImagingReportListAdapter extends RecyclerView.Adapter<Dia
         private ImageView diImageView;
         private TextView diDateTextView;
         private TextView diResultTextView;
+        private TextView diFindingTextView;
         private TextView diModalityTextView;
         private TextView diRpTypeTextView;
         private TextView bodypartTextView;
@@ -111,6 +110,7 @@ public class DiagnosticImagingReportListAdapter extends RecyclerView.Adapter<Dia
             diImageView = (ImageView) itemView.findViewById(R.id.id_rp_cardview_image_view);
             diDateTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_date_view);
             diResultTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_result_view);
+            diFindingTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_findings_view);
             diModalityTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_modality_view);
             diRpTypeTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_rptype_view);
             bodypartTextView = (TextView) itemView.findViewById(R.id.id_rp_cardview_bodypart_view);

@@ -38,6 +38,7 @@ import java.util.List;
  */
 public class ImagingReportDetailFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener{
     public static final String BUNDLE_KEY_CURRENT_REPORT = "current_diagnostic_imaging_report";
+    public static final String BUNDLE_KEY_IS_EDITING = "is_editing_mode";
 
     private RelativeLayout imagingReportDetailFragmentView;
     private TextView rpDateTextView;
@@ -58,6 +59,8 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
     private List<DiagnosticImage> diagnosticImageList = new ArrayList<>();
     private DiagnosticImagingReport diagnosticImagingReport = null;
 
+    private boolean isEditingMode = false;
+
     private Calendar cal = Calendar.getInstance();
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
@@ -70,11 +73,12 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
         }
     };
 
-    public static ImagingReportDetailFragment newInstance(DiagnosticImagingReport diagnosticImagingReport){
+    public static ImagingReportDetailFragment newInstance(DiagnosticImagingReport diagnosticImagingReport, boolean isEditingMode){
         ImagingReportDetailFragment fragment = new ImagingReportDetailFragment();
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(BUNDLE_KEY_CURRENT_REPORT, diagnosticImagingReport);
+        bundle.putBoolean(BUNDLE_KEY_IS_EDITING, isEditingMode);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -85,11 +89,16 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         if (getArguments() != null){
             diagnosticImagingReport = (DiagnosticImagingReport) getArguments().getSerializable(BUNDLE_KEY_CURRENT_REPORT);
+            isEditingMode = getArguments().getBoolean(BUNDLE_KEY_IS_EDITING);
+        } else {
+            diagnosticImagingReport = new DiagnosticImagingReport();
+            isEditingMode = false;
         }
 
-        super.onCreate(savedInstanceState);
         context = getActivity();
         diagnosticImagesGridViewAdapter = new ClinicalDocumentCaptureImageAdapter(context, imageAdapterModelList, this);
     }
@@ -145,7 +154,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
         addDiagnosticImageBtn = (Button) imagingReportDetailFragmentView.findViewById(R.id.id_imaging_report_detail_btn_add_image);
         addDiagnosticImageBtn.setOnClickListener(this);
 
-        if (diagnosticImagingReport != null){
+        if (isEditingMode){
             setRpType(diagnosticImagingReport.getRequestedProcedureTypeDef().getName());
             setBodypart(diagnosticImagingReport.getBodypart().getName());
             setModality(diagnosticImagingReport.getModality());
@@ -154,7 +163,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
             setImagingRecommendation(diagnosticImagingReport.getRecommendation());
             setRpDate(diagnosticImagingReport.getRequestedProcedureDate());
             List<DiagnosticImage> diagnosticImages = diagnosticImagingReport.getDiagnosticImages();
-            for (int i=0; i<diagnosticImages.size(); i++){
+            for (int i=0; i< diagnosticImages.size(); i++){
                 DiagnosticImage diagnosticImage = diagnosticImages.get(i);
                 addDiagnosticImage(diagnosticImage);
             }

@@ -23,7 +23,7 @@ public class DiagnosticImageServiceLocalImpl extends BaseServiceLocal implements
 
     @Override
     public void addDiagnosticImages(int dir_key, List<DiagnosticImage> diagnosticImages) {
-        for (int i=0; i<diagnosticImages.size(); i++){
+        for (int i=0; i< diagnosticImages.size(); i++){
             DiagnosticImage diagnosticImage = diagnosticImages.get(i);
 
             //if the id>0 means the image is existed, so don't need to save to database

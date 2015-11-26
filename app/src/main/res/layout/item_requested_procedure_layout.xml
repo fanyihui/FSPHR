@@ -42,9 +42,17 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/id_rp_cardview_date_view"
-                android:text="未见异常"
+                android:text="未见明显异常"
                 android:textSize="24dp"
                 android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/id_rp_cardview_findings_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/id_rp_cardview_result_view"
+                android:text="双肺大小正常"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

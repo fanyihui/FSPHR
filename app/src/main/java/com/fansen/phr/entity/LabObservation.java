@@ -1,12 +1,11 @@
 package com.fansen.phr.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * Created by 310078142 on 2015/11/16.
+ * Created by 310078142 on 2015/11/24.
  */
-public class ImagingObservation implements Serializable{
+public class LabObservation implements Serializable{
     private int _id;
     private ObservationDef observationDef;
     private String value;

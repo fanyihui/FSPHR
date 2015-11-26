@@ -5,8 +5,9 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FFFFFF"/>
+        android:layout_height="5dp"
+        android:background="#e5e5e5"
+        android:layout_alignParentTop="true"/>
     
     <TextView
         android:id="@+id/ent_date"
@@ -14,6 +15,7 @@
         android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:paddingTop="5dp"
         android:text="20151009"
         android:textStyle="bold"/>
@@ -24,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:paddingTop="5dp"
         android:text="心内科"
         android:textStyle="bold"/>
@@ -34,6 +37,7 @@
         android:layout_toRightOf="@+id/ent_dept"
         android:layout_marginLeft="60dp"
         android:paddingTop="5dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -82,12 +86,9 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-
-
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/ent_org"
-        android:layout_marginTop="2dp"
-        android:background="#FFFFFF"/>
+        android:layout_height="5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#e5e5e5"/>
 </RelativeLayout>

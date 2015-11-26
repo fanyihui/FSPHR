@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fansen.phr.R;
-import com.fansen.phr.adapter.ImageAdapterModel;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
 import com.fansen.phr.entity.Encounter;
@@ -75,12 +74,16 @@ public class ImagingReportDetailActivity extends AppCompatActivity implements Im
         Bundle bundle = intent.getExtras();
         currentEncounter = (Encounter) bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
         Object object = bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_REPORT);
+        boolean isEditingReport = false;
 
         if(object != null){
             currentDiagnosticImagingReport = (DiagnosticImagingReport) object;
+            isEditingReport = true;
+        } else {
+            currentDiagnosticImagingReport = new DiagnosticImagingReport();
         }
 
-        imagingReportDetailFragment = ImagingReportDetailFragment.newInstance(currentDiagnosticImagingReport);
+        imagingReportDetailFragment = ImagingReportDetailFragment.newInstance(currentDiagnosticImagingReport, isEditingReport);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

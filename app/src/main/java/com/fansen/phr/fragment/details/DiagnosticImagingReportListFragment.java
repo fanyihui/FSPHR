@@ -102,7 +102,7 @@ public class DiagnosticImagingReportListFragment extends Fragment implements Dia
         try {
             mListener = (OnDIRItemSelectedListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement OnDIRItemSelectedListener");
         }
     }
 

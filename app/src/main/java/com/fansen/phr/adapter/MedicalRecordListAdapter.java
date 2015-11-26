@@ -1,16 +1,22 @@
 package com.fansen.phr.adapter;
 
+import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.utils.TimeFormat;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +26,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
     private List<Encounter> encounterList;
     private MedicalRecordItemClickListener itemClickListener = null;
+    private String priorDate = "";
 
     public MedicalRecordListAdapter(List<Encounter> encounters) {
         if (encounters == null){
@@ -39,7 +46,28 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     public void onBindViewHolder(MedicalRecordListViewHolder holder, int position) {
         Encounter encounter = encounterList.get(position);
 
-        holder.vDate.setText(TimeFormat.parseDate(encounter.getAdmit_date(), "yyyyMMdd"));
+        Context context = holder.rootViewLayout.getContext();
+        if(position % 2 != 0){
+            holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
+        } else {
+            holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundLight));
+        }
+
+        Date date = encounter.getAdmit_date();
+        String dateString = TimeFormat.parseDate(date, "yyyyMMdd");
+        if(!dateString.equals(priorDate)){
+            holder.vDateYear.setText(TimeFormat.getYear(date));
+            holder.vDateDayMonth.setText(TimeFormat.getDay(date)+"/"+TimeFormat.getMonth(date));
+            priorDate = dateString;
+            holder.dotView.setVisibility(View.VISIBLE);
+            holder.vDateYear.setVisibility(View.VISIBLE);
+            holder.vDateDayMonth.setVisibility(View.VISIBLE);
+        } else{
+            holder.dotView.setVisibility(View.GONE);
+            holder.vDateYear.setVisibility(View.GONE);
+            holder.vDateDayMonth.setVisibility(View.GONE);
+        }
+
         holder.vHospital.setText(encounter.getOrg().getOrg_name());
         holder.vDept.setText(encounter.getDepartment().getName());
         holder.vDiagnosis.setText(encounter.getPrimaryDiagnosis().getName());
@@ -63,8 +91,12 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     }
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        protected TextView vDate;
+        //protected CardView rootView;
+        protected RelativeLayout rootViewLayout;
+        protected RelativeLayout cardViewLayout;
+        protected View dotView;
+        protected TextView vDateYear;
+        protected TextView vDateDayMonth;
         protected TextView vHospital;
         protected TextView vDept;
         protected TextView vDiagnosis;
@@ -72,10 +104,13 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
         public MedicalRecordListViewHolder(View itemView) {
             super(itemView);
-
             itemView.setOnClickListener(this);
 
-            vDate = (TextView) itemView.findViewById(R.id.ent_date);
+            rootViewLayout = (RelativeLayout)itemView;
+            cardViewLayout = (RelativeLayout) itemView.findViewById(R.id.id_ent_card_view_layout);
+            dotView = itemView.findViewById(R.id.id_ent_item_dot);
+            vDateYear = (TextView) itemView.findViewById(R.id.ent_date_year);
+            vDateDayMonth = (TextView) itemView.findViewById(R.id.ent_date_month);
             vHospital = (TextView) itemView.findViewById(R.id.ent_org);
             vDept = (TextView) itemView.findViewById(R.id.ent_dept);
             vDiagnosis = (TextView) itemView.findViewById(R.id.ent_diagnosis);

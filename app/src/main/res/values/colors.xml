@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F2F2F2</color>
+    <!--color name="colorPrimary">#f9f9f5</color-->
     <color name="colorPrimaryDark">#F2F2F2</color>
-    <color name="colorAccent">#33B5E5</color>
+    <color name="colorAccent">#8dc0c7</color>
     <color name="colorSeperateBackground">#e5e5e5</color>
+    <color name="cardviewBackgroundDark">#d5e1d3</color>
+    <color name="cardviewBackgroundLight">#ebf0ea</color>
 </resources>

@@ -12,7 +12,6 @@ public class DiagnosticImage implements Serializable{
     private String captureImageUri;
     private String thumbnailImageUri;
     private String creatingDate;
-    //private Bitmap thumbnailImage;
     private byte[] thumbnailImage;
 
     public byte[] getThumbnailImage() {
