@@ -24,13 +24,14 @@ import com.fansen.phr.entity.LabObservation;
 import com.fansen.phr.entity.LabReport;
 import com.fansen.phr.entity.OrderCodeDef;
 import com.fansen.phr.entity.SpecimenTypeCodeDef;
+import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,7 +45,7 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
 
     private ClinicalDocumentCaptureImageAdapter labRefImagesGridViewAdapter;
     private List<ImageAdapterModel> imageAdapterModelList = new ArrayList<>();
-    private List<DiagnosticImage> diagnosticImageList = new ArrayList<>();
+    private List<DiagnosticImage> refImageList = new ArrayList<>();
     private LabResultItemListAdapter labResultItemListAdapter;
     private List<LabObservation> labObservations = new ArrayList<>();
 
@@ -127,9 +128,11 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
         labReportSpecimenTypeTextView.setOnClickListener(this);
 
         specimenCollectingDateTextView = (TextView) labReportFragmentLayout.findViewById(R.id.id_lab_report_fragment_specimen_collecting_date);
+        specimenCollectingDateTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
         specimenCollectingDateTextView.setOnClickListener(this);
 
         reportingDateTextView = (TextView) labReportFragmentLayout.findViewById(R.id.id_lab_report_fragment_reporting_date);
+        reportingDateTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
         reportingDateTextView.setOnClickListener(this);
 
         labResultItemListView = (ListView) labReportFragmentLayout.findViewById(R.id.id_lab_result_item_list);
@@ -185,7 +188,7 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
         labReport.setSpecimenCollectedDate(TimeFormat.format("yyyyMMdd", collectingDate));
         labReport.setReportDate(TimeFormat.format("yyyyMMdd", reportingDate));
         labReport.setObservations(labObservations);
-        labReport.setReferenceImages(diagnosticImageList);
+        labReport.setReferenceImages(refImageList);
 
         return labReport;
     }
@@ -206,6 +209,25 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
 
     public void setLabReportSpecimenType(String specimenType){
         labReportSpecimenTypeTextView.setText(specimenType);
+    }
+
+    public void addLabResultItem(LabObservation labObservation){
+        if(labObservation == null){
+            return;
+        }
+
+        labResultItemListAdapter.addLabObservation(labObservation);
+    }
+
+    public void addRefImage(DiagnosticImage diagnosticImage){
+        if (diagnosticImage != null){
+            ImageAdapterModel imageAdapterModel = new ImageAdapterModel();
+            imageAdapterModel.setImagePath(diagnosticImage.getCaptureImageUri());
+            imageAdapterModel.setThumbnailBitmap(FileUtil.encodeBytesToBitmap(diagnosticImage.getThumbnailImage()));
+
+            refImageList.add(diagnosticImage);
+            labRefImagesGridViewAdapter.addImage(imageAdapterModel);
+        }
     }
 
     @Override

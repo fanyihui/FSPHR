@@ -82,6 +82,11 @@
             android:label="@string/title_activity_lab_report_detail"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.LabResultItemEditingActivity"
+            android:label="@string/title_activity_lab_result_item_editing"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 310078142 on 2015/11/25.
+ * Created by Yihui Fan on 2015/11/25.
  */
 public class LabResultItemListAdapter extends BaseAdapter{
     private Context context;

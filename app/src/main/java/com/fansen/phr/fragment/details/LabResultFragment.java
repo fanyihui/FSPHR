@@ -9,20 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fansen.phr.R;
+import com.fansen.phr.adapter.LabReportListAdapter;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.LabReport;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LabResultFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
-public class LabResultFragment extends Fragment {
+import java.util.List;
+
+public class LabResultFragment extends Fragment implements LabReportListAdapter.LabReportItemClickedListener {
     private static final String ARG_CURRENT_ENCOUNTER = "current_encounter";
 
     private OnLabResultFragmentInteractionListener mListener;
     private Encounter encounter;
     private Context context;
+
+    private LabReportListAdapter labReportListAdapter;
+    private List<LabReport> labReports;
 
     public static LabResultFragment newInstance(Encounter encounter){
         LabResultFragment labResultFragment = new LabResultFragment();
@@ -46,6 +47,9 @@ public class LabResultFragment extends Fragment {
         }
 
         context = getActivity();
+
+        //TODO get LabReportList from database
+        labReportListAdapter = new LabReportListAdapter(labReports, this);
     }
 
     @Override
@@ -69,6 +73,11 @@ public class LabResultFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void itemClicked(View v, int position) {
+
     }
 
     /**
