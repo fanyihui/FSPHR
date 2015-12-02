@@ -4,7 +4,9 @@ import com.fansen.phr.entity.BodyPartDef;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.MedicationDict;
 import com.fansen.phr.entity.ObservationDef;
+import com.fansen.phr.entity.OrderCodeDef;
 import com.fansen.phr.entity.RequestedProcedureTypeDef;
+import com.fansen.phr.entity.SpecimenTypeCodeDef;
 
 /**
  * Created by 310078142 on 2015/11/18.
@@ -15,4 +17,6 @@ public interface ITerminologyService {
     public int addMedicationCode(MedicationDict medicationDict);
     public int addDiagnosisCode(DictDiagnosis diagnosisCode);
     public int addObservationCode(ObservationDef observationDef);
+    public int addSpecimenTypeCode(SpecimenTypeCodeDef specimenTypeCodeDef);
+    public int addOrderCode(OrderCodeDef orderCodeDef);
 }

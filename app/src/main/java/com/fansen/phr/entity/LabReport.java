@@ -1,6 +1,7 @@
 package com.fansen.phr.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,12 +9,21 @@ import java.util.List;
  * Created by 310078142 on 2015/11/24.
  */
 public class LabReport implements Serializable{
+    private int _id;
     private OrderCodeDef orderCode;
     private Date specimenCollectedDate;
     private Date reportDate;
     private SpecimenTypeCodeDef specimenTypeCode;
-    private List<LabObservation> observations;
-    private List<DiagnosticImage> referenceImages;
+    private ArrayList<LabObservation> observations;
+    private ArrayList<DiagnosticImage> referenceImages;
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
 
     public OrderCodeDef getOrderCode() {
         return orderCode;
@@ -47,19 +57,19 @@ public class LabReport implements Serializable{
         this.specimenTypeCode = specimenTypeCode;
     }
 
-    public List<LabObservation> getObservations() {
+    public ArrayList<LabObservation> getObservations() {
         return observations;
     }
 
-    public void setObservations(List<LabObservation> observations) {
+    public void setObservations(ArrayList<LabObservation> observations) {
         this.observations = observations;
     }
 
-    public List<DiagnosticImage> getReferenceImages() {
+    public ArrayList<DiagnosticImage> getReferenceImages() {
         return referenceImages;
     }
 
-    public void setReferenceImages(List<DiagnosticImage> referenceImages) {
+    public void setReferenceImages(ArrayList<DiagnosticImage> referenceImages) {
         this.referenceImages = referenceImages;
     }
 }

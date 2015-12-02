@@ -49,8 +49,10 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         Context context = holder.rootViewLayout.getContext();
         if(position % 2 != 0){
             holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
         } else {
             holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundLight));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundLight));
         }
 
         Date date = encounter.getAdmit_date();
@@ -87,11 +89,13 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         if (encounterList != null){
             encounterList.add(0, encounter);
         }
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
+
+        notifyItemInserted(0);
     }
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        //protected CardView rootView;
+        protected CardView cardView;
         protected RelativeLayout rootViewLayout;
         protected RelativeLayout cardViewLayout;
         protected View dotView;
@@ -107,6 +111,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
             itemView.setOnClickListener(this);
 
             rootViewLayout = (RelativeLayout)itemView;
+            cardView = (CardView) itemView.findViewById(R.id.id_ent_card_view);
             cardViewLayout = (RelativeLayout) itemView.findViewById(R.id.id_ent_card_view_layout);
             dotView = itemView.findViewById(R.id.id_ent_item_dot);
             vDateYear = (TextView) itemView.findViewById(R.id.ent_date_year);

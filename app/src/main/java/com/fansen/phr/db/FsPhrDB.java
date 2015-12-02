@@ -189,6 +189,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     private final static String SQL_CREATE_LAB_REPORT = "CREATE TABLE " + PhrSchemaContract.LabReportTable.TABLE_NAME + "("+
             PhrSchemaContract.LabReportTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_REPORT_ENT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_REPORT_ORDER_DEF_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_SPECIMEN_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_COLLECTED_DATE + TEXT_TYPE + COMMA_SEP +

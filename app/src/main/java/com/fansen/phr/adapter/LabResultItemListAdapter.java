@@ -26,7 +26,7 @@ public class LabResultItemListAdapter extends BaseAdapter{
     public LabResultItemListAdapter(Context context, List<LabObservation> labObservations){
         this.context = context;
         if (labObservations == null){
-            labObservations = new ArrayList<>();
+            this.labObservations = new ArrayList<>();
         } else {
             this.labObservations = labObservations;
         }
@@ -55,8 +55,16 @@ public class LabResultItemListAdapter extends BaseAdapter{
         }
     }
 
+    public void setLabObservations(List<LabObservation> observations){
+        this.labObservations = observations;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
+        if(labObservations == null){
+            return 0;
+        }
         return labObservations.size();
     }
 

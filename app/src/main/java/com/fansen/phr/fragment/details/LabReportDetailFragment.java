@@ -44,10 +44,10 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
     private OnLabReportDataChangeListener onLabReportDataChangeListener;
 
     private ClinicalDocumentCaptureImageAdapter labRefImagesGridViewAdapter;
-    private List<ImageAdapterModel> imageAdapterModelList = new ArrayList<>();
-    private List<DiagnosticImage> refImageList = new ArrayList<>();
+    private List<ImageAdapterModel> imageAdapterModelList;
+    private ArrayList<DiagnosticImage> refImageList;
     private LabResultItemListAdapter labResultItemListAdapter;
-    private List<LabObservation> labObservations = new ArrayList<>();
+    private ArrayList<LabObservation> labObservations;
 
     private LabReport labReport = null;
     private boolean isEditingMode = false;
@@ -103,9 +103,28 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         context = getActivity();
 
+        imageAdapterModelList = new ArrayList<>();
+        labObservations = new ArrayList<>();
+        refImageList = new ArrayList<>();
+
         if (getArguments() != null){
             labReport = (LabReport) getArguments().getSerializable(BUNDLE_KEY_CURRENT_LAB_REPORT);
             isEditingMode = getArguments().getBoolean(BUNDLE_KEY_IS_EDITING);
+
+            if (labReport.getObservations() != null) {
+                labObservations = labReport.getObservations();
+            }
+
+            if(labReport.getReferenceImages() != null){
+                refImageList = labReport.getReferenceImages();
+            }
+
+            for (int i = 0; i < refImageList.size(); i++) {
+                ImageAdapterModel imageAdapterModel = new ImageAdapterModel();
+                imageAdapterModel.setImagePath(refImageList.get(i).getCaptureImageUri());
+                imageAdapterModel.setThumbnailBitmap(FileUtil.encodeBytesToBitmap(refImageList.get(i).getThumbnailImage()));
+                imageAdapterModelList.add(imageAdapterModel);
+            }
         } else {
             labReport = new LabReport();
         }
@@ -150,6 +169,15 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
 
         addRefImgBtn = (Button) labReportFragmentLayout.findViewById(R.id.id_lab_report_btn_add_image);
         addRefImgBtn.setOnClickListener(this);
+
+        if(isEditingMode){
+            labReportOrderTextView.setText(labReport.getOrderCode().getName());
+            labReportSpecimenTypeTextView.setText(labReport.getSpecimenTypeCode().getName());
+            specimenCollectingDateTextView.setText(TimeFormat.parseDate(labReport.getSpecimenCollectedDate(), "yyyyMMdd"));
+            reportingDateTextView.setText(TimeFormat.parseDate(labReport.getReportDate(), "yyyyMMdd"));
+            labResultItemListAdapter.setLabObservations(labObservations);
+            labRefImagesGridViewAdapter.setImages(imageAdapterModelList);
+        }
 
         return labReportFragmentLayout;
     }

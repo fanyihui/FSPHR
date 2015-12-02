@@ -109,6 +109,7 @@ public final class PhrSchemaContract {
 
     public static abstract class LabReportTable implements BaseColumns{
         public static final String TABLE_NAME = "lab_report";
+        public static final String COLUMN_NAME_LAB_REPORT_ENT_KEY = "ent_key";
         public static final String COLUMN_NAME_LAB_REPORT_ORDER_DEF_KEY = "order_def_key";
         public static final String COLUMN_NAME_LAB_SPECIMEN_KEY = "specimen_def_key";
         public static final String COLUMN_NAME_LAB_COLLECTED_DATE = "specimen_collected_date";

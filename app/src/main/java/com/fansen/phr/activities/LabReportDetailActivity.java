@@ -74,7 +74,7 @@ public class LabReportDetailActivity extends AppCompatActivity implements LabRep
         Bundle bundle = intent.getExtras();
         currentEncounter = (Encounter) bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
 
-        Object object = bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_REPORT);
+        Object object = bundle.getSerializable(BUNDEL_KEY_LAB_REPORT);
         boolean isEditingReport = false;
 
         if (object != null){

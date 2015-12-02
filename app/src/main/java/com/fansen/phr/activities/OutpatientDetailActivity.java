@@ -20,7 +20,11 @@ import com.fansen.phr.entity.BodyPartDef;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.LabObservation;
+import com.fansen.phr.entity.LabReport;
+import com.fansen.phr.entity.OrderCodeDef;
 import com.fansen.phr.entity.RequestedProcedureTypeDef;
+import com.fansen.phr.entity.SpecimenTypeCodeDef;
 import com.fansen.phr.fragment.PhrFragment;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
 import com.fansen.phr.fragment.details.ProblemsFragment;
@@ -28,12 +32,19 @@ import com.fansen.phr.fragment.details.LabResultFragment;
 import com.fansen.phr.fragment.details.DiagnosticImagingReportListFragment;
 import com.fansen.phr.service.IDiagnosticImageService;
 import com.fansen.phr.service.IDiagnosticImagingReportService;
+import com.fansen.phr.service.ILabObservationService;
+import com.fansen.phr.service.ILabReportRefImageService;
+import com.fansen.phr.service.ILabReportService;
 import com.fansen.phr.service.ITerminologyService;
 import com.fansen.phr.service.implementation.DiagnosticImageServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosticImagingReportServiceLocalImpl;
+import com.fansen.phr.service.implementation.LabObservationServiceLocalImpl;
+import com.fansen.phr.service.implementation.LabReportRefImageServiceLocalImpl;
+import com.fansen.phr.service.implementation.LabReportServiceLocalImpl;
 import com.fansen.phr.service.implementation.TermilologyServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OutpatientDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener,
@@ -58,6 +69,9 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
     IDiagnosticImagingReportService diagnosticImagingReportService;
     ITerminologyService terminologyService;
     IDiagnosticImageService diagnosticImageService;
+    ILabReportService labReportService;
+    ILabObservationService labObservationService;
+    ILabReportRefImageService labReportRefImageService;
 
 
     private Encounter selectedEncounter;
@@ -95,6 +109,9 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
         terminologyService = new TermilologyServiceLocalImpl(this);
         diagnosticImagingReportService = new DiagnosticImagingReportServiceLocalImpl(this);
         diagnosticImageService = new DiagnosticImageServiceLocalImpl(this);
+        labReportService = new LabReportServiceLocalImpl(this);
+        labObservationService = new LabObservationServiceLocalImpl(this);
+        labReportRefImageService = new LabReportRefImageServiceLocalImpl(this);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -159,6 +176,16 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
         startActivityForResult(intent, ADD_LAB_REPORT_REQUEST_CODE);
     }
 
+    private void dispatchEditLabReportRequestIntent(LabReport labReport){
+        Intent intent = new Intent(this, LabReportDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(BUNDLE_KEY_SELECTED_ENCOUNTER, selectedEncounter);
+        bundle.putSerializable(LabReportDetailActivity.BUNDEL_KEY_LAB_REPORT, labReport);
+        bundle.putBoolean(LabReportDetailActivity.BUNDLE_KEY_IS_EDITING, true);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, EDIT_LAB_REPORT_REQUEST_CODE);
+    }
+
     private void dispatchAddDirRequestIntent(){
         Intent intent = new Intent(this, ImagingReportDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -201,11 +228,55 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
     }
 
     private void handleAddLabReportRequest(Intent data){
+        Bundle bundle = data.getExtras();
+        LabReport labReport = (LabReport) bundle.getSerializable(LabReportDetailActivity.BUNDEL_KEY_LAB_REPORT);
 
+        LabResultFragment fragment = (LabResultFragment) mSectionsPagerAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
+        fragment.addLabReport(labReport);
+
+        OrderCodeDef orderCodeDef = labReport.getOrderCode();
+        int orderCodeKey = terminologyService.addOrderCode(orderCodeDef);
+        orderCodeDef.set_id(orderCodeKey);
+
+        SpecimenTypeCodeDef specimenTypeCodeDef = labReport.getSpecimenTypeCode();
+        int specimenTypeKey = terminologyService.addSpecimenTypeCode(specimenTypeCodeDef);
+        specimenTypeCodeDef.set_id(specimenTypeKey);
+
+        int labReportKey = labReportService.addNewLabReport(selectedEncounter.getEncounter_key(), labReport);
+        labReport.set_id(labReportKey);
+
+        List<LabObservation> labObservations = labReport.getObservations();
+        labObservationService.addLabObservation(labReportKey, labObservations);
+
+        List<DiagnosticImage> refImages = labReport.getReferenceImages();
+        labReportRefImageService.addLabReportRefImages(labReportKey, refImages);
     }
 
     private void handleEditLabReportRequest(Intent data){
-        //TODO
+        Bundle bundle = data.getExtras();
+        LabReport labReport = (LabReport) bundle.getSerializable(LabReportDetailActivity.BUNDEL_KEY_LAB_REPORT);
+
+        LabResultFragment fragment = (LabResultFragment) mSectionsPagerAdapter.instantiateItem(mViewPager, mViewPager.getCurrentItem());
+        fragment.updateLabReport(currentLabReportItemPosition, labReport);
+
+        OrderCodeDef orderCodeDef = labReport.getOrderCode();
+        int orderCodeKey = terminologyService.addOrderCode(orderCodeDef);
+        orderCodeDef.set_id(orderCodeKey);
+
+        SpecimenTypeCodeDef specimenTypeCodeDef = labReport.getSpecimenTypeCode();
+        int specimenTypeKey = terminologyService.addSpecimenTypeCode(specimenTypeCodeDef);
+        specimenTypeCodeDef.set_id(specimenTypeKey);
+
+        int labReportKey = labReport.get_id();
+        labReportService.updateLabReport(labReport);
+
+        List<LabObservation> labObservations = labReport.getObservations();
+        labObservationService.updateLabObservation(labReportKey, labObservations);
+
+        List<DiagnosticImage> refImages = labReport.getReferenceImages();
+        labReportRefImageService.addLabReportRefImages(labReportKey, refImages);
+
+        //TODO add code here to update the data to database
     }
 
 
@@ -218,10 +289,10 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
     }
 
     @Override
-    public void onLabResultItemSelected(int position) {
+    public void onLabResultItemSelected(int position, LabReport labReport) {
         //This is an implementation from LabResultFragment.OnLabResultFragmentInteractionListener
         currentLabReportItemPosition = position;
-        //TODO
+        dispatchEditLabReportRequestIntent(labReport);
     }
 
     private void handleAddDirRequest(Intent data){
@@ -291,7 +362,8 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
                 case 2:
                     return PrescriptionFragment.newInstance(selectedEncounter);
                 case 3:
-                    return LabResultFragment.newInstance(selectedEncounter);
+                    ArrayList<LabReport> labReportList = labReportService.getLabReports(selectedEncounter.getEncounter_key());
+                    return LabResultFragment.newInstance(selectedEncounter, labReportList);
             }
 
             return null;
