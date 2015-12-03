@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     private boolean isfabAddTouched = false;
     private FloatingActionButton fabAdd = null;
     private FloatingActionButton addOutpatient = null;
-    private FloatingActionButton addInpatient = null;
+    //private FloatingActionButton addInpatient = null;
     private int navigationItemId = 0;
 
     public static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
         addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
-        addInpatient = (FloatingActionButton) findViewById(R.id.action_add_ip);
+        //addInpatient = (FloatingActionButton) findViewById(R.id.action_add_ip);
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,14 +125,14 @@ public class MainActivity extends AppCompatActivity
     private void showFloatingActionButtons(){
         fabAdd.setImageResource(R.drawable.ic_clear_black_24dp);
         addOutpatient.setVisibility(View.VISIBLE);
-        addInpatient.setVisibility(View.VISIBLE);
+        //addInpatient.setVisibility(View.VISIBLE);
         isfabAddTouched = true;
     }
 
     private void hideFloatingActionButtons(){
         fabAdd.setImageResource(R.drawable.ic_add_black_24dp);
         addOutpatient.setVisibility(View.GONE);
-        addInpatient.setVisibility(View.GONE);
+        //addInpatient.setVisibility(View.GONE);
         isfabAddTouched = false;
     }
 

@@ -187,7 +187,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_24dp"
             android:background="#00000000"
-            android:text="" />
+            android:text="@string/btn_lab_report_image_add" />
     </LinearLayout>
 
 </RelativeLayout>

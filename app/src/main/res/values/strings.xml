@@ -77,6 +77,6 @@
     <string name="lab_item_list_header_column_name_value">结果</string>
     <string name="lab_item_list_header_column_name_unit">单位</string>
     <string name="lab_item_list_header_column_name_range">参考值</string>
-    <string name="title_activity_lab_result_item_editing">LabResultItemEditingActivity</string>
+    <string name="title_activity_lab_result_item_editing">编辑检验项目</string>
 
 </resources>
