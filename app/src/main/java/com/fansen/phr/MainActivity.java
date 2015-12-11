@@ -17,7 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fansen.phr.activities.OutpatientActivity;
+import com.fansen.phr.activities.EncounterCoreInfoActivity;
 import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity
     private IDiagnosisDictService diagnosisDictService = null;
     private IPhysicianService physicianService = null;
 
+    private PhrFragment phrFragment;
+    private SummaryFragment summaryFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity
         diagnosisDictService = new DiagnosisDictServiceLocalImpl(context);
         physicianService = new PhysicianServiceLocalImpl(context);
 
-
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
         addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
         //addInpatient = (FloatingActionButton) findViewById(R.id.action_add_ip);
@@ -91,9 +93,9 @@ public class MainActivity extends AppCompatActivity
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isfabAddTouched) {
+                if (!isfabAddTouched) {
                     showFloatingActionButtons();
-                } else{
+                } else {
                     hideFloatingActionButtons();
                 }
             }
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             //Open the add new outpatient activity and wait for result
             public void onClick(View v) {
-                Intent intent = new Intent(context, OutpatientActivity.class);
+                Intent intent = new Intent(context, EncounterCoreInfoActivity.class);
 
                 startActivityForResult(intent, ADD_OUTPATIENT_REQUEST);
 
@@ -119,6 +121,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Encounter latestEncounter = encounterService.getLatestEncounter();
+
+        phrFragment = PhrFragment.newInstance();
+        summaryFragment = SummaryFragment.newInstance(latestEncounter);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, summaryFragment).commit();
     }
 
 
@@ -148,19 +159,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -177,26 +183,22 @@ public class MainActivity extends AppCompatActivity
         navigationItemId = item.getItemId();
         ActionBar actionBar = getSupportActionBar();
 
+        FragmentManager fragmentManager = getFragmentManager();
+
         if (navigationItemId == R.id.nav_summary) {
-            fragment = new SummaryFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, summaryFragment).commit();
             mTitle = getString(R.string.title_summary);
         } else if (navigationItemId == R.id.nav_phr) {
-            fragment = new PhrFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, phrFragment).commit();
             mTitle = getString(R.string.title_phr);
         } else if (navigationItemId == R.id.nav_careplan) {
             fragment = new CarePlanFragment();
             mTitle = getString(R.string.title_careplan);
         }
 
-        if (fragment != null){
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment).commit();
-
-
-            actionBar.setTitle(mTitle);
-
-        }
+        actionBar.setTitle(mTitle);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -206,69 +208,103 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_OUTPATIENT_REQUEST){
-            if (resultCode == RESULT_OK){
-
-                //Get values from OutpatientActivity
-                Bundle bundle = data.getExtras();
-                String organization = bundle.getString(OutpatientActivity.KEY_ORG);
-                String department = bundle.getString(OutpatientActivity.KEY_DEPT);
-                String diagnosis = bundle.getString(OutpatientActivity.KEY_DIAG);
-                String admit_date = bundle.getString(OutpatientActivity.KEY_DATE);
-                String attending_doctor = bundle.getString(OutpatientActivity.KEY_DOCTOR);
-
-                //Initial Encounter
-                Encounter encounter = new Encounter();
-
-                //Initial Organization
-                Organization org = new Organization(organization);
-                long org_key = organizationService.addOrganization(org);
-                org.setOrg_key(org_key);
-
-                //Initial department
-                Department dept = new Department();
-                dept.setName(department);
-                long dept_key = departmentService.addDepartment(dept);
-                dept.setDepartment_key(dept_key);
-
-
-
-                //Add new Dict to database if not exist
-                DictDiagnosis primaryDiagnosis = new DictDiagnosis();
-                primaryDiagnosis.setName(diagnosis);
-                int diagnosis_dict_key = diagnosisDictService.addDiagnosisDict(primaryDiagnosis);
-                primaryDiagnosis.setKey(diagnosis_dict_key);
-
-                //Add new physician to database if not exist
-                Physician physician = new Physician();
-                physician.setPhysicianName(attending_doctor);
-                int attending_doctor_key = physicianService.addPhysician(physician);
-                physician.setPhysicianKey(attending_doctor_key);
-
-                //Set the value to encounter
-                encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", admit_date));
-                encounter.setOrg(org);
-                encounter.setDepartment(dept);
-                encounter.setPrimaryDiagnosis(primaryDiagnosis);
-                encounter.setAttendingDoctor(physician);
-
-                // add the encounter to database, and return the key of that encounter
-                long encounter_key = encounterService.addNewEncounter(encounter);
-                encounter.setEncounter_key(encounter_key);
-
-                if (navigationItemId == R.id.nav_phr) {
-                    PhrFragment phrFragment = (PhrFragment) fragment;
-                    phrFragment.addEncounter(encounter);
-                } else if(navigationItemId == R.id.nav_summary){
-                    //TODO add code here to put encounter into summary page
-                }
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case ADD_OUTPATIENT_REQUEST:
+                    handleOutpatientIntent(data);
+                    break;
+                case ADD_INPATIENT_REQUEST:
+                    break;
+                case ADD_CAREPLAN_REQUEST:
+                    break;
+                default:
+                    break;
             }
-
-        } else if(requestCode == ADD_INPATIENT_REQUEST){
-            //TODO add inpatient
-        } else if(requestCode == ADD_CAREPLAN_REQUEST){
-            //TODO add care plan
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void dispatchAddOutpatientRequest(){
+
+    }
+
+    private void dispatchAddInpatientRequest(){
+
+    }
+
+    private void handleOutpatientIntent(Intent data){
+        //Get values from EncounterCoreInfoActivity
+        Bundle bundle = data.getExtras();
+        String organization = bundle.getString(EncounterCoreInfoActivity.KEY_ORG);
+        String department = bundle.getString(EncounterCoreInfoActivity.KEY_DEPT);
+
+        ArrayList<String> diagnosisTextList = (ArrayList) bundle.getSerializable(EncounterCoreInfoActivity.KEY_DIAG);
+
+        //String diagnosis = bundle.getString(EncounterCoreInfoActivity.KEY_DIAG);
+        String admit_date = bundle.getString(EncounterCoreInfoActivity.KEY_DATE);
+        String attending_doctor = bundle.getString(EncounterCoreInfoActivity.KEY_DOCTOR);
+
+        //Initial Encounter
+        Encounter encounter = new Encounter();
+
+        //Initial Organization
+        Organization org = new Organization(organization);
+        long org_key = organizationService.addOrganization(org);
+        org.setOrg_key(org_key);
+
+        //Initial department
+        Department dept = new Department();
+        dept.setName(department);
+        long dept_key = departmentService.addDepartment(dept);
+        dept.setDepartment_key(dept_key);
+
+        //Add new physician to database if not exist
+        Physician physician = new Physician();
+        physician.setPhysicianName(attending_doctor);
+        int attending_doctor_key = physicianService.addPhysician(physician);
+        physician.setPhysicianKey(attending_doctor_key);
+
+        //Set the value to encounter
+        encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", admit_date));
+        encounter.setOrg(org);
+        encounter.setDepartment(dept);
+        //encounter.setPrimaryDiagnosis(primaryDiagnosis);
+        encounter.setAttendingDoctor(physician);
+
+        // add the encounter to database, and return the key of that encounter
+        long encounter_key = encounterService.addNewEncounter(encounter);
+        encounter.setEncounter_key(encounter_key);
+
+        ArrayList<Diagnosis> diagnosises = new ArrayList<>();
+
+        //add diagnosis list to an Encounter
+        if (diagnosisTextList != null && diagnosisTextList.size()>0){
+            for (int i=0; i<diagnosisTextList.size(); i++){
+                String diagnosisValue = diagnosisTextList.get(i);
+                //Add new Dict to database if not exist
+                DictDiagnosis dictDiagnosis = new DictDiagnosis();
+                dictDiagnosis.setName(diagnosisValue);
+                int diagnosis_dict_key = diagnosisDictService.addDiagnosisDict(dictDiagnosis);
+                dictDiagnosis.setKey(diagnosis_dict_key);
+
+                Diagnosis diagnosis = new Diagnosis();
+                diagnosis.setEncounter_key(encounter_key);
+                diagnosis.setDiagnosis_dict(dictDiagnosis);
+
+                int diag_key = diagnosisService.addNewDiagnosis(diagnosis);
+                diagnosis.setDiagnosis_key(diag_key);
+
+                diagnosises.add(diagnosis);
+            }
+        }
+
+        encounter.setDiagnosisList(diagnosises);
+
+        if (navigationItemId == R.id.nav_phr) {
+            PhrFragment phrFragment = (PhrFragment) fragment;
+            phrFragment.addEncounter(encounter);
+        } else if(navigationItemId == R.id.nav_summary){
+            //TODO add code here to put encounter into summary page
+        }
     }
 }

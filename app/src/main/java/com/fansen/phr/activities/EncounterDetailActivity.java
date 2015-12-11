@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.BodyPartDef;
+import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
 import com.fansen.phr.entity.Encounter;
@@ -47,7 +48,7 @@ import com.fansen.phr.utils.TimeFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OutpatientDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener,
+public class EncounterDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener,
         LabResultFragment.OnLabResultFragmentInteractionListener{
     public static final int ADD_DIR_REQUEST_CODE = 1000;
     public static final int EDIT_DIR_REQUEST_CODE = 1001;
@@ -63,7 +64,7 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
     private TextView textOrgView;
     private TextView textAdmitDateView;
     private TextView textAttendingDoctor;
-    private TextView textPrimaryDiagnosis;
+    //private TextView textDiagnosis;
     private FloatingActionButton floatingActionButton;
 
     IDiagnosticImagingReportService diagnosticImagingReportService;
@@ -81,7 +82,7 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_outpatient_detail);
+        setContentView(R.layout.activity_encounter_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,14 +121,24 @@ public class OutpatientDetailActivity extends AppCompatActivity implements Diagn
         textDepartmentView = (TextView) findViewById(R.id.ent_dept);
         textOrgView = (TextView) findViewById(R.id.ent_org);
         textAdmitDateView = (TextView) findViewById(R.id.ent_date);
-        textPrimaryDiagnosis = (TextView) findViewById(R.id.id_ent_primary_diagnosis);
+        //textDiagnosis = (TextView) findViewById(R.id.id_ent_primary_diagnosis);
         textAttendingDoctor = (TextView) findViewById(R.id.id_bar_attending_doct);
 
         textAdmitDateView.setText(TimeFormat.parseDate(selectedEncounter.getAdmit_date(), "yyyyMMdd"));
         textOrgView.setText(selectedEncounter.getOrg().getOrg_name());
         textDepartmentView.setText(selectedEncounter.getDepartment().getName());
         textAttendingDoctor.setText(selectedEncounter.getAttendingDoctor().getPhysicianName());
-        textPrimaryDiagnosis.setText(selectedEncounter.getPrimaryDiagnosis().getName());
+
+        /*List<Diagnosis> diagnosises = selectedEncounter.getDiagnosis();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i=0; i<diagnosises.size(); i++){
+            stringBuffer.append(diagnosises.get(i).getDiagnosis_dict().getName());
+            if (i != diagnosises.size()-1){
+                stringBuffer.append(EncounterCoreInfoActivity.DELIMITER);
+            }
+        }*/
+
+        //textDiagnosis.setText(stringBuffer.toString());
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);

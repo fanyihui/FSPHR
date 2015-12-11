@@ -24,184 +24,203 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@drawable/shape_line"
+        android:showDividers="middle|end">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="药品名称"
-            android:gravity="center" />
-
-        <EditText
-            android:id="@+id/id_med_order_edit_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:gravity="center|left"
-            android:hint="必填"
-            android:textColorHint="#e5e5e5"/>
-    </LinearLayout>
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_name"
+                android:gravity="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="药品规格"
-            android:gravity="center" />
+            <EditText
+                android:id="@+id/id_med_order_edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/hint_mandatory"
+                android:textColorHint="#e5e5e5"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/id_med_order_edit_spec"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:gravity="center|left"
-            android:hint="可选"
-            android:textColorHint="#e5e5e5"/>
-    </LinearLayout>
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_spec"
+                android:gravity="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="数量"
-            android:gravity="center" />
+            <EditText
+                android:id="@+id/id_med_order_edit_spec"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="可选"
+                android:textColorHint="#e5e5e5"/>
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/id_med_order_edit_quantity"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="58dp"
-            android:gravity="center|left"
-            android:hint="可选"
-            android:textColorHint="#e5e5e5"/>
-
-        <Spinner
-            android:id="@+id/id_med_order_edit_quantity_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:entries="@array/quantity_unit"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="频次"
-            android:gravity="center" />
-
-        <EditText
-            android:id="@+id/id_med_order_edit_frequency_interval"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="58dp"
-            android:gravity="center|left"
-            android:hint="必填"
-            android:textColorHint="#e5e5e5"/>
-
-        <Spinner
-            android:id="@+id/id_med_order_edit_frequency_interval_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:entries="@array/frequency_interval_unit"/>
-
-        <EditText
-            android:id="@+id/id_med_order_edit_frequency_times"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center|left"
-            android:hint="必填"
-            android:textColorHint="#e5e5e5"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="次"
-            android:gravity="center" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="用量"
-            android:gravity="center" />
-
-        <EditText
-            android:id="@+id/id_med_order_edit_dosage"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="58dp"
-            android:gravity="center|left"
-            android:hint="必填"
-            android:textColorHint="#e5e5e5"/>
-
-        <Spinner
-            android:id="@+id/id_med_order_edit_dosage_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:entries="@array/dosage_unit"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="用药途径"
-            android:gravity="center" />
-
-        <Spinner
-            android:id="@+id/id_med_order_edit_route"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:entries="@array/route_code"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/label_outpatient_date"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/id_med_order_edit_start_time"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="58dp"
-            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
-            android:gravity="center|left"
-            android:hint="必填"
-            android:textColorHint="#e5e5e5"/>
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_quantity"
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/id_med_order_edit_quantity"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="可选"
+                android:textColorHint="#e5e5e5"/>
+
+            <Spinner
+                android:id="@+id/id_med_order_edit_quantity_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/quantity_unit"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_frequency"
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/id_med_order_edit_frequency_interval"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/hint_mandatory"
+                android:textColorHint="#e5e5e5"/>
+
+            <Spinner
+                android:id="@+id/id_med_order_edit_frequency_interval_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/frequency_interval_unit"/>
+
+            <EditText
+                android:id="@+id/id_med_order_edit_frequency_times"
+                android:layout_width="75dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/hint_mandatory"
+                android:textColorHint="#e5e5e5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="次"
+                android:textSize="14dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_dosage"
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/id_med_order_edit_dosage"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:gravity="center|left"
+                android:hint="@string/hint_mandatory"
+                android:textColorHint="#e5e5e5"/>
+
+            <Spinner
+                android:id="@+id/id_med_order_edit_dosage_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/dosage_unit"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_route"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/id_med_order_edit_route"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:entries="@array/route_code"/>
+
+            <CheckBox
+                android:id="@+id/id_med_order_edit_prn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:text="@string/label_medicine_order_prn"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/label_medicine_order_date"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/id_med_order_edit_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:gravity="center|left"
+                android:hint="@string/hint_mandatory"
+                android:textColorHint="#e5e5e5"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 
-    <CheckBox
-        android:id="@+id/id_med_order_edit_prn"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="是否按需用药"/>
 </LinearLayout>

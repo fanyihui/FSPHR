@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ent_item_layout_view"
     android:layout_width="match_parent"
-    android:layout_height="110dp">
+    android:layout_height="120dp">
 
     <RelativeLayout
         android:id="@+id/ent_item_date_layout"
@@ -67,37 +67,17 @@
                 android:textSize="24dp"
                 android:textStyle="bold"/>
 
-            <LinearLayout
-                android:id="@+id/ent_section_diagnosis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ent_dept"
-                android:layout_marginRight="5dp">
-
-                <TextView
-                    android:id="@+id/label_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/label_diagnosis"/>
-
-                <TextView
-                    android:id="@+id/ent_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="心悸"/>
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/ent_org"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:paddingTop="5dp"
-                android:layout_below="@+id/ent_section_diagnosis"
+                android:layout_below="@+id/ent_dept"
                 android:text="上海复旦大学附属中山医院"/>
 
             <LinearLayout
+                android:id="@+id/id_section_physician"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ent_org"
@@ -117,6 +97,29 @@
                     android:layout_height="wrap_content"
                     android:text="范益辉"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ent_section_diagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_section_physician"
+                android:layout_marginRight="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/label_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/label_diagnosis"/>
+
+                <TextView
+                    android:id="@+id/ent_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="心悸"/>
+            </LinearLayout>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

@@ -296,14 +296,16 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        ImageAdapterModel imageAdapterModel = (ImageAdapterModel)labRefImagesGridViewAdapter.getItem(position);
+        String path = imageAdapterModel.getImagePath();
+        onLabReportDataChangeListener.onViewRefImage(path);
     }
 
     public interface OnLabReportDataChangeListener{
         public void onAddLabResultItem();
         public void onAddLabReportRefImage(View v);
         public void onEditLabResultItem();
-        public void onViewRefImage();
+        public void onViewRefImage(String imagePath);
         public void onOrderContentEditing(String order);
         public void onSpecimenTextEditing(String specimenType);
     }

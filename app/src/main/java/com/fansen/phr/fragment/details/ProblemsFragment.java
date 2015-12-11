@@ -18,21 +18,30 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.activities.ChiefComplaintEditActivity;
+import com.fansen.phr.activities.EncounterCoreInfoActivity;
 import com.fansen.phr.activities.EncounterProblemEditActivity;
+import com.fansen.phr.activities.FreeTextEditActivity;
 import com.fansen.phr.adapter.ChiefComplaintListAdapter;
 import com.fansen.phr.entity.ChiefComplaint;
+import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.ObservationType;
 import com.fansen.phr.service.IChiefComplaintService;
+import com.fansen.phr.service.IDiagnosisService;
 import com.fansen.phr.service.IEncounterService;
 import com.fansen.phr.service.implementation.ChiefComplaintServiceLocalImpl;
+import com.fansen.phr.service.implementation.DiagnosisServiceLocalImpl;
 import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
+import com.fansen.phr.utils.TextUtil;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ProblemsFragment extends Fragment {
-    public static final int ADD_COMPLAINT_REQUEST = 4;  // The request code
+    //public static final int EDIT_COMPLAINT_REQUEST = 4;  // The request code
     public static final int EDIT_PROBLEM_DESC_REQUEST = 5;  // The request code
     public static final int EDIT_COMPLAINT_REQUEST = 6;
     public static final int EDIT_HISTORICAL_PROBLEM_REQUEST = 1001;
@@ -45,26 +54,31 @@ public class ProblemsFragment extends Fragment {
     public static final String BUNDLE_KEY_SELECTED_COMPLAINT = "selected_complaint";
 
     private OnFragmentInteractionListener mListener;
-    private Button addComplaintBtn;
-    private ListView complaintListView;
+    //private Button addComplaintBtn;
+    //private ListView complaintListView;
+    private TextView chiefComplaintTextView;
     private TextView historyProblemTextView;
     private TextView physicalExamTextView;
     private TextView problemDescriptionTextView;
+    private TextView diagnosisTextView;
     private RelativeLayout problemsView;
 
-    private List<ChiefComplaint> chiefComplaints;
-    private ChiefComplaintListAdapter chiefComplaintListAdapter;
+    //private List<ChiefComplaint> chiefComplaints;
+    //private ChiefComplaintListAdapter chiefComplaintListAdapter;
 
     private Context context;
     private Encounter encounter;
     private String problemsDescription;
     private String historicalProblems;
     private String physicalExamDetails;
+    private String chiefComplaint;
+    private ArrayList<Diagnosis> diagnosisList;
 
     private int selectChiefComplaintPosition = 0;
 
     private IChiefComplaintService chiefComplaintService;
     private IEncounterService encounterService;
+    private IDiagnosisService diagnosisService;
 
     public static ProblemsFragment newInstance(Encounter encounter) {
         ProblemsFragment fragment = new ProblemsFragment();
@@ -88,11 +102,14 @@ public class ProblemsFragment extends Fragment {
 
         chiefComplaintService = new ChiefComplaintServiceLocalImpl(context);
         encounterService = new EncounterServiceLocalImpl(context);
+        diagnosisService = new DiagnosisServiceLocalImpl(context);
 
-        chiefComplaints = chiefComplaintService.getComplaints(encounter.getEncounter_key());
+        //chiefComplaints = chiefComplaintService.getComplaints(encounter.getEncounter_key());
+        chiefComplaint = encounterService.getChiefComplaint(encounter.getEncounter_key());
         problemsDescription = encounterService.getProblemsDescription(encounter.getEncounter_key());
         historicalProblems = encounterService.getHistoricalProblems(encounter.getEncounter_key());
         physicalExamDetails = encounterService.getPhysicalExamDetails(encounter.getEncounter_key());
+        diagnosisList = diagnosisService.getDiagnosis(encounter.getEncounter_key());
     }
 
     @Override
@@ -102,7 +119,7 @@ public class ProblemsFragment extends Fragment {
         problemsView = (RelativeLayout) inflater.inflate(R.layout.fragment_problems, container, false);
 
         //Initial chief complaint section view
-        addComplaintBtn = (Button) problemsView.findViewById(R.id.id_problems_add_complaint_btn);
+        /*addComplaintBtn = (Button) problemsView.findViewById(R.id.id_problems_add_complaint_btn);
         addComplaintBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -128,6 +145,15 @@ public class ProblemsFragment extends Fragment {
                 intent.putExtras(bundle1);
 
                 startActivityForResult(intent, EDIT_COMPLAINT_REQUEST);
+            }
+        });*/
+
+        chiefComplaintTextView = (TextView) problemsView.findViewById(R.id.id_problems_chief_complaint);
+        chiefComplaintTextView.setText(chiefComplaint);
+        chiefComplaintTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchChiefComplaintIntent();
             }
         });
 
@@ -167,7 +193,24 @@ public class ProblemsFragment extends Fragment {
             }
         });
 
+        diagnosisTextView = (TextView) problemsView.findViewById(R.id.id_problems_diagnosis);
+        diagnosisTextView.setText(TextUtil.convertDiagnosisListToString(diagnosisList, EncounterCoreInfoActivity.DELIMITER));
+
         return problemsView;
+    }
+
+    private void dispatchChiefComplaintIntent(){
+        Intent intent = new Intent(context, FreeTextEditActivity.class);
+        Bundle bundle = new Bundle();
+        String hint = getResources().getString(R.string.hint_chief_complaint_guide);
+
+        bundle.putString(FreeTextEditActivity.BUNDLE_KEY_FREE_TEXT_VALUE, chiefComplaintTextView.getText().toString());
+        bundle.putString(FreeTextEditActivity.BUNDLE_KEY_FREE_TEXT_HINT, hint);
+        bundle.putString(FreeTextEditActivity.BUNDLE_KEY_FREE_TEXT_TITLE, hint);
+
+        intent.putExtras(bundle);
+
+        startActivityForResult(intent, EDIT_COMPLAINT_REQUEST);
     }
 
     private void dispatchProblemEditIntent(String type, String value, int requestCode){
@@ -194,7 +237,7 @@ public class ProblemsFragment extends Fragment {
         int key = chiefComplaintService.addComplaint(encounter.getEncounter_key(), chiefComplaint);
         chiefComplaint.setKey(key);
 
-        chiefComplaintListAdapter.addComplaint(chiefComplaint);
+        //chiefComplaintListAdapter.addComplaint(chiefComplaint);
     }
 
     private void handleProblemDescEdit(Intent data){
@@ -211,19 +254,25 @@ public class ProblemsFragment extends Fragment {
 
     private void handleEditComplaint(Intent data){
         Bundle bundle = data.getExtras();
-        String complaint = bundle.getString(ChiefComplaintEditActivity.COMPLAINT_KEY);
-        String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
-        String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
-        int key = bundle.getInt(ChiefComplaintEditActivity.ID_KEY);
+        String complaint = bundle.getString(FreeTextEditActivity.BUNDLE_KEY_FREE_TEXT_VALUE);
+        if (complaint != null && !complaint.equals(chiefComplaint)){
+            chiefComplaint = complaint;
+            chiefComplaintTextView.setText(complaint);
+            encounter.setChiefComplaint(complaint);
+            encounterService.updateChiefComplaint(encounter.getEncounter_key(), complaint);
+        }
+        //String duration = bundle.getString(ChiefComplaintEditActivity.DURATION_KEY);
+        //String unit = bundle.getString(ChiefComplaintEditActivity.DURATION_UNIT_KEY);
+        //int key = bundle.getInt(ChiefComplaintEditActivity.ID_KEY);
 
-        ChiefComplaint chiefComplaint = new ChiefComplaint();
-        chiefComplaint.setSymptom(complaint);
-        chiefComplaint.setDuration(duration);
-        chiefComplaint.setDuration_unit(unit);
-        chiefComplaint.setKey(key);
+        //ChiefComplaint chiefComplaint = new ChiefComplaint();
+        //chiefComplaint.setSymptom(complaint);
+        //chiefComplaint.setDuration(duration);
+        //chiefComplaint.setDuration_unit(unit);
+        //chiefComplaint.setKey(key);
 
-        chiefComplaintListAdapter.updateComplaint(selectChiefComplaintPosition, chiefComplaint);
-        chiefComplaintService.updateChiefComplaint(chiefComplaint);
+        //chiefComplaintListAdapter.updateComplaint(selectChiefComplaintPosition, chiefComplaint);
+        //chiefComplaintService.updateChiefComplaint(chiefComplaint);
     }
 
     private void handleEditHistoricalProblem(Intent data){
@@ -255,9 +304,9 @@ public class ProblemsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK){
             switch (requestCode){
-                case ADD_COMPLAINT_REQUEST:
-                    handleComplaintAdded(data);
-                    break;
+                //case ADD_COMPLAINT_REQUEST:
+                //    handleComplaintAdded(data);
+                //    break;
                 case EDIT_PROBLEM_DESC_REQUEST:
                     handleProblemDescEdit(data);
                     break;

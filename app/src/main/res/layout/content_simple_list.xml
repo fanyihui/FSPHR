@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.fansen.phr.activities.SimpleListActivity"
+    tools:showIn="@layout/activity_simple_list">
+
+    <TextView
+        android:id="@+id/id_hint_simple_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
+
+    <View
+        android:id="@+id/id_simple_list_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSeperateBackground"
+        android:layout_below="@+id/id_hint_simple_list"/>
+
+    <EditText
+        android:id="@+id/id_simple_list_content_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginTop="@dimen/edit_text_height"
+        android:padding="5dp"
+        android:layout_below="@id/id_simple_list_line"/>
+
+    <Button
+        android:id="@+id/id_simple_list_add_new_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_add"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/id_simple_list_content_edit_text"/>
+
+    <TextView
+        android:id="@+id/id_simple_list_seperate_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_simple_list_add_new_item"
+        android:text="@string/seperate_simple_list"
+        android:padding="5dp"
+        android:background="@color/colorSeperateBackground"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/id_simple_list_empty_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_simple_list_seperate_list"
+        android:padding="5dp"
+        android:text="@string/tip_for_empty_list" />
+
+    <ListView
+        android:id="@+id/id_simple_list_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_simple_list_seperate_list"/>
+</RelativeLayout>

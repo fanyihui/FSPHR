@@ -15,6 +15,7 @@ import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.ImageUtil;
 
 public class ImageViewActivity extends AppCompatActivity {
+    public static final String BUNDLE_KEY_VIEW_IMAGE = "view_image";
 
     private String imagePath;
     private ImageView imageView;

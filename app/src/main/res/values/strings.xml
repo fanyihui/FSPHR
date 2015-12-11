@@ -12,14 +12,16 @@
     <string name="title_phr">健康记录</string>
     <string name="title_careplan">健康计划</string>
 
+    <string name="label_chief_complaint">主诉</string>
     <string name="label_diagnosis">诊断：</string>
+    <string name="label_physician">医生：</string>
     <string name="label_outpatient_date">日期</string>
     <string name="label_diagnostic_imaging_detail_date">检查日期</string>
     <string name="label_diagnostic_imaging_detail_modality">检查设备</string>
     <string name="label_diagnostic_imaging_detail_requested_procedure">检查方法</string>
     <string name="label_diagnostic_imaging_detail_body">检查部位</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_new_outpatient">添加门诊病历</string>
     <string name="title_activity_new_inpatient">添加住院病历</string>
@@ -37,6 +39,7 @@
     <string name="title_activity_medication_order_edit">编辑用药记录</string>
     <string name="title_fragment_prescription_add_image">添加处方图片</string>
     <string name="title_activity_image_view">图片浏览</string>
+    <string name="title_activity_edit_diagnosis">编辑诊断信息</string>
 
     <string name="hint_current_problems_guide">此处用来描述当前疾病的发展过程，比如什么时候开始，有些什么样的症状，什么情况下会加剧，什么情况下会缓解等。</string>
     <string name="hint_historical_problems_guide">此处用来描述本人的过往史，过去发生了什么疾病、做过检查、手术等</string>
@@ -48,10 +51,16 @@
     <string name="hint_diagnostic_imaging_body">编辑检查部位</string>
     <string name="hint_lab_report_order">编辑检验医嘱</string>
     <string name="hint_lab_report_specimen">编辑标本类型</string>
-
+    <string name="hint_chief_complaint_guide">描述病人感受</string>
+    <string name="hint_mandatory">必填</string>
+    <string name="hint_optional">可选</string>
+    <string name="hint_diagnosis_edit">在下列输入框中输入诊断信息，输入后点击“添加按钮”加入诊断列表中，如果有多个诊断，请分别输入！</string>
 
     <string name="tip_for_empty_diagnostic_image_report">当前没有影像检查报告，请通过右下角的按钮添加一个新的影像检查报告</string>
     <string name="tip_for_empty_lab_report">当前没有检验报告，请通过右下角的按钮添加一个新的检验报告</string>
+    <string name="tip_for_empty_list">列表为空</string>
+    <string name="tip_for_empty_medicine">当前没有正在服用的药物，如果有，请在病历中的处方页面添加药品</string>
+
     <string name="title_activity_imaging_report_detail">医学影像报告编辑</string>
     <string name="action_submit">提交</string>
     <string name="seperate_name_dir_basic">基本信息</string>
@@ -61,16 +70,40 @@
     <string name="seperate_name_dir_reference_images">报告单和参考图像</string>
     <string name="seperate_name_lab_obr_list">检验结果清单</string>
     <string name="seperate_name_lab_report_reference_images">检验报告单图像</string>
-    <string name="title_activity_free_text_edit">FreeTextEditActivity</string>
+    <string name="seperate_encounter_core_info">就诊信息</string>
+    <string name="seperate_simple_list">诊断列表</string>
+    <string name="seperate_name_problem_diagnosis">诊断</string>
+    <string name="seperate_name_problem_chief_complaint">主诉</string>
+    <string name="seperate_name_problem_current_problems">现病史</string>
+    <string name="seperate_name_problem_history">既往史</string>
+    <string name="seperate_name_problem_physical_exam">体格检查</string>
+    <string name="seperate_name_latest_encounter">最近一次就诊</string>
+    <string name="seperate_name_medicine_reminder">用药记录</string>
+
+    <string name="title_activity_free_text_edit">自由文本编辑</string>
     <string name="title_activity_lab_report_detail">编辑检验报告</string>
-    <string name="hint_mandatory">必填</string>
+
+
     <string name="label_lab_report_order">医嘱内容</string>
     <string name="label_lab_report_specimen">标本类型</string>
     <string name="label_lab_report_specimen_collected_date">采集时间</string>
     <string name="label_lab_report_reporting_date">报告时间</string>
 
+    <string name="label_medicine_order_name">药品名称</string>
+    <string name="label_medicine_order_spec">药品规格</string>
+    <string name="label_medicine_order_quantity">药品数量</string>
+    <string name="label_medicine_order_frequency">用药频次</string>
+    <string name="label_medicine_order_dosage">单次用量</string>
+    <string name="label_medicine_order_route">用药方法</string>
+    <string name="label_medicine_order_prn">是否按需用药</string>
+    <string name="label_medicine_order_date">开始日期</string>
+
+
     <string name="btn_lab_report_item_add">添加检验项</string>
+    <string name="btn_add">添加</string>
     <string name="btn_lab_report_image_add">扫描检验报告单</string>
+    <string name="btn_imaging_report_image_add">扫描检查报告单</string>
+    <string name="btn_prescription_image_add">扫描处方</string>
 
     <string name="lab_item_list_header_column_name_code">缩写/编码</string>
     <string name="lab_item_list_header_column_name_name">检验项目</string>
@@ -78,5 +111,6 @@
     <string name="lab_item_list_header_column_name_unit">单位</string>
     <string name="lab_item_list_header_column_name_range">参考值</string>
     <string name="title_activity_lab_result_item_editing">编辑检验项目</string>
+    <string name="title_activity_simple_list">简单列表编辑</string>
 
 </resources>

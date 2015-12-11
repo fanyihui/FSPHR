@@ -72,7 +72,7 @@ public class LabReportDetailActivity extends AppCompatActivity implements LabRep
         context = this;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        currentEncounter = (Encounter) bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
+        currentEncounter = (Encounter) bundle.getSerializable(EncounterDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
 
         Object object = bundle.getSerializable(BUNDEL_KEY_LAB_REPORT);
         boolean isEditingReport = false;
@@ -163,8 +163,11 @@ public class LabReportDetailActivity extends AppCompatActivity implements LabRep
     }
 
     @Override
-    public void onViewRefImage() {
+    public void onViewRefImage(String imagePath) {
+        Intent intent = new Intent(context, ImageViewActivity.class);
+        intent.putExtra(ImageViewActivity.BUNDLE_KEY_VIEW_IMAGE, imagePath);
 
+        startActivity(intent);
     }
 
     @Override

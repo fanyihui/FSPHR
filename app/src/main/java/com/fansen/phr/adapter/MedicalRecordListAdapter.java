@@ -10,6 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
+import com.fansen.phr.activities.EncounterCoreInfoActivity;
+import com.fansen.phr.activities.SimpleListActivity;
+import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.utils.TimeFormat;
 
@@ -46,6 +49,15 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
     public void onBindViewHolder(MedicalRecordListViewHolder holder, int position) {
         Encounter encounter = encounterList.get(position);
 
+        List<Diagnosis> diagnosises = encounter.getDiagnosisList();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i=0; i<diagnosises.size(); i++){
+            stringBuffer.append(diagnosises.get(i).getDiagnosis_dict().getName());
+            if (i != diagnosises.size()-1){
+                stringBuffer.append(EncounterCoreInfoActivity.DELIMITER);
+            }
+        }
+
         Context context = holder.rootViewLayout.getContext();
         if(position % 2 != 0){
             holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
@@ -72,7 +84,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
         holder.vHospital.setText(encounter.getOrg().getOrg_name());
         holder.vDept.setText(encounter.getDepartment().getName());
-        holder.vDiagnosis.setText(encounter.getPrimaryDiagnosis().getName());
+        holder.vDiagnosis.setText(stringBuffer.toString());
         holder.vAttendingDoctor.setText(encounter.getAttendingDoctor().getPhysicianName());
     }
 

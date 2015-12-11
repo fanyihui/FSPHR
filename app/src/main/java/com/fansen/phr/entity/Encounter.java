@@ -1,6 +1,7 @@
 package com.fansen.phr.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,12 +18,13 @@ public class Encounter implements Serializable{
     private Person person;
     private Date admit_date;
     private Date discharge_date;
-    private List<Diagnosis> diagnosisList;
+    private ArrayList<Diagnosis> diagnosisList;
     private DictDiagnosis primaryDiagnosis;
     private Physician attendingDoctor;
     private String problem_description;
     private String historicalProblems;
     private String physicalExam;
+    private String chiefComplaint;
 
     public Date getDischarge_date() {
         return discharge_date;
@@ -80,14 +82,6 @@ public class Encounter implements Serializable{
         this.admit_date = admit_date;
     }
 
-    public List<Diagnosis> getDiagnosis() {
-        return diagnosisList;
-    }
-
-    public void setDiagnosis(List<Diagnosis> diagnosis) {
-        this.diagnosisList = diagnosis;
-    }
-
     public DictDiagnosis getPrimaryDiagnosis() {
         return primaryDiagnosis;
     }
@@ -112,11 +106,11 @@ public class Encounter implements Serializable{
         this.problem_description = problem_description;
     }
 
-    public List<Diagnosis> getDiagnosisList() {
+    public ArrayList<Diagnosis> getDiagnosisList() {
         return diagnosisList;
     }
 
-    public void setDiagnosisList(List<Diagnosis> diagnosisList) {
+    public void setDiagnosisList(ArrayList<Diagnosis> diagnosisList) {
         this.diagnosisList = diagnosisList;
     }
 
@@ -134,5 +128,13 @@ public class Encounter implements Serializable{
 
     public void setPhysicalExam(String physicalExam) {
         this.physicalExam = physicalExam;
+    }
+
+    public String getChiefComplaint() {
+        return chiefComplaint;
+    }
+
+    public void setChiefComplaint(String chiefComplaint) {
+        this.chiefComplaint = chiefComplaint;
     }
 }

@@ -34,6 +34,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_CHIEF_COMPLAINT + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + INT_TYPE + COMMA_SEP +

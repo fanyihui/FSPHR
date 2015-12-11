@@ -285,7 +285,9 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        onImageReportElementListener.onViewDiagnosticImage();
+        ImageAdapterModel imageAdapterModel = (ImageAdapterModel)diagnosticImagesGridViewAdapter.getItem(position);
+        String path = imageAdapterModel.getImagePath();
+        onImageReportElementListener.onViewDiagnosticImage(path);
     }
 
     private void updateDate() {
@@ -294,7 +296,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
     }
 
     public interface OnImageReportElementListener {
-        public void onViewDiagnosticImage();
+        public void onViewDiagnosticImage(String imagePath);
         public void onEditingRPType(String rpType);
         public void onEditingFinding(String finding);
         public void onEditingResult(String result);

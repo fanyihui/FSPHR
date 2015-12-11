@@ -11,8 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fansen.phr.PhrSchemaContract;
 import com.fansen.phr.R;
-import com.fansen.phr.activities.OutpatientDetailActivity;
+import com.fansen.phr.activities.EncounterDetailActivity;
 import com.fansen.phr.adapter.MedicalRecordListAdapter;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
@@ -43,6 +44,12 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
     private IDiagnosisDictService diagnosisDictService = null;
 
     public static final String OPEN_ENT_KEY = "open_encounter";
+
+    public static PhrFragment newInstance(){
+        PhrFragment phrFragment = new PhrFragment();
+
+        return phrFragment;
+    }
 
     public PhrFragment() {
         // Required empty public constructor
@@ -98,7 +105,7 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
 
     @Override
     public void itemClicked(View v, int position) {
-        Intent intent = new Intent(context, OutpatientDetailActivity.class);
+        Intent intent = new Intent(context, EncounterDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(OPEN_ENT_KEY, encounters.get(position));
         intent.putExtras(bundle);

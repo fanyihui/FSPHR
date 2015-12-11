@@ -72,8 +72,8 @@ public class ImagingReportDetailActivity extends AppCompatActivity implements Im
         context = this;
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        currentEncounter = (Encounter) bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
-        Object object = bundle.getSerializable(OutpatientDetailActivity.BUNDLE_KEY_SELECTED_REPORT);
+        currentEncounter = (Encounter) bundle.getSerializable(EncounterDetailActivity.BUNDLE_KEY_SELECTED_ENCOUNTER);
+        Object object = bundle.getSerializable(EncounterDetailActivity.BUNDLE_KEY_SELECTED_REPORT);
         boolean isEditingReport = false;
 
         if(object != null){
@@ -122,8 +122,11 @@ public class ImagingReportDetailActivity extends AppCompatActivity implements Im
      * Following overide the interface of OnImageReportElementListener from ImagingReportDetailFragment
      * */
     @Override
-    public void onViewDiagnosticImage() {
+    public void onViewDiagnosticImage(String imagePath) {
+        Intent intent = new Intent(context, ImageViewActivity.class);
+        intent.putExtra(ImageViewActivity.BUNDLE_KEY_VIEW_IMAGE, imagePath);
 
+        startActivity(intent);
     }
 
     @Override

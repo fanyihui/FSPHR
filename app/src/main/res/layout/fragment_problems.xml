@@ -13,12 +13,22 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="主诉"
+            android:text="@string/seperate_name_problem_chief_complaint"
             android:background="#e5e5e5"
             android:gravity="center"
             android:textStyle="bold"/>
 
-        <ListView
+        <TextView
+            android:id="@+id/id_problems_chief_complaint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="@string/hint_chief_complaint_guide"/>
+
+        <!--ListView
             android:id="@+id/id_problems_complaint_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -29,9 +39,8 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_add_black_24dp"
             android:background="#00000000"
-            android:text="添加症状" />
+            android:text="添加症状" /-->
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/id_problems_section_current_problem"
@@ -45,7 +54,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="现病史"
+            android:text="@string/seperate_name_problem_current_problems"
             android:background="#e5e5e5"
             android:gravity="center"
             android:textStyle="bold"/>
@@ -75,7 +84,7 @@
             android:gravity="center"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="既往史"
+            android:text="@string/seperate_name_problem_history"
             android:textStyle="bold" />
 
         <TextView
@@ -103,7 +112,7 @@
             android:gravity="center"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="体格检查"
+            android:text="@string/seperate_name_problem_physical_exam"
             android:textStyle="bold" />
 
         <TextView
@@ -113,6 +122,34 @@
             android:layout_marginLeft="5dp"
             android:drawableRight="@drawable/ic_chevron_right_black_24dp"
             android:hint="描述体格检查情况"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_problems_section_diagnosis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_problems_section_physical_exam"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e5e5e5"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/seperate_name_problem_diagnosis"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_problems_diagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:hint="描述诊断信息"
             android:paddingBottom="5dp"
             android:paddingTop="5dp" />
     </LinearLayout>

@@ -67,7 +67,7 @@
             android:drawableLeft="@drawable/ic_add_black_24dp"
             android:layout_below="@id/id_fragment_prescription_images"
             android:background="#00000000"
-            android:text="添加处方图片" />
+            android:text="@string/btn_prescription_image_add" />
     </RelativeLayout>
 
 

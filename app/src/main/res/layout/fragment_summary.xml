@@ -1,56 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/id_latest_ent_seperate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSeperateBackground"
+        android:padding="@dimen/seperate_padding_margin"
+        android:text="@string/seperate_name_latest_encounter"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/id_seperate_latest_ent_bracket_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSeperateBackground"
+        android:paddingTop="@dimen/seperate_padding_margin"
+        android:paddingBottom="@dimen/seperate_padding_margin"
+        android:text="("
+        android:layout_toRightOf="@+id/id_latest_ent_seperate"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/id_latest_ent_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSeperateBackground"
+        android:paddingTop="@dimen/seperate_padding_margin"
+        android:paddingBottom="@dimen/seperate_padding_margin"
+        android:layout_toRightOf="@+id/id_seperate_latest_ent_bracket_left"
+        android:textStyle="bold"
+        android:text="20151210"/>
+
+    <TextView
+        android:id="@+id/id_seperate_latest_ent_bracket_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSeperateBackground"
+        android:paddingTop="@dimen/seperate_padding_margin"
+        android:paddingBottom="@dimen/seperate_padding_margin"
+        android:text=")"
+        android:layout_toRightOf="@+id/id_latest_ent_date"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/id_latest_ent_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/cardviewBackgroundLight"
+        android:layout_below="@+id/id_latest_ent_seperate"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:id="@+id/id_latest_ent_card_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/id_latest_ent_dept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="心内科"
+                android:textSize="24dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/id_latest_ent_org"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/id_latest_ent_dept"
+                android:text="上海复旦大学附属中山医院"/>
+
+            <LinearLayout
+                android:id="@+id/id_latest_ent_section_physician"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_latest_ent_org"
+                android:layout_marginRight="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/id_latest_ent_label_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/label_physician"/>
+
+                <TextView
+                    android:id="@+id/id_latest_ent_attending_doctor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="范益辉"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/id_latest_ent_section_diagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_latest_ent_section_physician"
+                android:layout_marginRight="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/label_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/label_diagnosis"/>
+
+                <TextView
+                    android:id="@+id/id_latest_ent_diagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="心悸"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/id_medicine_reminder_seperate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSeperateBackground"
+        android:layout_below="@+id/id_latest_ent_card_view"
+        android:padding="@dimen/seperate_padding_margin"
+        android:text="@string/seperate_name_medicine_reminder"
+        android:textStyle="bold"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_medicine_reminder_seperate">
 
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/id_mar_datetime_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="start">
+
+            <Button
+                android:id="@+id/id_mar_back_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:drawableRight="@drawable/ic_keyboard_arrow_left_black_24dp"
+                android:background="#00000000" />
+
+            <TextView
+                android:id="@+id/id_mar_datetime_slot"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="2015年12月10日 上午"/>
+
+            <Button
+                android:id="@+id/id_mar_forward_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:background="#00000000" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/id_tips_for_empty_medicine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="最近一次就诊" >
+            android:layout_below="@+id/id_mar_datetime_layout"
+            android:padding="@dimen/seperate_padding_margin"
+            android:text="@string/tip_for_empty_medicine"/>
 
-        </EditText>
-
+        <ListView
+            android:id="@+id/id_mar_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_tips_for_empty_medicine"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <!--android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_medicine_reminder_seperate">
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:ems="10"
-            android:text="用药提醒" >
+    </android.support.v7.widget.RecyclerView -->
 
-            <requestFocus />
-        </EditText>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <EditText
-            android:id="@+id/editText3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:ems="10"
-            android:text="计划提醒" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

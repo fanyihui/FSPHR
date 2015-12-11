@@ -18,4 +18,7 @@ public interface IEncounterService {
     public String getProblemsDescription(long ent_key);
     public String getHistoricalProblems(long ent_key);
     public String getPhysicalExamDetails(long ent_key);
+    public String getChiefComplaint(long ent_key);
+    public void  updateChiefComplaint(long ent_key, String chiefComplain);
+    public Encounter getLatestEncounter();
 }
