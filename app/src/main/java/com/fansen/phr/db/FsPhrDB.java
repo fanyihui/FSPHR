@@ -1,5 +1,6 @@
 package com.fansen.phr.db;
 
+import android.animation.PropertyValuesHolder;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,12 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fansen.phr.PhrSchemaContract;
 
+import java.util.ConcurrentModificationException;
+
 /**
  * Created by Yihui on 2015/10/16.
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 22;
+    private final static int DATABASE_VERSION = 23;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -43,7 +46,6 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY + INT_TYPE + ")";
 
-    //TODO modify
     private final static String SQL_CREATE_MEDICATION_ORDER = "CREATE TABLE " + PhrSchemaContract.MedicationOrderTable.TABLE_NAME + "(" +
             PhrSchemaContract.MedicationOrderTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY + INT_TYPE + COMMA_SEP +
@@ -57,7 +59,16 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN + INT_TYPE + ")";
+
+    private final static String SQL_CREATE_MAR = "CREATE TABLE " + PhrSchemaContract.MARTable.TABLE_NAME + "(" +
+            PhrSchemaContract.MARTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_STATUS + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DOSAGE + REAL_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DOSAGE_UNIT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_ORDER_KEY + INT_TYPE + ")";
 
     private final static String SQL_CREATE_DIAGNOSIS = "CREATE TABLE " + PhrSchemaContract.DiagnosisTable.TABLE_NAME + "(" +
             PhrSchemaContract.DiagnosisTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
@@ -277,11 +288,15 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_LAB_OBSERVATION);
         db.execSQL(SQL_CREATE_ORDER_CODE_DEF);
         db.execSQL(SQL_CREATE_SPECIMEN_TYPE_DEF);
+        db.execSQL(SQL_CREATE_MAR);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
+                " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS + TEXT_TYPE);
+        db.execSQL(SQL_CREATE_MAR);
         //upgrade for version 19
         //db.execSQL(SQL_CREATE_BODY_PART_DEF);
         //db.execSQL(SQL_ADD_BODY_PART_DEF_KEY);

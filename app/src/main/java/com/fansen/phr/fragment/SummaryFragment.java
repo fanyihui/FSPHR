@@ -6,21 +6,28 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.activities.EncounterCoreInfoActivity;
+import com.fansen.phr.adapter.MarListAdapter;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.MedicationOrder;
 import com.fansen.phr.utils.TextUtil;
 import com.fansen.phr.utils.TimeFormat;
+
+import java.util.ArrayList;
 
 /**
  * Created by Yihui Fan on 2015/10/10.
  */
 public class SummaryFragment extends Fragment{
     public static final String BUNDLE_KEY_LATEST_ENCOUNTER = "latest_encounter";
+    public static final String BUNDLE_KEY_MED_ORDER_LIST = "medication_orders";
 
     private RelativeLayout summaryView;
     private TextView vDate;
@@ -29,14 +36,25 @@ public class SummaryFragment extends Fragment{
     private TextView vDiagnosis;
     private TextView vAttendingDoctor;
 
+    private Button navigateBackBtn;
+    private Button navigateForwardBtn;
+    private TextView marTimeslotTextView;
+
+    private ListView marListView;
+    private TextView emptyMarTipsTextView;
+
     private Encounter latestEncounter;
 
-    public static SummaryFragment newInstance(Encounter encounter){
+    private MarListAdapter marListAdapter;
+    private ArrayList<MedicationOrder> medicationOrders;
+
+    public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationOrder> medicationOrders){
         SummaryFragment summaryFragment = new SummaryFragment();
 
         if(encounter != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, encounter);
+            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_LIST, medicationOrders);
             summaryFragment.setArguments(bundle);
         }
 
@@ -54,7 +72,16 @@ public class SummaryFragment extends Fragment{
         Bundle bundle = getArguments();
         if (bundle != null){
             latestEncounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_LATEST_ENCOUNTER);
+            medicationOrders = (ArrayList<MedicationOrder>) bundle.getSerializable(BUNDLE_KEY_MED_ORDER_LIST);
         }
+
+        if (medicationOrders == null){
+            medicationOrders = new ArrayList<>();
+        }
+
+        marListAdapter = new MarListAdapter(medicationOrders);
+
+        //TODO add code here to initial MAR List view
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +102,10 @@ public class SummaryFragment extends Fragment{
 
     public void setLatestEncounter(Encounter latestEncounter){
         this.latestEncounter = latestEncounter;
+
+        if (latestEncounter == null){
+            return;
+        }
 
         vDate.setText(TimeFormat.parseDate(latestEncounter.getAdmit_date(), "yyyyMMdd"));
         vDept.setText(latestEncounter.getDepartment().getName());

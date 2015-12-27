@@ -5,26 +5,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.fansen.phr.entity.MedicationOrder;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 310078142 on 2015/12/10.
  */
-public class MedicineAdministrationRecordAdapter extends BaseAdapter{
+public class MarListAdapter extends BaseAdapter{
+    private ArrayList<MedicationOrder> medicationOrderArrayList = new ArrayList<>();
+
+    public MarListAdapter(ArrayList<MedicationOrder> medicationOrderArrayList){
+        this.medicationOrderArrayList = medicationOrderArrayList;
+    }
 
     @Override
     public int getCount() {
-        return 0;
+        return medicationOrderArrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return medicationOrderArrayList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override

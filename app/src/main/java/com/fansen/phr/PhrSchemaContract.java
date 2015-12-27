@@ -50,6 +50,16 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_MED_ORDER_ROUTE = "route";
         public static final String COLUMN_NAME_MED_ORDER_PRN = "prn_indicator";
         public static final String COLUMN_NAME_MED_ORDER_START_TIME = "start_time";
+        public static final String COLUMN_NAME_MED_ORDER_STATUS = "status";
+    }
+
+    public static abstract class MARTable implements BaseColumns{
+        public static final String TABLE_NAME = "mar";
+        public static final String COLUMN_NAME_MAR_ORDER_KEY = "med_order_key";
+        public static final String COLUMN_NAME_MAR_STATUS = "status";
+        public static final String COLUMN_NAME_MAR_DT = "date_time";
+        public static final String COLUMN_NAME_MAR_DOSAGE = "dosage";
+        public static final String COLUMN_NAME_MAR_DOSAGE_UNIT = "unit";
     }
 
     public static abstract class ClinicalDocumentTable implements BaseColumns{

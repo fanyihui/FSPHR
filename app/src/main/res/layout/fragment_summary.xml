@@ -51,7 +51,8 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/cardviewBackgroundLight"
         android:layout_below="@+id/id_latest_ent_seperate"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         app:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -182,14 +183,7 @@
             android:id="@+id/id_mar_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/id_tips_for_empty_medicine"/>
+            android:layout_below="@id/id_tips_for_empty_medicine" />
     </RelativeLayout>
-
-    <!--android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/id_medicine_reminder_seperate">
-
-    </android.support.v7.widget.RecyclerView -->
 
 </RelativeLayout>
