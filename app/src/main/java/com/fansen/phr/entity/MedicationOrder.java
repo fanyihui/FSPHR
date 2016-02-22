@@ -18,6 +18,7 @@ public class MedicationOrder implements Serializable{
     private String route;
     private int PRNIndicator;
     private String start_time;
+    private String status;
 
     public MedicationDict getMedication() {
         return medication;
@@ -113,5 +114,13 @@ public class MedicationOrder implements Serializable{
 
     public void setStart_time(String start_time) {
         this.start_time = start_time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

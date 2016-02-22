@@ -7,6 +7,7 @@ import android.database.Cursor;
 import com.fansen.phr.PhrSchemaContract;
 import com.fansen.phr.entity.MedicationDict;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.OrderStatus;
 import com.fansen.phr.service.IMedicationOrderService;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE, medicationOrder.getRoute());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN, medicationOrder.getPRNIndicator());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME, medicationOrder.getStart_time());
-
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS, medicationOrder.getStatus());
 
         int id = (int) fsPhrDB.insert(PhrSchemaContract.MedicationOrderTable.TABLE_NAME, values);
 
@@ -126,5 +127,69 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
         String[] args = {String.valueOf(medicationOrder.get_id())};
 
         fsPhrDB.update(PhrSchemaContract.MedicationOrderTable.TABLE_NAME, values, "_id=?", args);
+    }
+
+    @Override
+    public ArrayList<MedicationOrder> getAllActiveMedicationOrders() {
+        String sql = "select "+
+                PhrSchemaContract.MedicationOrderTable.TABLE_NAME+"."+PhrSchemaContract.MedicationOrderTable._ID +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY_UNIT +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT +"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME+"," +
+                PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_NAME+"," +
+                PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_SPEC+"," +
+                PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_CODE +
+                " from " +
+                PhrSchemaContract.MedicationOrderTable.TABLE_NAME + ","+
+                PhrSchemaContract.MedicationDictTable.TABLE_NAME +
+                " where " +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS +"='"+ OrderStatus.ACTIVE.getName() +
+                "' and "+
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY +
+                "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID;
+
+        ArrayList<MedicationOrder> medicationOrders = new ArrayList<>();
+
+        Cursor c = fsPhrDB.rawQuery(sql);
+
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            MedicationDict medicationDict = new MedicationDict();
+            MedicationOrder medicationOrder = new MedicationOrder();
+
+            medicationDict.setName(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_NAME)));
+            medicationDict.setSpec(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_SPEC)));
+            medicationDict.setCode(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_CODE)));
+
+            medicationOrder.setMedication(medicationDict);
+            medicationOrder.set_id(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable._ID)));
+            medicationOrder.setQuantity(c.getFloat(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY)));
+            medicationOrder.setQuantity_unit(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY_UNIT)));
+            medicationOrder.setFrequency_interval(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL)));
+            medicationOrder.setFrequency_interval_unit(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT)));
+            medicationOrder.setFrequency_times(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES)));
+            medicationOrder.setDosage(c.getFloat(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE)));
+            medicationOrder.setDosage_unit(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT)));
+            medicationOrder.setRoute(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE)));
+            medicationOrder.setPRNIndicator(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN)));
+            medicationOrder.setStart_time(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME)));
+
+            medicationOrders.add(medicationOrder);
+
+            c.moveToNext();
+        }
+
+        c.close();
+        fsPhrDB.closeDatabase();
+
+        return medicationOrders;
     }
 }

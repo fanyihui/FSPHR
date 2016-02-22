@@ -31,6 +31,7 @@ import java.util.List;
 public class PhrFragment extends Fragment implements MedicalRecordListAdapter.MedicalRecordItemClickListener{
 
     private Context context;
+    private OnPhrFragmentInteractionListener onPhrFragmentInteractionListener;
 
     private RecyclerView phrView = null;
     private List<Encounter> encounters;
@@ -66,6 +67,23 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
         adapter = new MedicalRecordListAdapter(encounters);
         adapter.setItemClickListener(this);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            onPhrFragmentInteractionListener = (OnPhrFragmentInteractionListener) context;
+        } catch (ClassCastException cce){
+            throw new ClassCastException(context.toString()
+                    +" must implement OnPhrFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onPhrFragmentInteractionListener = null;
     }
 
     @Override
@@ -105,12 +123,14 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
 
     @Override
     public void itemClicked(View v, int position) {
-        Intent intent = new Intent(context, EncounterDetailActivity.class);
+        /*Intent intent = new Intent(context, EncounterDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(OPEN_ENT_KEY, encounters.get(position));
         intent.putExtras(bundle);
 
-        context.startActivity(intent);
+        context.startActivity(intent);*/
+
+        onPhrFragmentInteractionListener.onEncounterListClicked(encounters.get(position));
     }
 
     /**
@@ -123,9 +143,8 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public interface OnPhrFragmentInteractionListener {
+        public void onEncounterListClicked(Encounter encounter);
     }
 
 }

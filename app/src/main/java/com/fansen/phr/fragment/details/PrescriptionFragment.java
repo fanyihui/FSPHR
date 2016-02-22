@@ -31,6 +31,7 @@ import com.fansen.phr.entity.ClinicalDocumentType;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.MedicationDict;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.OrderStatus;
 import com.fansen.phr.service.IClinicalDocumentService;
 import com.fansen.phr.service.IMedicationDictService;
 import com.fansen.phr.service.IMedicationOrderService;
@@ -298,6 +299,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrder.setRoute(route);
         medicationOrder.setPRNIndicator(prnChecked ? 1 : 0);
         medicationOrder.setStart_time(start_time);
+        medicationOrder.setStatus(OrderStatus.ACTIVE.getName());
 
         int med_order_id = medicationOrderService.addMedicationOrder(encounter.getEncounter_key(), medicationOrder);
         medicationOrder.set_id(med_order_id);

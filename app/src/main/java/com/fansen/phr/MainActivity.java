@@ -18,10 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fansen.phr.activities.EncounterCoreInfoActivity;
+import com.fansen.phr.activities.EncounterDetailActivity;
 import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.MedicationOrder;
 import com.fansen.phr.entity.Organization;
 import com.fansen.phr.entity.Physician;
 import com.fansen.phr.fragment.CarePlanFragment;
@@ -31,12 +33,14 @@ import com.fansen.phr.service.IDepartmentService;
 import com.fansen.phr.service.IDiagnosisDictService;
 import com.fansen.phr.service.IDiagnosisService;
 import com.fansen.phr.service.IEncounterService;
+import com.fansen.phr.service.IMedicationOrderService;
 import com.fansen.phr.service.IOrganizationService;
 import com.fansen.phr.service.IPhysicianService;
 import com.fansen.phr.service.implementation.DepartmentServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisServiceLocalImpl;
 import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
+import com.fansen.phr.service.implementation.MedicationOrderServiceLocalImpl;
 import com.fansen.phr.service.implementation.OrganizationServiceLocalImpl;
 import com.fansen.phr.service.implementation.PhysicianServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
@@ -44,8 +48,9 @@ import com.fansen.phr.utils.TimeFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        SummaryFragment.OnSummaryFragmentInteractionListener,
+        PhrFragment.OnPhrFragmentInteractionListener {
 
     private CharSequence mTitle;
     private boolean isfabAddTouched = false;
@@ -59,6 +64,8 @@ public class MainActivity extends AppCompatActivity
     public static final int ADD_CAREPLAN_REQUEST = 3;  // The request code
     //static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
 
+    public static String OPEN_ENT_KEY = "open_encounter";
+
     private Fragment fragment = null;
     private IEncounterService encounterService = null;
     private IOrganizationService organizationService = null;
@@ -66,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     private IDiagnosisService diagnosisService = null;
     private IDiagnosisDictService diagnosisDictService = null;
     private IPhysicianService physicianService = null;
+    private IMedicationOrderService medicationOrderService = null;
 
     private PhrFragment phrFragment;
     private SummaryFragment summaryFragment;
@@ -85,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         diagnosisService = new DiagnosisServiceLocalImpl(context);
         diagnosisDictService = new DiagnosisDictServiceLocalImpl(context);
         physicianService = new PhysicianServiceLocalImpl(context);
+        medicationOrderService = new MedicationOrderServiceLocalImpl(context);
 
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
         addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
@@ -123,9 +132,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Encounter latestEncounter = encounterService.getLatestEncounter();
+        ArrayList<MedicationOrder> medicationOrders = medicationOrderService.getAllActiveMedicationOrders();
 
         phrFragment = PhrFragment.newInstance();
-        summaryFragment = SummaryFragment.newInstance(latestEncounter);
+        summaryFragment = SummaryFragment.newInstance(latestEncounter, medicationOrders);
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -306,5 +316,24 @@ public class MainActivity extends AppCompatActivity
         } else if(navigationItemId == R.id.nav_summary){
             //TODO add code here to put encounter into summary page
         }
+    }
+
+    @Override
+    public void onLatestEncounterClicked(Encounter encounter) {
+        openEncounterDetails(encounter);
+    }
+
+    @Override
+    public void onEncounterListClicked(Encounter encounter) {
+        openEncounterDetails(encounter);
+    }
+
+    private void openEncounterDetails(Encounter encounter){
+        Intent intent = new Intent(this, EncounterDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(OPEN_ENT_KEY, encounter);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 }

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fansen.phr.PhrSchemaContract;
+import com.fansen.phr.entity.OrderStatus;
 
 import java.util.ConcurrentModificationException;
 
@@ -16,7 +17,7 @@ import java.util.ConcurrentModificationException;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 23;
+    private final static int DATABASE_VERSION = 24;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -296,6 +297,8 @@ public class FsPhrDB extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
                 " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS + TEXT_TYPE);
+        db.execSQL("insert into "+ PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
+                "(" + PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+") values ('"+ OrderStatus.ACTIVE.getName()+"')");
         db.execSQL(SQL_CREATE_MAR);
         //upgrade for version 19
         //db.execSQL(SQL_CREATE_BODY_PART_DEF);

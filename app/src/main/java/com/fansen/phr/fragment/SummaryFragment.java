@@ -1,13 +1,13 @@
 package com.fansen.phr.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,10 +26,14 @@ import java.util.ArrayList;
  * Created by Yihui Fan on 2015/10/10.
  */
 public class SummaryFragment extends Fragment{
+    Context context;
+    private OnSummaryFragmentInteractionListener onSummaryFragmentInteractionListener;
+
     public static final String BUNDLE_KEY_LATEST_ENCOUNTER = "latest_encounter";
     public static final String BUNDLE_KEY_MED_ORDER_LIST = "medication_orders";
 
     private RelativeLayout summaryView;
+    private CardView latestEncounterCardView;
     private TextView vDate;
     private TextView vHospital;
     private TextView vDept;
@@ -69,6 +73,8 @@ public class SummaryFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        context = getActivity();
+
         Bundle bundle = getArguments();
         if (bundle != null){
             latestEncounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_LATEST_ENCOUNTER);
@@ -79,9 +85,25 @@ public class SummaryFragment extends Fragment{
             medicationOrders = new ArrayList<>();
         }
 
-        marListAdapter = new MarListAdapter(medicationOrders);
+        marListAdapter = new MarListAdapter(context, medicationOrders);
+    }
 
-        //TODO add code here to initial MAR List view
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            onSummaryFragmentInteractionListener = (OnSummaryFragmentInteractionListener) context;
+        } catch(ClassCastException cce){
+            throw new ClassCastException(context.toString()
+                    +" must implement OnSummaryFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onSummaryFragmentInteractionListener = null;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,11 +111,23 @@ public class SummaryFragment extends Fragment{
         summaryView = (RelativeLayout) inflater.inflate(
                 R.layout.fragment_summary, container, false);
 
+        latestEncounterCardView = (CardView) summaryView.findViewById(R.id.id_latest_ent_card_view);
+        latestEncounterCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSummaryFragmentInteractionListener.onLatestEncounterClicked(latestEncounter);
+            }
+        });
+
         vDate = (TextView) summaryView.findViewById(R.id.id_latest_ent_date);
         vDept = (TextView) summaryView.findViewById(R.id.id_latest_ent_dept);
         vHospital = (TextView) summaryView.findViewById(R.id.id_latest_ent_org);
         vAttendingDoctor = (TextView) summaryView.findViewById(R.id.id_latest_ent_attending_doctor);
         vDiagnosis = (TextView) summaryView.findViewById(R.id.id_latest_ent_diagnosis);
+
+        marListView = (ListView) summaryView.findViewById(R.id.id_mar_list_view);
+
+        marListView.setAdapter(marListAdapter);
 
         setLatestEncounter(latestEncounter);
 
@@ -112,5 +146,9 @@ public class SummaryFragment extends Fragment{
         vHospital.setText(latestEncounter.getOrg().getOrg_name());
         vAttendingDoctor.setText(latestEncounter.getAttendingDoctor().getPhysicianName());
         vDiagnosis.setText(TextUtil.convertDiagnosisListToString(latestEncounter.getDiagnosisList(), EncounterCoreInfoActivity.DELIMITER));
+    }
+
+    public interface OnSummaryFragmentInteractionListener {
+        public void onLatestEncounterClicked(Encounter encounter);
     }
 }

@@ -2,6 +2,7 @@ package com.fansen.phr.service;
 
 import com.fansen.phr.entity.MedicationOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,4 +12,5 @@ public interface IMedicationOrderService {
     public List<MedicationOrder> getMedicationOrders(long ent_key);
     public int addMedicationOrder(long ent_key, MedicationOrder medicationOrder);
     public void updateMedicationOrder(MedicationOrder medicationOrder);
+    public ArrayList<MedicationOrder> getAllActiveMedicationOrders();
 }

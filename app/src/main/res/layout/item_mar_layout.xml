@@ -37,16 +37,19 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/id_mar_btn_taken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="已服用"/>
 
             <RadioButton
+                android:id="@+id/id_mar_btn_postpone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="推迟服用"/>
 
             <RadioButton
+                android:id="@+id/id_mar_btn_ignore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="忽略"/>
