@@ -1,8 +1,9 @@
 package com.fansen.phr.fragment;
 
-import android.app.Fragment;
+//import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by Yihui Fan on 2015/10/10.
  */
-public class SummaryFragment extends Fragment{
+public class SummaryFragment extends Fragment {
     Context context;
     private OnSummaryFragmentInteractionListener onSummaryFragmentInteractionListener;
 

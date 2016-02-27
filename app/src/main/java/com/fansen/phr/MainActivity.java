@@ -1,11 +1,11 @@
 package com.fansen.phr;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         phrFragment = PhrFragment.newInstance();
         summaryFragment = SummaryFragment.newInstance(latestEncounter, medicationOrders);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, summaryFragment).commit();
     }
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationItemId = item.getItemId();
         ActionBar actionBar = getSupportActionBar();
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (navigationItemId == R.id.nav_summary) {
             fragmentManager.beginTransaction()

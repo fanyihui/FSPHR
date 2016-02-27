@@ -295,11 +295,11 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
-                " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS + TEXT_TYPE);
-        db.execSQL("insert into "+ PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
-                "(" + PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+") values ('"+ OrderStatus.ACTIVE.getName()+"')");
-        db.execSQL(SQL_CREATE_MAR);
+        //db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
+        //        " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS + TEXT_TYPE);
+        //db.execSQL("update "+ PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
+        //        " set " + PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+"='"+ OrderStatus.ACTIVE.getName()+"'");
+        //db.execSQL(SQL_CREATE_MAR);
         //upgrade for version 19
         //db.execSQL(SQL_CREATE_BODY_PART_DEF);
         //db.execSQL(SQL_ADD_BODY_PART_DEF_KEY);
