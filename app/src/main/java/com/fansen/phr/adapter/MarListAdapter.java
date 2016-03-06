@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.view.SlipButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -53,9 +57,12 @@ public class MarListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.vMarMedName = (TextView) convertView.findViewById(R.id.id_mar_med_name);
             viewHolder.vMarMedDosage = (TextView) convertView.findViewById(R.id.id_mar_dosage);
-            viewHolder.takenBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_taken);
+            viewHolder.vTimeslot = (TextView) convertView.findViewById(R.id.id_mar_datetime_slot);
+            viewHolder.switchButton = (ToggleButton) convertView.findViewById(R.id.item_mar_taken_btn);
+            //viewHolder.vStatus = (TextView) convertView.findViewById(R.id.id_mar_item_status);
+            /*viewHolder.takenBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_taken);
             viewHolder.postponeBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_postpone);
-            viewHolder.ignoreBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_ignore);
+            viewHolder.ignoreBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_ignore);*/
 
             convertView.setTag(viewHolder);
         } else {
@@ -68,8 +75,11 @@ public class MarListAdapter extends BaseAdapter {
     public class ViewHolder{
         protected TextView vMarMedName;
         protected TextView vMarMedDosage;
-        protected RadioButton takenBtn;
+        protected TextView vTimeslot;
+        protected ToggleButton switchButton;
+        //protected TextView vStatus;
+        /*protected RadioButton takenBtn;
         protected RadioButton postponeBtn;
-        protected RadioButton ignoreBtn;
+        protected RadioButton ignoreBtn;*/
     }
 }

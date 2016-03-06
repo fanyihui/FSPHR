@@ -128,6 +128,31 @@ public class SummaryFragment extends Fragment {
 
         marListView = (ListView) summaryView.findViewById(R.id.id_mar_list_view);
 
+        navigateBackBtn = (Button) summaryView.findViewById(R.id.id_mar_back_btn);
+        navigateBackBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //TODO add code here to change implement the behavior of button
+            }
+        });
+
+        navigateForwardBtn = (Button) summaryView.findViewById(R.id.id_mar_forward_btn);
+        navigateForwardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        emptyMarTipsTextView = (TextView) summaryView.findViewById(R.id.id_tips_for_empty_medicine);
+        if (marListAdapter.isEmpty()){
+            emptyMarTipsTextView.setVisibility(View.VISIBLE);
+        } else{
+            emptyMarTipsTextView.setVisibility(View.GONE);
+        }
+
+        marTimeslotTextView = (TextView) summaryView.findViewById(R.id.id_mar_datetime_slot);
+
         marListView.setAdapter(marListAdapter);
 
         setLatestEncounter(latestEncounter);
