@@ -5,15 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RadioButton;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.MedicationOrder;
-import com.fansen.phr.view.SlipButton;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -51,6 +48,8 @@ public class MarListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+        MedicationOrder medicationOrder = medicationOrderArrayList.get(position);
+
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.item_mar_layout, null);
 
@@ -59,15 +58,20 @@ public class MarListAdapter extends BaseAdapter {
             viewHolder.vMarMedDosage = (TextView) convertView.findViewById(R.id.id_mar_dosage);
             viewHolder.vTimeslot = (TextView) convertView.findViewById(R.id.id_mar_datetime_slot);
             viewHolder.switchButton = (ToggleButton) convertView.findViewById(R.id.item_mar_taken_btn);
-            //viewHolder.vStatus = (TextView) convertView.findViewById(R.id.id_mar_item_status);
-            /*viewHolder.takenBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_taken);
-            viewHolder.postponeBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_postpone);
-            viewHolder.ignoreBtn = (RadioButton) convertView.findViewById(R.id.id_mar_btn_ignore);*/
+            viewHolder.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    //TODO add code here to
+                }
+            });
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
+
+        viewHolder.vMarMedName.setText(medicationOrder.getMedication().getName());
+        viewHolder.vMarMedDosage.setText(medicationOrder.getDosage()+medicationOrder.getDosage_unit());
 
         return convertView;
     }
@@ -78,8 +82,5 @@ public class MarListAdapter extends BaseAdapter {
         protected TextView vTimeslot;
         protected ToggleButton switchButton;
         //protected TextView vStatus;
-        /*protected RadioButton takenBtn;
-        protected RadioButton postponeBtn;
-        protected RadioButton ignoreBtn;*/
     }
 }

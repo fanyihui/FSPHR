@@ -199,9 +199,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction()
                     .replace(R.id.container, summaryFragment).commit();
             mTitle = getString(R.string.title_summary);
+            fragment = summaryFragment;
         } else if (navigationItemId == R.id.nav_phr) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, phrFragment).commit();
+            fragment = phrFragment;
             mTitle = getString(R.string.title_phr);
         } else if (navigationItemId == R.id.nav_careplan) {
             fragment = new CarePlanFragment();

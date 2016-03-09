@@ -29,16 +29,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:layout_centerInParent="true">
+        android:layout_toRightOf="@+id/id_mar_item_timeslot"
+        android:layout_marginLeft="60dp">
 
         <TextView
             android:id="@+id/id_mar_med_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/id_mar_item_seperate_line"
-            android:layout_marginLeft="@dimen/seperate_padding_margin"
             android:layout_marginTop="@dimen/seperate_padding_margin"
-            android:layout_gravity="center_horizontal"
             android:text="阿司匹林肠溶片"
             android:textSize="@dimen/font_size"
             android:textStyle="bold" />
@@ -48,9 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/id_mar_med_name"
-            android:layout_marginLeft="@dimen/seperate_padding_margin"
             android:layout_marginTop="@dimen/seperate_padding_margin"
-            android:layout_gravity="center_horizontal"
             android:text="每次一粒" />
     </LinearLayout>
 
