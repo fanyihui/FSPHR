@@ -51,6 +51,7 @@ public final class PhrSchemaContract {
         public static final String COLUMN_NAME_MED_ORDER_PRN = "prn_indicator";
         public static final String COLUMN_NAME_MED_ORDER_START_TIME = "start_time";
         public static final String COLUMN_NAME_MED_ORDER_STATUS = "status";
+        public static final String COLUMN_NAME_MED_ORDER_NOTES = "notes";
     }
 
     public static abstract class MARTable implements BaseColumns{
@@ -218,5 +219,12 @@ public final class PhrSchemaContract {
         public static final String TABLE_NAME = "code_system";
         public static final String COLUMN_NAME_CODE_SYSTEM_OID = "code_system_oid";
         public static final String COLUMN_NAME_CODE_SYSTEM_NAME = "code_system_name";
+    }
+
+    public static abstract class MARScheduledTimeTable implements BaseColumns{
+        public static final String TABLE_NAME="mar_scheduled_time";
+        public static final String COLUMN_NAME_MED_ORDER_KEY = "order_key";
+        public static final String COLUMN_NAME_SEQUENCE_NUMBER = "name";
+        public static final String COLUMN_NAME_SCHEDULED_TIME = "scheduled_time";
     }
 }

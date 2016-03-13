@@ -125,26 +125,16 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <TextView
-        android:id="@+id/id_medicine_reminder_seperate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSeperateBackground"
-        android:layout_below="@+id/id_latest_ent_card_view"
-        android:padding="@dimen/seperate_padding_margin"
-        android:text="@string/seperate_name_medicine_reminder"
-        android:textStyle="bold"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id_medicine_reminder_seperate">
+        android:layout_below="@+id/id_latest_ent_card_view">
 
         <RelativeLayout
             android:id="@+id/id_mar_datetime_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/colorSeperateBackground"
             android:gravity="start">
 
             <Button
@@ -160,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:text="2015年12月10日 上午"/>
+                android:text="@string/seperate_name_medicine_reminder"/>
 
             <Button
                 android:id="@+id/id_mar_forward_btn"

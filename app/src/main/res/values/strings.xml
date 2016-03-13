@@ -78,7 +78,7 @@
     <string name="seperate_name_problem_history">既往史</string>
     <string name="seperate_name_problem_physical_exam">体格检查</string>
     <string name="seperate_name_latest_encounter">最近一次就诊</string>
-    <string name="seperate_name_medicine_reminder">用药记录</string>
+    <string name="seperate_name_medicine_reminder">今日用药提醒</string>
 
     <string name="title_activity_free_text_edit">自由文本编辑</string>
     <string name="title_activity_lab_report_detail">编辑检验报告</string>

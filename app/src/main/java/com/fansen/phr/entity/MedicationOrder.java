@@ -1,6 +1,7 @@
 package com.fansen.phr.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Yihui Fan on 2015/11/3.
@@ -19,6 +20,8 @@ public class MedicationOrder implements Serializable{
     private int PRNIndicator;
     private String start_time;
     private String status;
+    private String notes;
+    private ArrayList<MARScheduledTime> MARScheduledTimes;
 
     public MedicationDict getMedication() {
         return medication;
@@ -122,5 +125,21 @@ public class MedicationOrder implements Serializable{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public ArrayList<MARScheduledTime> getMARScheduledTimes() {
+        return MARScheduledTimes;
+    }
+
+    public void setMARScheduledTimes(ArrayList<MARScheduledTime> MARScheduledTimes) {
+        this.MARScheduledTimes = MARScheduledTimes;
     }
 }
