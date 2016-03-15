@@ -79,6 +79,8 @@
     <string name="seperate_name_problem_physical_exam">体格检查</string>
     <string name="seperate_name_latest_encounter">最近一次就诊</string>
     <string name="seperate_name_medicine_reminder">今日用药提醒</string>
+    <string name="seperate_name_medicine_info">用药信息</string>
+    <string name="seperate_name_medicine_reminder_config">用药提醒设置</string>
 
     <string name="title_activity_free_text_edit">自由文本编辑</string>
     <string name="title_activity_lab_report_detail">编辑检验报告</string>
@@ -97,6 +99,7 @@
     <string name="label_medicine_order_route">用药方法</string>
     <string name="label_medicine_order_prn">是否按需用药</string>
     <string name="label_medicine_order_date">开始日期</string>
+    <string name="label_medicine_order_notes">特殊说明</string>
 
 
     <string name="btn_lab_report_item_add">添加检验项</string>
