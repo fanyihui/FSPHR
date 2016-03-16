@@ -35,6 +35,8 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT+"," +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES+"," +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_NAME+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_SPEC+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_CODE +
@@ -73,6 +75,8 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
             medicationOrder.setRoute(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE)));
             medicationOrder.setPRNIndicator(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN)));
             medicationOrder.setStart_time(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME)));
+            medicationOrder.setNotes(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES)));
+            medicationOrder.setStatus(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS)));
 
             medicationOrders.add(medicationOrder);
 
@@ -102,6 +106,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN, medicationOrder.getPRNIndicator());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME, medicationOrder.getStart_time());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS, medicationOrder.getStatus());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES, medicationOrder.getNotes());
 
         int id = (int) fsPhrDB.insert(PhrSchemaContract.MedicationOrderTable.TABLE_NAME, values);
 
@@ -122,7 +127,8 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE, medicationOrder.getRoute());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN, medicationOrder.getPRNIndicator());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME, medicationOrder.getStart_time());
-
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS, medicationOrder.getStatus());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES, medicationOrder.getNotes());
 
         String[] args = {String.valueOf(medicationOrder.get_id())};
 
@@ -143,6 +149,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL_UNIT+"," +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_TIMES+"," +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME+"," +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_NAME+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_SPEC+"," +
                 PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_CODE +
@@ -181,6 +188,8 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
             medicationOrder.setRoute(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ROUTE)));
             medicationOrder.setPRNIndicator(c.getInt(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_PRN)));
             medicationOrder.setStart_time(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_START_TIME)));
+            medicationOrder.setNotes(c.getString(c.getColumnIndex(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES)));
+            medicationOrder.setStatus(OrderStatus.ACTIVE.getName());
 
             medicationOrders.add(medicationOrder);
 

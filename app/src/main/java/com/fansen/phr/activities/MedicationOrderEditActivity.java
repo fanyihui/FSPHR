@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +39,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     public static final String ROUTE ="route";
     public static final String PRN = "prn";
     public static final String START_TIME = "start_time";
+    public static final String ORDER_NOTES = "order_notes";
 
 
     private EditText medicationNameEditText;
@@ -51,6 +54,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     private Spinner routeSpinner;
     private CheckBox prnCheckBox;
     private TextView startTimeTextView;
+    private EditText notesEditText;
 
     private Calendar cal = Calendar.getInstance();
 
@@ -90,6 +94,24 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
         frequencyIntervalEditText = (EditText) findViewById(R.id.id_med_order_edit_frequency_interval);
         intervalUnitSpinner = (Spinner) findViewById(R.id.id_med_order_edit_frequency_interval_unit);
         frequencyTimesEditText = (EditText) findViewById(R.id.id_med_order_edit_frequency_times);
+        frequencyTimesEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         dosageEditText = (EditText) findViewById(R.id.id_med_order_edit_dosage);
         dosageUnitSpinner = (Spinner) findViewById(R.id.id_med_order_edit_dosage_unit);
         routeSpinner = (Spinner) findViewById(R.id.id_med_order_edit_route);
@@ -107,6 +129,8 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             }
         });
 
+        notesEditText = (EditText) findViewById(R.id.id_med_order_edit_notes);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if(bundle != null) {
@@ -122,7 +146,8 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             dosageEditText.setText(medicationOrder.getDosage() + "");
             SpinnerUtil.setSpinnerItemSelectedByValue(dosageUnitSpinner, medicationOrder.getDosage_unit());
             SpinnerUtil.setSpinnerItemSelectedByValue(routeSpinner, medicationOrder.getRoute());
-            prnCheckBox.setChecked(medicationOrder.getPRNIndicator()==1);
+            prnCheckBox.setChecked(medicationOrder.getPRNIndicator() == 1);
+            notesEditText.setText(medicationOrder.getNotes());
         }
     }
 
@@ -147,6 +172,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             String route = routeSpinner.getSelectedItem().toString();
             boolean prnChecked = prnCheckBox.isChecked();
             String start_time = startTimeTextView.getText().toString();
+            String notes = notesEditText.getText().toString();
 
             Intent intent = new Intent();
 
@@ -163,6 +189,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             bundle.putString(ROUTE, route);
             bundle.putBoolean(PRN, prnChecked);
             bundle.putString(START_TIME, start_time);
+            bundle.putString(ORDER_NOTES, notes);
 
             intent.putExtras(bundle);
             setResult(RESULT_OK, intent);

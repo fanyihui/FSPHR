@@ -279,6 +279,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         String route = bundle.getString(MedicationOrderEditActivity.ROUTE);
         boolean prnChecked = bundle.getBoolean(MedicationOrderEditActivity.PRN);
         String start_time = bundle.getString(MedicationOrderEditActivity.START_TIME);
+        String notes = bundle.getString(MedicationOrderEditActivity.ORDER_NOTES);
 
         MedicationOrder medicationOrder = new MedicationOrder();
         MedicationDict medicationDict = new MedicationDict();
@@ -300,6 +301,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrder.setPRNIndicator(prnChecked ? 1 : 0);
         medicationOrder.setStart_time(start_time);
         medicationOrder.setStatus(OrderStatus.ACTIVE.getName());
+        medicationOrder.setNotes(notes);
 
         int med_order_id = medicationOrderService.addMedicationOrder(encounter.getEncounter_key(), medicationOrder);
         medicationOrder.set_id(med_order_id);
@@ -321,6 +323,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         String route = bundle.getString(MedicationOrderEditActivity.ROUTE);
         boolean prnChecked = bundle.getBoolean(MedicationOrderEditActivity.PRN);
         String start_time = bundle.getString(MedicationOrderEditActivity.START_TIME);
+        String notes = bundle.getString(MedicationOrderEditActivity.ORDER_NOTES);
 
         MedicationDict medicationDict = new MedicationDict();
         medicationDict.setName(name);
@@ -342,6 +345,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrder.setRoute(route);
         medicationOrder.setPRNIndicator(prnChecked ? 1 : 0);
         medicationOrder.setStart_time(start_time);
+        medicationOrder.setNotes(notes);
 
         medicationOrderService.updateMedicationOrder(medicationOrder);
         medicationOrderListAdapter.updateMedicationOrder(selectedMedicationOrderPosition, medicationOrder);
