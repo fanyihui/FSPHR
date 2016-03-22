@@ -108,6 +108,8 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS, medicationOrder.getStatus());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES, medicationOrder.getNotes());
 
+        //TODO add code here save the reminder times to database
+
         int id = (int) fsPhrDB.insert(PhrSchemaContract.MedicationOrderTable.TABLE_NAME, values);
 
         return id;

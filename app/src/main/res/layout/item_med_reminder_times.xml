@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/id_med_reminder_seq"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="第1次" />
+
+    <TextView
+        android:id="@+id/id_med_reminder_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/grid_view_column_width"
+        android:text="8:00"
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:textSize="@dimen/font_size_big"/>
+</LinearLayout>

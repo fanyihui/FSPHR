@@ -2,7 +2,7 @@ package com.fansen.phr.service.implementation;
 
 import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
-import com.fansen.phr.entity.MARScheduledTime;
+import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.service.IMedicationAdminRecordService;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class MedicationAdminRecordServiceLocalImpl implements IMedicationAdminRecordService{
     @Override
-    public MedicationAdminRecord getMAR(MedicationOrder medicationOrder, MARScheduledTime MARScheduledTime) {
+    public MedicationAdminRecord getMAR(MedicationOrder medicationOrder, MedicationReminderTimes MedicationReminderTimes) {
         return null;
     }
 

@@ -10,7 +10,7 @@ public class MedicationAdminRecord implements Serializable{
     private int _id;
     private String status;
     private Date adminDate;
-    private MARScheduledTime MARScheduledTime;
+    private MedicationReminderTimes MedicationReminderTimes;
     private MedicationOrder medicationOrder;
 
     public int get_id() {
@@ -37,12 +37,12 @@ public class MedicationAdminRecord implements Serializable{
         this.adminDate = adminDate;
     }
 
-    public MARScheduledTime getMARScheduledTime() {
-        return MARScheduledTime;
+    public MedicationReminderTimes getMedicationReminderTimes() {
+        return MedicationReminderTimes;
     }
 
-    public void setMARScheduledTime(MARScheduledTime MARScheduledTime) {
-        this.MARScheduledTime = MARScheduledTime;
+    public void setMedicationReminderTimes(MedicationReminderTimes medicationReminderTimes) {
+        this.MedicationReminderTimes = medicationReminderTimes;
     }
 
     public MedicationOrder getMedicationOrder() {

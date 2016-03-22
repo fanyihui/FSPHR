@@ -21,7 +21,7 @@ public class MedicationOrder implements Serializable{
     private String start_time;
     private String status;
     private String notes;
-    private ArrayList<MARScheduledTime> MARScheduledTimes;
+    private ArrayList<MedicationReminderTimes> MedicationReminderTimes;
 
     public MedicationDict getMedication() {
         return medication;
@@ -135,11 +135,11 @@ public class MedicationOrder implements Serializable{
         this.notes = notes;
     }
 
-    public ArrayList<MARScheduledTime> getMARScheduledTimes() {
-        return MARScheduledTimes;
+    public ArrayList<MedicationReminderTimes> getMedicationReminderTimes() {
+        return MedicationReminderTimes;
     }
 
-    public void setMARScheduledTimes(ArrayList<MARScheduledTime> MARScheduledTimes) {
-        this.MARScheduledTimes = MARScheduledTimes;
+    public void setMedicationReminderTimes(ArrayList<MedicationReminderTimes> medicationReminderTimes) {
+        this.MedicationReminderTimes = medicationReminderTimes;
     }
 }

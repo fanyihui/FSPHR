@@ -1,6 +1,7 @@
 package com.fansen.phr.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,20 +14,27 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
+import com.fansen.phr.adapter.MedicationReminderAdapter;
+import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
 import com.fansen.phr.utils.SpinnerUtil;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class MedicationOrderEditActivity extends AppCompatActivity {
+    private Context context;
+
     public static final String MED_NAME = "medication_name";
     public static final String MED_SPEC = "medication_spec";
     public static final String QUANTITY = "quantity";
@@ -40,6 +48,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     public static final String PRN = "prn";
     public static final String START_TIME = "start_time";
     public static final String ORDER_NOTES = "order_notes";
+    public static final String REMINDER_TIMES = "reminder_times";
 
 
     private EditText medicationNameEditText;
@@ -55,6 +64,10 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     private CheckBox prnCheckBox;
     private TextView startTimeTextView;
     private EditText notesEditText;
+    private ListView reminderTimes;
+
+    private MedicationReminderAdapter medicationReminderAdapter;
+    private ArrayList<MedicationReminderTimes> reminderTimeList = new ArrayList<>();
 
     private Calendar cal = Calendar.getInstance();
 
@@ -73,6 +86,8 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+
         setContentView(R.layout.activity_medication_order_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,6 +102,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
         });
 
         //initial all UI elements
+        reminderTimes = (ListView) findViewById(R.id.id_med_order_edit_reminder_time_setting);
         medicationNameEditText = (EditText) findViewById(R.id.id_med_order_edit_name);
         medicationSpecEditText = (EditText) findViewById(R.id.id_med_order_edit_spec);
         quantityEditText = (EditText) findViewById(R.id.id_med_order_edit_quantity);
@@ -95,9 +111,11 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
         intervalUnitSpinner = (Spinner) findViewById(R.id.id_med_order_edit_frequency_interval_unit);
         frequencyTimesEditText = (EditText) findViewById(R.id.id_med_order_edit_frequency_times);
         frequencyTimesEditText.addTextChangedListener(new TextWatcher() {
+            String priorStr;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                priorStr = s.toString();
             }
 
             @Override
@@ -107,7 +125,22 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                String value = frequencyTimesEditText.getText().toString();
 
+                if((!value.equals("")) && (!value.equals(priorStr))){
+                    reminderTimeList = new ArrayList<>();
+
+                    int freqTimes = Integer.valueOf(frequencyTimesEditText.getText().toString());
+                    for (int i=0; i<freqTimes; i++){
+                        MedicationReminderTimes medicationReminderTimes = new MedicationReminderTimes();
+                        medicationReminderTimes.setSequenceNumber(i+1);
+                        medicationReminderTimes.setReminderTime("08:00");
+                        reminderTimeList.add(medicationReminderTimes);
+                    }
+
+                    medicationReminderAdapter = new MedicationReminderAdapter(context, reminderTimeList);
+                    reminderTimes.setAdapter(medicationReminderAdapter);
+                }
             }
         });
 
@@ -148,6 +181,8 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             SpinnerUtil.setSpinnerItemSelectedByValue(routeSpinner, medicationOrder.getRoute());
             prnCheckBox.setChecked(medicationOrder.getPRNIndicator() == 1);
             notesEditText.setText(medicationOrder.getNotes());
+
+            //TODO add code here to initial the reminder times from database.
         }
     }
 
@@ -190,6 +225,8 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
             bundle.putBoolean(PRN, prnChecked);
             bundle.putString(START_TIME, start_time);
             bundle.putString(ORDER_NOTES, notes);
+            bundle.putSerializable(REMINDER_TIMES, reminderTimeList);
+
 
             intent.putExtras(bundle);
             setResult(RESULT_OK, intent);
