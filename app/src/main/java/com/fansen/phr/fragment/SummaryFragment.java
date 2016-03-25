@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,16 +18,20 @@ import com.fansen.phr.R;
 import com.fansen.phr.activities.EncounterCoreInfoActivity;
 import com.fansen.phr.adapter.MarListAdapter;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.MarStatus;
+import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.utils.TextUtil;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Yihui Fan on 2015/10/10.
  */
-public class SummaryFragment extends Fragment {
+public class SummaryFragment extends Fragment implements MarListAdapter.OnMarStatusChanged{
     Context context;
     private OnSummaryFragmentInteractionListener onSummaryFragmentInteractionListener;
 
@@ -86,7 +91,24 @@ public class SummaryFragment extends Fragment {
             medicationOrders = new ArrayList<>();
         }
 
-        marListAdapter = new MarListAdapter(context, medicationOrders);
+        ArrayList<MedicationAdminRecord> medicationAdminRecords = new ArrayList<>();
+
+        for (int i=0; i<medicationOrders.size();i++){
+            MedicationOrder medicationOrder = medicationOrders.get(i);
+            ArrayList<MedicationReminderTimes> reminderTimes = medicationOrder.getMedicationReminderTimes();
+
+            for (int j=0;j<reminderTimes.size();j++){
+                MedicationAdminRecord medicationAdminRecord = new MedicationAdminRecord();
+                medicationAdminRecord.setMedicationOrder(medicationOrder);
+                medicationAdminRecord.setMedicationReminderTimes(reminderTimes.get(j));
+                medicationAdminRecord.setStatus(MarStatus.UNTAKEN.getName());
+
+                medicationAdminRecords.add(medicationAdminRecord);
+            }
+
+        }
+
+        marListAdapter = new MarListAdapter(context, this, medicationAdminRecords);
     }
 
     @Override
@@ -174,7 +196,24 @@ public class SummaryFragment extends Fragment {
         vDiagnosis.setText(TextUtil.convertDiagnosisListToString(latestEncounter.getDiagnosisList(), EncounterCoreInfoActivity.DELIMITER));
     }
 
+    @Override
+    public void onMarTaken(MedicationAdminRecord medicationAdminRecord) {
+        medicationAdminRecord.setStatus(MarStatus.TAKEN.getName());
+        medicationAdminRecord.setAdminDate(new Date());
+
+        onSummaryFragmentInteractionListener.onMedicationTaken(medicationAdminRecord);
+    }
+
+    @Override
+    public void onMarUntaken(MedicationAdminRecord medicationAdminRecord) {
+        medicationAdminRecord.setStatus(MarStatus.UNTAKEN.getName());
+
+        onSummaryFragmentInteractionListener.onMedicationUntaken(medicationAdminRecord);
+    }
+
     public interface OnSummaryFragmentInteractionListener {
         public void onLatestEncounterClicked(Encounter encounter);
+        public void onMedicationTaken(MedicationAdminRecord medicationAdminRecord);
+        public void onMedicationUntaken(MedicationAdminRecord medicationAdminRecord);
     }
 }

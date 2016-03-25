@@ -12,9 +12,13 @@ import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import com.fansen.phr.R;
+import com.fansen.phr.entity.MarStatus;
+import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Yihui Fan on 2015/12/10.
@@ -22,12 +26,14 @@ import java.util.ArrayList;
 public class MarListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
+    private OnMarStatusChanged onMarStatusChanged;
 
-    private ArrayList<MedicationOrder> medicationOrderArrayList = new ArrayList<>();
+    private ArrayList<MedicationAdminRecord> medicationOrderArrayList = new ArrayList<>();
 
-    public MarListAdapter(Context context, ArrayList<MedicationOrder> medicationOrderArrayList) {
+    public MarListAdapter(Context context, OnMarStatusChanged onMarStatusChanged, ArrayList<MedicationAdminRecord> medicationOrderArrayList) {
         this.context = context;
         this.medicationOrderArrayList = medicationOrderArrayList;
+        this.onMarStatusChanged = onMarStatusChanged;
 
         layoutInflater = LayoutInflater.from(context);
     }
@@ -48,9 +54,9 @@ public class MarListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        MedicationOrder medicationOrder = medicationOrderArrayList.get(position);
+        final MedicationAdminRecord medicationAdminRecord = medicationOrderArrayList.get(position);
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.item_mar_layout, null);
@@ -58,12 +64,17 @@ public class MarListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.vMarMedName = (TextView) convertView.findViewById(R.id.id_mar_med_name);
             viewHolder.vMarMedDosage = (TextView) convertView.findViewById(R.id.id_mar_dosage);
-            viewHolder.vTimeslot = (TextView) convertView.findViewById(R.id.id_mar_datetime_slot);
+            viewHolder.vTimeslot = (TextView) convertView.findViewById(R.id.id_mar_item_timeslot);
             viewHolder.switchButton = (ToggleButton) convertView.findViewById(R.id.item_mar_taken_btn);
+
             viewHolder.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //TODO add code here to
+                    if(isChecked){
+                        onMarStatusChanged.onMarTaken(medicationAdminRecord);
+                    } else{
+                        onMarStatusChanged.onMarUntaken(medicationAdminRecord);
+                    }
                 }
             });
 
@@ -72,8 +83,9 @@ public class MarListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.vMarMedName.setText(medicationOrder.getMedication().getName());
-        viewHolder.vMarMedDosage.setText(medicationOrder.getDosage()+medicationOrder.getDosage_unit());
+        viewHolder.vMarMedName.setText(medicationAdminRecord.getMedicationOrder().getMedication().getName());
+        viewHolder.vMarMedDosage.setText(medicationAdminRecord.getMedicationOrder().getDosage()+medicationAdminRecord.getMedicationOrder().getDosage_unit());
+        viewHolder.vTimeslot.setText(medicationAdminRecord.getMedicationReminderTimes().getReminderTime());
 
         return convertView;
     }
@@ -84,5 +96,10 @@ public class MarListAdapter extends BaseAdapter {
         protected TextView vTimeslot;
         protected ToggleButton switchButton;
         //protected TextView vStatus;
+    }
+
+    public interface OnMarStatusChanged{
+        public void onMarTaken(MedicationAdminRecord medicationAdminRecord);
+        public void onMarUntaken(MedicationAdminRecord medicationAdminRecord);
     }
 }

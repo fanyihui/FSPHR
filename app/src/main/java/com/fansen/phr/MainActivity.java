@@ -23,7 +23,9 @@ import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.entity.Organization;
 import com.fansen.phr.entity.Physician;
 import com.fansen.phr.fragment.CarePlanFragment;
@@ -33,14 +35,18 @@ import com.fansen.phr.service.IDepartmentService;
 import com.fansen.phr.service.IDiagnosisDictService;
 import com.fansen.phr.service.IDiagnosisService;
 import com.fansen.phr.service.IEncounterService;
+import com.fansen.phr.service.IMedicationAdminRecordService;
 import com.fansen.phr.service.IMedicationOrderService;
+import com.fansen.phr.service.IMedicationReminderService;
 import com.fansen.phr.service.IOrganizationService;
 import com.fansen.phr.service.IPhysicianService;
 import com.fansen.phr.service.implementation.DepartmentServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.DiagnosisServiceLocalImpl;
 import com.fansen.phr.service.implementation.EncounterServiceLocalImpl;
+import com.fansen.phr.service.implementation.MedicationAdminRecordServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationOrderServiceLocalImpl;
+import com.fansen.phr.service.implementation.MedicationReminderServiceLocalImpl;
 import com.fansen.phr.service.implementation.OrganizationServiceLocalImpl;
 import com.fansen.phr.service.implementation.PhysicianServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
@@ -74,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private IDiagnosisDictService diagnosisDictService = null;
     private IPhysicianService physicianService = null;
     private IMedicationOrderService medicationOrderService = null;
+    private IMedicationReminderService reminderService = null;
+    private IMedicationAdminRecordService medicationAdminRecordService = null;
 
     private PhrFragment phrFragment;
     private SummaryFragment summaryFragment;
@@ -94,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         diagnosisDictService = new DiagnosisDictServiceLocalImpl(context);
         physicianService = new PhysicianServiceLocalImpl(context);
         medicationOrderService = new MedicationOrderServiceLocalImpl(context);
+        reminderService = new MedicationReminderServiceLocalImpl(context);
+        medicationAdminRecordService = new MedicationAdminRecordServiceLocalImpl(context);
 
         fabAdd = (FloatingActionButton) findViewById(R.id.action_add);
         addOutpatient = (FloatingActionButton) findViewById(R.id.action_add_op);
@@ -133,6 +143,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Encounter latestEncounter = encounterService.getLatestEncounter();
         ArrayList<MedicationOrder> medicationOrders = medicationOrderService.getAllActiveMedicationOrders();
+
+        for (int i=0;i<medicationOrders.size();i++){
+            //TODO add code here to get all reminders time for each order
+
+            MedicationOrder medicationOrder = medicationOrders.get(i);
+            int id = medicationOrder.get_id();
+
+            ArrayList<MedicationReminderTimes> reminderTimes = reminderService.getReminderTimes(id);
+            medicationOrder.setMedicationReminderTimes(reminderTimes);
+        }
 
         phrFragment = PhrFragment.newInstance();
         summaryFragment = SummaryFragment.newInstance(latestEncounter, medicationOrders);
@@ -328,6 +348,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onEncounterListClicked(Encounter encounter) {
         openEncounterDetails(encounter);
+    }
+
+    @Override
+    public void onMedicationTaken(MedicationAdminRecord medicationAdminRecord) {
+        //TODO add code here to save the MAR to database
+        int id = medicationAdminRecordService.takenMedication(medicationAdminRecord);
+        medicationAdminRecord.set_id(id);
+    }
+
+    @Override
+    public void onMedicationUntaken(MedicationAdminRecord medicationAdminRecord) {
+        int id = medicationAdminRecord.get_id();
+        medicationAdminRecordService.unTakenMedication(id);
     }
 
     private void openEncounterDetails(Encounter encounter){

@@ -31,6 +31,7 @@ import com.fansen.phr.entity.ClinicalDocumentType;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.MedicationDict;
 import com.fansen.phr.entity.MedicationOrder;
+import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.entity.OrderStatus;
 import com.fansen.phr.service.IClinicalDocumentService;
 import com.fansen.phr.service.IMedicationDictService;
@@ -39,6 +40,7 @@ import com.fansen.phr.service.IMedicationReminderService;
 import com.fansen.phr.service.implementation.ClinicalDocumentServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationDictServiceLocalImpl;
 import com.fansen.phr.service.implementation.MedicationOrderServiceLocalImpl;
+import com.fansen.phr.service.implementation.MedicationReminderServiceLocalImpl;
 import com.fansen.phr.utils.DensityUtil;
 import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.ImageUtil;
@@ -91,6 +93,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     private IMedicationOrderService medicationOrderService;
     private IMedicationDictService medicationDictService;
     private IClinicalDocumentService clinicalDocumentService;
+    private IMedicationReminderService medicationReminderService;
 
     private Encounter encounter;
 
@@ -131,6 +134,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrderService = new MedicationOrderServiceLocalImpl(context);
         medicationDictService = new MedicationDictServiceLocalImpl(context);
         clinicalDocumentService = new ClinicalDocumentServiceLocalImpl(context);
+        medicationReminderService = new MedicationReminderServiceLocalImpl(context);
 
         columnWidth = DensityUtil.dip2px(context, getResources().getDimension(R.dimen.grid_view_column_width));
 
@@ -281,7 +285,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         boolean prnChecked = bundle.getBoolean(MedicationOrderEditActivity.PRN);
         String start_time = bundle.getString(MedicationOrderEditActivity.START_TIME);
         String notes = bundle.getString(MedicationOrderEditActivity.ORDER_NOTES);
-        ArrayList<String> reminderTimes = bundle.getStringArrayList(MedicationOrderEditActivity.REMINDER_TIMES);
+        ArrayList<MedicationReminderTimes> reminderTimes = (ArrayList)bundle.getSerializable(MedicationOrderEditActivity.REMINDER_TIMES);
 
         MedicationOrder medicationOrder = new MedicationOrder();
         MedicationDict medicationDict = new MedicationDict();
@@ -304,10 +308,12 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrder.setStart_time(start_time);
         medicationOrder.setStatus(OrderStatus.ACTIVE.getName());
         medicationOrder.setNotes(notes);
-        //TODO add code here to set the reminder times for medication order
+        medicationOrder.setMedicationReminderTimes(reminderTimes);
 
         int med_order_id = medicationOrderService.addMedicationOrder(encounter.getEncounter_key(), medicationOrder);
         medicationOrder.set_id(med_order_id);
+
+        medicationReminderService.addReminderTimes(med_order_id, reminderTimes);
 
         medicationOrderListAdapter.addMedicationOrder(medicationOrder);
     }
@@ -327,7 +333,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         boolean prnChecked = bundle.getBoolean(MedicationOrderEditActivity.PRN);
         String start_time = bundle.getString(MedicationOrderEditActivity.START_TIME);
         String notes = bundle.getString(MedicationOrderEditActivity.ORDER_NOTES);
-        ArrayList<String> reminderTimes = bundle.getStringArrayList(MedicationOrderEditActivity.REMINDER_TIMES);
+        ArrayList<MedicationReminderTimes> reminderTimes = (ArrayList)bundle.getStringArrayList(MedicationOrderEditActivity.REMINDER_TIMES);
 
 
         MedicationDict medicationDict = new MedicationDict();
@@ -351,9 +357,11 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         medicationOrder.setPRNIndicator(prnChecked ? 1 : 0);
         medicationOrder.setStart_time(start_time);
         medicationOrder.setNotes(notes);
-        //medicationOrder.setMedicationReminderTimes();
+        medicationOrder.setMedicationReminderTimes(reminderTimes);
 
         medicationOrderService.updateMedicationOrder(medicationOrder);
+        medicationReminderService.updateReminderTimes(medicationOrder.get_id(), reminderTimes);
+
         medicationOrderListAdapter.updateMedicationOrder(selectedMedicationOrderPosition, medicationOrder);
     }
 

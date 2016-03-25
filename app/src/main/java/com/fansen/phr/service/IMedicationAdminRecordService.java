@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IMedicationAdminRecordService {
     public MedicationAdminRecord getMAR(MedicationOrder medicationOrder, MedicationReminderTimes MedicationReminderTimes);
-    public void takenMedication(int _id);
+    public int takenMedication(MedicationAdminRecord medicationAdminRecord);
     public void unTakenMedication(int _id);
     public List<MedicationAdminRecord> getExpiredMedication();
 }
