@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,7 +35,7 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
     private OnSummaryFragmentInteractionListener onSummaryFragmentInteractionListener;
 
     public static final String BUNDLE_KEY_LATEST_ENCOUNTER = "latest_encounter";
-    public static final String BUNDLE_KEY_MED_ORDER_LIST = "medication_orders";
+    public static final String BUNDLE_KEY_MED_ORDER_REMINDER_LIST = "medication_order_reminders";
 
     private RelativeLayout summaryView;
     private CardView latestEncounterCardView;
@@ -56,15 +55,15 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
     private Encounter latestEncounter;
 
     private MarListAdapter marListAdapter;
-    private ArrayList<MedicationOrder> medicationOrders;
+    private ArrayList<MedicationReminderTimes> medicationOrderReminders;
 
-    public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationOrder> medicationOrders){
+    public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationReminderTimes> medicationOrderReminders){
         SummaryFragment summaryFragment = new SummaryFragment();
 
         if(encounter != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, encounter);
-            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_LIST, medicationOrders);
+            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST, medicationOrderReminders);
             summaryFragment.setArguments(bundle);
         }
 
@@ -84,28 +83,24 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
         Bundle bundle = getArguments();
         if (bundle != null){
             latestEncounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_LATEST_ENCOUNTER);
-            medicationOrders = (ArrayList<MedicationOrder>) bundle.getSerializable(BUNDLE_KEY_MED_ORDER_LIST);
+            medicationOrderReminders = (ArrayList<MedicationReminderTimes>) bundle.getSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST);
         }
 
-        if (medicationOrders == null){
-            medicationOrders = new ArrayList<>();
+        if (medicationOrderReminders == null){
+            medicationOrderReminders = new ArrayList<>();
         }
 
         ArrayList<MedicationAdminRecord> medicationAdminRecords = new ArrayList<>();
 
-        for (int i=0; i<medicationOrders.size();i++){
-            MedicationOrder medicationOrder = medicationOrders.get(i);
-            ArrayList<MedicationReminderTimes> reminderTimes = medicationOrder.getMedicationReminderTimes();
+        for (int i=0; i<medicationOrderReminders.size();i++) {
+            MedicationReminderTimes reminderTimes = medicationOrderReminders.get(i);
 
-            for (int j=0;j<reminderTimes.size();j++){
-                MedicationAdminRecord medicationAdminRecord = new MedicationAdminRecord();
-                medicationAdminRecord.setMedicationOrder(medicationOrder);
-                medicationAdminRecord.setMedicationReminderTimes(reminderTimes.get(j));
-                medicationAdminRecord.setStatus(MarStatus.UNTAKEN.getName());
+            MedicationAdminRecord medicationAdminRecord = new MedicationAdminRecord();
+            medicationAdminRecord.setMedicationReminderTimes(reminderTimes);
+            medicationAdminRecord.setStatus(MarStatus.UNTAKEN.getName());
+            medicationAdminRecord.setMedicationOrder(reminderTimes.getMedicationOrder());
 
-                medicationAdminRecords.add(medicationAdminRecord);
-            }
-
+            medicationAdminRecords.add(medicationAdminRecord);
         }
 
         marListAdapter = new MarListAdapter(context, this, medicationAdminRecords);

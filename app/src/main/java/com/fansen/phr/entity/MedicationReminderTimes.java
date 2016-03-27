@@ -12,6 +12,7 @@ public class MedicationReminderTimes implements Serializable{
     private int _id;
     private int sequenceNumber;
     private String reminderTime;
+    private MedicationOrder medicationOrder;
 
     public int get_id() {
         return _id;
@@ -35,5 +36,13 @@ public class MedicationReminderTimes implements Serializable{
 
     public void setReminderTime(String reminderTime) {
         this.reminderTime = reminderTime;
+    }
+
+    public MedicationOrder getMedicationOrder() {
+        return medicationOrder;
+    }
+
+    public void setMedicationOrder(MedicationOrder medicationOrder) {
+        this.medicationOrder = medicationOrder;
     }
 }

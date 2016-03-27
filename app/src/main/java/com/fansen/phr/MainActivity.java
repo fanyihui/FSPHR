@@ -142,20 +142,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         Encounter latestEncounter = encounterService.getLatestEncounter();
-        ArrayList<MedicationOrder> medicationOrders = medicationOrderService.getAllActiveMedicationOrders();
+        /*ArrayList<MedicationOrder> medicationOrders = medicationOrderService.getAllActiveMedicationOrders();
 
         for (int i=0;i<medicationOrders.size();i++){
-            //TODO add code here to get all reminders time for each order
-
             MedicationOrder medicationOrder = medicationOrders.get(i);
             int id = medicationOrder.get_id();
 
             ArrayList<MedicationReminderTimes> reminderTimes = reminderService.getReminderTimes(id);
             medicationOrder.setMedicationReminderTimes(reminderTimes);
-        }
+        }*/
+
+        ArrayList<MedicationReminderTimes> reminderTimes = reminderService.getAllActiveMedicationReminders();
 
         phrFragment = PhrFragment.newInstance();
-        summaryFragment = SummaryFragment.newInstance(latestEncounter, medicationOrders);
+        summaryFragment = SummaryFragment.newInstance(latestEncounter, reminderTimes);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

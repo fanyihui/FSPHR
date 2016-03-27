@@ -87,6 +87,12 @@ public class MarListAdapter extends BaseAdapter {
         viewHolder.vMarMedDosage.setText(medicationAdminRecord.getMedicationOrder().getDosage()+medicationAdminRecord.getMedicationOrder().getDosage_unit());
         viewHolder.vTimeslot.setText(medicationAdminRecord.getMedicationReminderTimes().getReminderTime());
 
+        if(medicationAdminRecord.getStatus().equals(MarStatus.TAKEN.getName())){
+            viewHolder.switchButton.setChecked(true);
+        } else {
+            viewHolder.switchButton.setChecked(false);
+        }
+
         return convertView;
     }
 

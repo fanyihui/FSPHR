@@ -1,5 +1,6 @@
 package com.fansen.phr.service;
 
+import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationReminderTimes;
 
 import java.util.ArrayList;
@@ -11,4 +12,5 @@ public interface IMedicationReminderService {
     public ArrayList<MedicationReminderTimes> getReminderTimes(int orderId);
     public void addReminderTimes(int orderId, ArrayList<MedicationReminderTimes> reminderTimes);
     public void updateReminderTimes(int orderId, ArrayList<MedicationReminderTimes> reminderTimes);
+    public ArrayList<MedicationReminderTimes> getAllActiveMedicationReminders();
 }
