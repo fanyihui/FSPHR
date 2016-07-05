@@ -70,6 +70,10 @@ public class MarListAdapter extends BaseAdapter {
             viewHolder.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!buttonView.isPressed()){
+                        return;
+                    }
+
                     if(isChecked){
                         onMarStatusChanged.onMarTaken(medicationAdminRecord);
                     } else{
@@ -87,10 +91,11 @@ public class MarListAdapter extends BaseAdapter {
         viewHolder.vMarMedDosage.setText(medicationAdminRecord.getMedicationOrder().getDosage()+medicationAdminRecord.getMedicationOrder().getDosage_unit());
         viewHolder.vTimeslot.setText(medicationAdminRecord.getMedicationReminderTimes().getReminderTime());
 
-        if(medicationAdminRecord.getStatus().equals(MarStatus.TAKEN.getName())){
-            viewHolder.switchButton.setChecked(true);
-        } else {
+        if(medicationAdminRecord.getStatus() == null || medicationAdminRecord.getStatus().equals(MarStatus.UNTAKEN.getName()))
+        {
             viewHolder.switchButton.setChecked(false);
+        } else {
+            viewHolder.switchButton.setChecked(true);
         }
 
         return convertView;
@@ -102,6 +107,11 @@ public class MarListAdapter extends BaseAdapter {
         protected TextView vTimeslot;
         protected ToggleButton switchButton;
         //protected TextView vStatus;
+    }
+
+    public void updateMar(ArrayList<MedicationAdminRecord> medicationAdminRecords){
+        this.medicationOrderArrayList = medicationAdminRecords;
+        notifyDataSetChanged();
     }
 
     public interface OnMarStatusChanged{

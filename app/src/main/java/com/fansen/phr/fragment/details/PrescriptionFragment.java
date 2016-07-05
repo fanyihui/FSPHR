@@ -56,7 +56,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PrescriptionFragment.OnFragmentInteractionListener} interface
+ * {@link PrescriptionFragment.OnPrescriptionFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link PrescriptionFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -86,7 +86,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
 
     private SelectPicPopWindow popWindow;
 
-    private OnFragmentInteractionListener mListener;
+    private OnPrescriptionFragmentInteractionListener prescriptionFragmentInteractionListener;
 
     private Context context;
 
@@ -222,6 +222,24 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            prescriptionFragmentInteractionListener = (OnPrescriptionFragmentInteractionListener) context;
+        } catch (ClassCastException cce){
+            throw new ClassCastException(context.toString()
+                    +" must implement OnPrescriptionFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        prescriptionFragmentInteractionListener = null;
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -249,9 +267,9 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnPrescriptionFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onPrescriptionChanged();
     }
 
     @Override
@@ -259,8 +277,10 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ADD_MED_REQUEST) {
                 handleNewMedOrder(data);
+                prescriptionFragmentInteractionListener.onPrescriptionChanged();
             } else if (requestCode == EDIT_MED_REQUEST) {
                 handleEditMedOrder(data);
+                prescriptionFragmentInteractionListener.onPrescriptionChanged();
             } else if (requestCode == TAKE_IMAGE_REQUEST) {
                 handleCameraPhoto();
             } else if (requestCode == SELECT_IMAGE_REQUEST) {
@@ -422,7 +442,7 @@ public class PrescriptionFragment extends Fragment implements View.OnClickListen
         clinicalDocument.setCaptureImageUri(filePath);
         clinicalDocument.setThumbnailImageUri(thumFilePath);
         clinicalDocument.setDocumentType(ClinicalDocumentType.PRESCRIPTION.getName());
-        clinicalDocument.setCreatingDate(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        clinicalDocument.setCreatingDate(TimeFormat.parseDate(new Date()));
 
         int id = clinicalDocumentService.addClinicalDocument(encounter.getEncounter_key(), clinicalDocument);
         clinicalDocument.set_id(id);

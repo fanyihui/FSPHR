@@ -79,7 +79,7 @@ public class DiagnosticImagingReportServiceLocalImpl extends BaseServiceLocal im
             dir.setFindings(c.getString(c.getColumnIndex(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_FINDINGS)));
             dir.setRecommendation(c.getString(c.getColumnIndex(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RECOMMENDATION)));
             dir.setResult(c.getString(c.getColumnIndex(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RESULT)));
-            dir.setRequestedProcedureDate(TimeFormat.format("yyyyMMdd", c.getString(c.getColumnIndex(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_DATE))));
+            dir.setRequestedProcedureDate(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_DATE))));
 
             List<DiagnosticImage> diagnosticImages = diagnosticImageService.getDiagnosticImages(id);
             dir.setDiagnosticImages(diagnosticImages);
@@ -104,7 +104,7 @@ public class DiagnosticImagingReportServiceLocalImpl extends BaseServiceLocal im
         String result = diagnosticImagingReport.getResult();
         String recommendation = diagnosticImagingReport.getRecommendation();
         int rp_type_key = diagnosticImagingReport.getRequestedProcedureTypeDef().get_id();
-        String date = TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate(), "yyyyMMdd");
+        String date = TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate());
         String modality = diagnosticImagingReport.getModality();
         int body_part_key = diagnosticImagingReport.getBodypart().get_id();
 
@@ -132,7 +132,7 @@ public class DiagnosticImagingReportServiceLocalImpl extends BaseServiceLocal im
         cv.put(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_RECOMMENDATION, diagnosticImagingReport.getRecommendation());
         cv.put(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_FINDINGS, diagnosticImagingReport.getFindings());
         cv.put(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_MODALITY, diagnosticImagingReport.getModality());
-        cv.put(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_DATE, TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate(), "yyyyMMdd"));
+        cv.put(PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_DATE, TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate()));
 
         String[] args = {String.valueOf(diagnosticImagingReport.get_id())};
 

@@ -7,7 +7,6 @@ import android.database.Cursor;
 import com.fansen.phr.PhrSchemaContract;
 import com.fansen.phr.entity.Department;
 import com.fansen.phr.entity.Diagnosis;
-import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
 import com.fansen.phr.entity.Physician;
@@ -32,8 +31,8 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
     }
 
     @Override
-    public List<Encounter> getAllEncounters() {
-        List<Encounter> encounters = new ArrayList<Encounter>();
+    public ArrayList<Encounter> getAllEncounters() {
+        ArrayList<Encounter> encounters = new ArrayList<Encounter>();
 
         String ent_sql = "select " + PhrSchemaContract.EncounterTable.TABLE_NAME+"."+PhrSchemaContract.EncounterTable._ID + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + "," +
@@ -85,7 +84,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             encounter.setChiefComplaint(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_CHIEF_COMPLAINT)));
             encounter.setDepartment(dept);
             encounter.setOrg(org);
-            encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
+            encounter.setAdmit_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
             encounter.setEncounter_key(ent_key);
             //encounter.setPrimaryDiagnosis(dictDiagnosis);
             encounter.setAttendingDoctor(physician);
@@ -108,7 +107,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
     @Override
     public long addNewEncounter(Encounter encounter) {
         ContentValues values = new ContentValues();
-        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE, TimeFormat.parseDate(encounter.getAdmit_date(), "yyyyMMdd"));
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE, TimeFormat.parseDate(encounter.getAdmit_date()));
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY, encounter.getOrg().getOrg_key());
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY, encounter.getDepartment().getDepartment_key());
         //values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY, encounter.getPrimaryDiagnosis().getKey());
@@ -265,7 +264,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
                 " where encounter.org_key=organization._id and " +
                 "encounter.dpt_key=department._id and "+
                 "encounter.attending_doctor_key=physician._id"+
-                " order by "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE +" desc LIMIT 1";;
+                " order by "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE +" desc LIMIT 1";
 
         Cursor c = fsPhrDB.rawQuery(ent_sql);
 
@@ -295,7 +294,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         encounter.setChiefComplaint(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_CHIEF_COMPLAINT)));
         encounter.setDepartment(dept);
         encounter.setOrg(org);
-        encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
+        encounter.setAdmit_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
         encounter.setEncounter_key(ent_key);
         encounter.setAttendingDoctor(physician);
 

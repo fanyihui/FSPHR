@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.entity.BodyPartDef;
-import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.DiagnosticImagingReport;
 import com.fansen.phr.entity.Encounter;
@@ -49,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EncounterDetailActivity extends AppCompatActivity implements DiagnosticImagingReportListFragment.OnDIRItemSelectedListener,
-        LabResultFragment.OnLabResultFragmentInteractionListener{
+        LabResultFragment.OnLabResultFragmentInteractionListener, PrescriptionFragment.OnPrescriptionFragmentInteractionListener{
     public static final int ADD_DIR_REQUEST_CODE = 1000;
     public static final int EDIT_DIR_REQUEST_CODE = 1001;
     public static final int ADD_LAB_REPORT_REQUEST_CODE = 1002;
@@ -57,6 +56,7 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
 
     public static final String BUNDLE_KEY_SELECTED_ENCOUNTER = "selected_encounter";
     public static final String BUNDLE_KEY_SELECTED_REPORT = "selected_di_report";
+    public static final String BUNDLE_KEY_PRESCRIPTION_CHANGED = "prescription_changed";
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -78,6 +78,7 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
     private Encounter selectedEncounter;
     private int currentImagingReportItemPosition = 0;
     private int currentLabReportItemPosition = 0;
+    private boolean isPrescriptionChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,13 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Intent data = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(BUNDLE_KEY_PRESCRIPTION_CHANGED, isPrescriptionChanged);
+                data.putExtras(bundle);
+
+                setResult(RESULT_OK, data);
+
                 finish();
             }
         });
@@ -118,16 +126,16 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        textDepartmentView = (TextView) findViewById(R.id.ent_dept);
-        textOrgView = (TextView) findViewById(R.id.ent_org);
-        textAdmitDateView = (TextView) findViewById(R.id.ent_date);
+        //textDepartmentView = (TextView) findViewById(R.id.ent_dept);
+        //textOrgView = (TextView) findViewById(R.id.ent_org);
+        //textAdmitDateView = (TextView) findViewById(R.id.ent_date);
         //textDiagnosis = (TextView) findViewById(R.id.id_ent_primary_diagnosis);
-        textAttendingDoctor = (TextView) findViewById(R.id.id_bar_attending_doct);
+        //textAttendingDoctor = (TextView) findViewById(R.id.id_bar_attending_doct);
 
-        textAdmitDateView.setText(TimeFormat.parseDate(selectedEncounter.getAdmit_date(), "yyyyMMdd"));
-        textOrgView.setText(selectedEncounter.getOrg().getOrg_name());
-        textDepartmentView.setText(selectedEncounter.getDepartment().getName());
-        textAttendingDoctor.setText(selectedEncounter.getAttendingDoctor().getPhysicianName());
+        //textAdmitDateView.setText(TimeFormat.parseDate(selectedEncounter.getAdmit_date()));
+        //textOrgView.setText(selectedEncounter.getOrg().getOrg_name());
+        //textDepartmentView.setText(selectedEncounter.getDepartment().getName());
+        //textAttendingDoctor.setText(selectedEncounter.getAttendingDoctor().getPhysicianName());
 
         /*List<Diagnosis> diagnosises = selectedEncounter.getDiagnosis();
         StringBuffer stringBuffer = new StringBuffer();
@@ -351,6 +359,11 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
 
         List<DiagnosticImage> diagnosticImages = diagnosticImagingReport.getDiagnosticImages();
         diagnosticImageService.addDiagnosticImages(diagnosticImagingReport.get_id(), diagnosticImages);
+    }
+
+    @Override
+    public void onPrescriptionChanged() {
+        isPrescriptionChanged = true;
     }
 
     /**

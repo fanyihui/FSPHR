@@ -80,7 +80,7 @@ public class DiagnosticImagingReportListAdapter extends RecyclerView.Adapter<Dia
             holder.diImageView.setImageBitmap(FileUtil.encodeBytesToBitmap(bytes));
         }
 
-        holder.diDateTextView.setText(TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate(), "yyyyMMdd"));
+        holder.diDateTextView.setText(TimeFormat.parseDate(diagnosticImagingReport.getRequestedProcedureDate()));
         holder.diResultTextView.setText(diagnosticImagingReport.getResult());
         holder.diFindingTextView.setText(diagnosticImagingReport.getFindings());
         holder.diModalityTextView.setText(diagnosticImagingReport.getModality());

@@ -13,7 +13,7 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 25;
+    private final static int DATABASE_VERSION = 27;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String LONG_TYPE = " LONG";
@@ -64,8 +64,10 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.MARTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.MARTable.COLUMN_NAME_MAR_STATUS + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_TM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DOSAGE + REAL_TYPE + COMMA_SEP +
             PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DOSAGE_UNIT + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MARTable.COLUMN_NAME_MAR_SCHEDULED_TIME_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.MARTable.COLUMN_NAME_MAR_ORDER_KEY + INT_TYPE + ")";
 
     private final static String SQL_CREATE_DIAGNOSIS = "CREATE TABLE " + PhrSchemaContract.DiagnosisTable.TABLE_NAME + "(" +
@@ -298,10 +300,11 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
-                " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES + TEXT_TYPE);
+        //db.execSQL("alter table "+PhrSchemaContract.MARTable.TABLE_NAME + " add "+PhrSchemaContract.MARTable.COLUMN_NAME_MAR_SCHEDULED_TIME_KEY + INT_TYPE);
+        //db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
+        //        " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES + TEXT_TYPE);
 
-        db.execSQL(SQL_CREATE_MAR_SCHEDULED_TIME);
+        //db.execSQL(SQL_CREATE_MAR_SCHEDULED_TIME);
         //db.execSQL("update "+ PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
         //        " set " + PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+"='"+ OrderStatus.ACTIVE.getName()+"'");
         //db.execSQL(SQL_CREATE_MAR);

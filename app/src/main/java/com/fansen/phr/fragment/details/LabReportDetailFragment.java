@@ -147,11 +147,11 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
         labReportSpecimenTypeTextView.setOnClickListener(this);
 
         specimenCollectingDateTextView = (TextView) labReportFragmentLayout.findViewById(R.id.id_lab_report_fragment_specimen_collecting_date);
-        specimenCollectingDateTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        specimenCollectingDateTextView.setText(TimeFormat.parseDate(new Date()));
         specimenCollectingDateTextView.setOnClickListener(this);
 
         reportingDateTextView = (TextView) labReportFragmentLayout.findViewById(R.id.id_lab_report_fragment_reporting_date);
-        reportingDateTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        reportingDateTextView.setText(TimeFormat.parseDate(new Date()));
         reportingDateTextView.setOnClickListener(this);
 
         labResultItemListView = (ListView) labReportFragmentLayout.findViewById(R.id.id_lab_result_item_list);
@@ -173,8 +173,8 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
         if(isEditingMode){
             labReportOrderTextView.setText(labReport.getOrderCode().getName());
             labReportSpecimenTypeTextView.setText(labReport.getSpecimenTypeCode().getName());
-            specimenCollectingDateTextView.setText(TimeFormat.parseDate(labReport.getSpecimenCollectedDate(), "yyyyMMdd"));
-            reportingDateTextView.setText(TimeFormat.parseDate(labReport.getReportDate(), "yyyyMMdd"));
+            specimenCollectingDateTextView.setText(TimeFormat.parseDate(labReport.getSpecimenCollectedDate()));
+            reportingDateTextView.setText(TimeFormat.parseDate(labReport.getReportDate()));
             labResultItemListAdapter.setLabObservations(labObservations);
             labRefImagesGridViewAdapter.setImages(imageAdapterModelList);
         }
@@ -213,8 +213,8 @@ public class LabReportDetailFragment extends Fragment implements View.OnClickLis
 
         labReport.setOrderCode(orderCode);
         labReport.setSpecimenTypeCode(specimenTypeCodeDef);
-        labReport.setSpecimenCollectedDate(TimeFormat.format("yyyyMMdd", collectingDate));
-        labReport.setReportDate(TimeFormat.format("yyyyMMdd", reportingDate));
+        labReport.setSpecimenCollectedDate(TimeFormat.format(collectingDate));
+        labReport.setReportDate(TimeFormat.format(reportingDate));
         labReport.setObservations(labObservations);
         labReport.setReferenceImages(refImageList);
 

@@ -68,7 +68,7 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
         });
 
         textViewEntDate = (TextView) findViewById(R.id.id_op_date);
-        textViewEntDate.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        textViewEntDate.setText(TimeFormat.parseDate(new Date()));
         textViewEntDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new DatePickerDialog(EncounterCoreInfoActivity.this, listener,

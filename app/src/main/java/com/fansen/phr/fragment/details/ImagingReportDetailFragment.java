@@ -127,7 +127,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
         imagingReportDetailFragmentView = (RelativeLayout) inflater.inflate(R.layout.fragment_imaging_report_detail, container, false);
 
         rpDateTextView = (TextView) imagingReportDetailFragmentView.findViewById(R.id.id_imaging_report_detail_textview_rp_date);
-        rpDateTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        rpDateTextView.setText(TimeFormat.parseDate(new Date()));
         rpDateTextView.setOnClickListener(this);
 
         bodypartTextView = (TextView) imagingReportDetailFragmentView.findViewById(R.id.id_imaging_report_detail_textview_body);
@@ -197,7 +197,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
         diagnosticImagingReport.setResult(resultTextView.getText().toString());
         diagnosticImagingReport.setRecommendation(recommendationTextView.getText().toString());
         diagnosticImagingReport.setModality(modalitySpinner.getSelectedItem().toString());
-        diagnosticImagingReport.setRequestedProcedureDate(TimeFormat.format("yyyyMMdd", rpDateTextView.getText().toString()));
+        diagnosticImagingReport.setRequestedProcedureDate(TimeFormat.format(rpDateTextView.getText().toString()));
         diagnosticImagingReport.setRequestedProcedureTypeDef(rpDef);
         diagnosticImagingReport.setBodypart(bodyPartDef);
 
@@ -241,7 +241,7 @@ public class ImagingReportDetailFragment extends Fragment implements View.OnClic
     }
 
     public void setRpDate(Date rpDate){
-        rpDateTextView.setText(TimeFormat.parseDate(rpDate, "yyyyMMdd"));
+        rpDateTextView.setText(TimeFormat.parseDate(rpDate));
     }
 
     public void setDiagnosticImageList(){

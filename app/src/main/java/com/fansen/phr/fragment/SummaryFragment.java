@@ -19,8 +19,6 @@ import com.fansen.phr.adapter.MarListAdapter;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.MarStatus;
 import com.fansen.phr.entity.MedicationAdminRecord;
-import com.fansen.phr.entity.MedicationOrder;
-import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.utils.TextUtil;
 import com.fansen.phr.utils.TimeFormat;
 
@@ -55,15 +53,16 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
     private Encounter latestEncounter;
 
     private MarListAdapter marListAdapter;
-    private ArrayList<MedicationReminderTimes> medicationOrderReminders;
+    //private ArrayList<MedicationReminderTimes> medicationOrderReminders;
+    private ArrayList<MedicationAdminRecord> medicationAdminRecords;
 
-    public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationReminderTimes> medicationOrderReminders){
+    public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationAdminRecord> medicationAdminRecords){
         SummaryFragment summaryFragment = new SummaryFragment();
 
         if(encounter != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, encounter);
-            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST, medicationOrderReminders);
+            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST, medicationAdminRecords);
             summaryFragment.setArguments(bundle);
         }
 
@@ -83,24 +82,11 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
         Bundle bundle = getArguments();
         if (bundle != null){
             latestEncounter = (Encounter) bundle.getSerializable(BUNDLE_KEY_LATEST_ENCOUNTER);
-            medicationOrderReminders = (ArrayList<MedicationReminderTimes>) bundle.getSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST);
+            medicationAdminRecords = (ArrayList<MedicationAdminRecord>) bundle.getSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST);
         }
 
-        if (medicationOrderReminders == null){
-            medicationOrderReminders = new ArrayList<>();
-        }
-
-        ArrayList<MedicationAdminRecord> medicationAdminRecords = new ArrayList<>();
-
-        for (int i=0; i<medicationOrderReminders.size();i++) {
-            MedicationReminderTimes reminderTimes = medicationOrderReminders.get(i);
-
-            MedicationAdminRecord medicationAdminRecord = new MedicationAdminRecord();
-            medicationAdminRecord.setMedicationReminderTimes(reminderTimes);
-            medicationAdminRecord.setStatus(MarStatus.UNTAKEN.getName());
-            medicationAdminRecord.setMedicationOrder(reminderTimes.getMedicationOrder());
-
-            medicationAdminRecords.add(medicationAdminRecord);
+        if (medicationAdminRecords == null){
+            medicationAdminRecords = new ArrayList<>();
         }
 
         marListAdapter = new MarListAdapter(context, this, medicationAdminRecords);
@@ -172,23 +158,40 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
 
         marListView.setAdapter(marListAdapter);
 
-        setLatestEncounter(latestEncounter);
+        updateView(latestEncounter);
 
         return summaryView;
+    }
+
+    private void updateView(Encounter encounter){
+        if (latestEncounter == null){
+            return;
+        }
+
+        vDate.setText(TimeFormat.parseDate(latestEncounter.getAdmit_date()));
+        vDept.setText(latestEncounter.getDepartment().getName());
+        vHospital.setText(latestEncounter.getOrg().getOrg_name());
+        vAttendingDoctor.setText(latestEncounter.getAttendingDoctor().getPhysicianName());
+        vDiagnosis.setText(TextUtil.convertDiagnosisListToString(latestEncounter.getDiagnosisList(), EncounterCoreInfoActivity.DELIMITER));
     }
 
     public void setLatestEncounter(Encounter latestEncounter){
         this.latestEncounter = latestEncounter;
 
-        if (latestEncounter == null){
-            return;
-        }
+        Bundle bundle = getArguments();
+        bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, latestEncounter);
 
-        vDate.setText(TimeFormat.parseDate(latestEncounter.getAdmit_date(), "yyyyMMdd"));
-        vDept.setText(latestEncounter.getDepartment().getName());
-        vHospital.setText(latestEncounter.getOrg().getOrg_name());
-        vAttendingDoctor.setText(latestEncounter.getAttendingDoctor().getPhysicianName());
-        vDiagnosis.setText(TextUtil.convertDiagnosisListToString(latestEncounter.getDiagnosisList(), EncounterCoreInfoActivity.DELIMITER));
+        updateView(latestEncounter);
+    }
+
+    public void updateMAR(ArrayList<MedicationAdminRecord> medicationAdminRecords){
+        marListAdapter.updateMar(medicationAdminRecords);
+
+        if (marListAdapter.isEmpty()){
+            emptyMarTipsTextView.setVisibility(View.VISIBLE);
+        } else{
+            emptyMarTipsTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.fansen.phr.utils;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,17 +9,42 @@ import java.util.Date;
  * Created by 310078142 on 2015/9/22.
  */
 public class TimeFormat {
-    public static String parseDate(Date date, String format){
+    public static String DATEFORMAT = "yyyyMMdd";
+    public static String TIMEFORMAT = "HH:mm:ss";
+
+    public static String parseTime(Date date){
         if(date == null){
             return "";
         }
 
-        SimpleDateFormat df = new SimpleDateFormat(format);
+        SimpleDateFormat df = new SimpleDateFormat(TIMEFORMAT);
         return df.format(date);
     }
 
-    public static Date format(String format, String date){
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+    public static Date formatTime(String time){
+        SimpleDateFormat df = new SimpleDateFormat(TIMEFORMAT);
+        Date result = null;
+
+        try{
+            result = df.parse(time);
+        } catch (ParseException pe){
+            pe.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String parseDate(Date date){
+        if(date == null){
+            return "";
+        }
+
+        SimpleDateFormat df = new SimpleDateFormat(DATEFORMAT);
+        return df.format(date);
+    }
+
+    public static Date format(String date){
+        SimpleDateFormat df = new SimpleDateFormat(DATEFORMAT);
         Date result = null;
 
         try{

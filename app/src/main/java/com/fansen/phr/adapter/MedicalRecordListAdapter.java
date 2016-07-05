@@ -11,14 +11,13 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.activities.EncounterCoreInfoActivity;
-import com.fansen.phr.activities.SimpleListActivity;
 import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.Encounter;
+import com.fansen.phr.entity.sort.EncounterSort;
 import com.fansen.phr.utils.TimeFormat;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +36,9 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         } else {
             encounterList = encounters;
         }
+
+        //Collections.sort(encounterList, new EncounterSort());
+        Collections.sort(encounterList, Collections.<Encounter>reverseOrder(new EncounterSort()));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
         }
 
         Date date = encounter.getAdmit_date();
-        String dateString = TimeFormat.parseDate(date, "yyyyMMdd");
+        String dateString = TimeFormat.parseDate(date);
         if(!dateString.equals(priorDate)){
             holder.vDateYear.setText(TimeFormat.getYear(date));
             holder.vDateDayMonth.setText(TimeFormat.getDay(date)+"/"+TimeFormat.getMonth(date));
@@ -99,11 +101,14 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
     public void addEncounter(Encounter encounter){
         if (encounterList != null){
-            encounterList.add(0, encounter);
+            encounterList.add(encounter);
+            //Collections.sort(encounterList, new EncounterSort());
+            Collections.sort(encounterList, Collections.<Encounter>reverseOrder(new EncounterSort()));
         }
-        //notifyDataSetChanged();
 
-        notifyItemInserted(0);
+        notifyDataSetChanged();
+
+        //notifyItemInserted(0);
     }
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

@@ -16,8 +16,6 @@ import com.fansen.phr.service.ILabReportService;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
 
 /**
  * Created by Yihui on 2015/12/1.
@@ -41,8 +39,8 @@ public class LabReportServiceLocalImpl extends BaseServiceLocal implements ILabR
 
         int orderCodeKey = labReport.getOrderCode().get_id();
         int specimenCodeKey = labReport.getSpecimenTypeCode().get_id();
-        String collectingDate = TimeFormat.parseDate(labReport.getSpecimenCollectedDate(), "yyyyMMdd");
-        String reportingDate = TimeFormat.parseDate(labReport.getReportDate(), "yyyyMMdd");
+        String collectingDate = TimeFormat.parseDate(labReport.getSpecimenCollectedDate());
+        String reportingDate = TimeFormat.parseDate(labReport.getReportDate());
 
         ContentValues cv = new ContentValues();
         cv.put(PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_REPORT_ENT_KEY, ent_key);
@@ -62,8 +60,8 @@ public class LabReportServiceLocalImpl extends BaseServiceLocal implements ILabR
 
         int orderCodeKey = labReport.getOrderCode().get_id();
         int specimenCodeKey = labReport.getSpecimenTypeCode().get_id();
-        String collectingDate = TimeFormat.parseDate(labReport.getSpecimenCollectedDate(), "yyyyMMdd");
-        String reportingDate = TimeFormat.parseDate(labReport.getReportDate(), "yyyyMMdd");
+        String collectingDate = TimeFormat.parseDate(labReport.getSpecimenCollectedDate());
+        String reportingDate = TimeFormat.parseDate(labReport.getReportDate());
 
         ContentValues cv = new ContentValues();
         cv.put(PhrSchemaContract.LabReportTable.COLUMN_NAME_LAB_REPORT_ORDER_DEF_KEY, orderCodeKey);
@@ -131,8 +129,8 @@ public class LabReportServiceLocalImpl extends BaseServiceLocal implements ILabR
             labReport.set_id(id);
             labReport.setOrderCode(orderCodeDef);
             labReport.setSpecimenTypeCode(specimenTypeCodeDef);
-            labReport.setReportDate(TimeFormat.format("yyyyMMdd", reportingDate));
-            labReport.setSpecimenCollectedDate(TimeFormat.format("yyyyMMdd", collectingDate));
+            labReport.setReportDate(TimeFormat.format(reportingDate));
+            labReport.setSpecimenCollectedDate(TimeFormat.format(collectingDate));
             labReport.setObservations(labObservations);
             labReport.setReferenceImages(refImages);
 

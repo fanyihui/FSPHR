@@ -24,8 +24,6 @@ import com.fansen.phr.entity.Diagnosis;
 import com.fansen.phr.entity.DictDiagnosis;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.MedicationAdminRecord;
-import com.fansen.phr.entity.MedicationOrder;
-import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.entity.Organization;
 import com.fansen.phr.entity.Physician;
 import com.fansen.phr.fragment.CarePlanFragment;
@@ -52,6 +50,7 @@ import com.fansen.phr.service.implementation.PhysicianServiceLocalImpl;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -68,9 +67,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
     public static final int ADD_INPATIENT_REQUEST = 2;  // The request code
     public static final int ADD_CAREPLAN_REQUEST = 3;  // The request code
+    public static final int PRESCRIPTION_CHANGE_REQUEST = 4;
     //static final int ADD_OUTPATIENT_REQUEST = 1;  // The request code
 
     public static String OPEN_ENT_KEY = "open_encounter";
+
+    private Encounter latestEncounter;
 
     private Fragment fragment = null;
     private IEncounterService encounterService = null;
@@ -141,21 +143,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Encounter latestEncounter = encounterService.getLatestEncounter();
-        /*ArrayList<MedicationOrder> medicationOrders = medicationOrderService.getAllActiveMedicationOrders();
+        latestEncounter = encounterService.getLatestEncounter();
+        ArrayList<Encounter> encounters = encounterService.getAllEncounters();
 
-        for (int i=0;i<medicationOrders.size();i++){
-            MedicationOrder medicationOrder = medicationOrders.get(i);
-            int id = medicationOrder.get_id();
+        Date currentDate = new Date();
+        String today = TimeFormat.parseDate(currentDate);
+        ArrayList<MedicationAdminRecord> medicationAdminRecords = medicationAdminRecordService.getMARByDate(today);
 
-            ArrayList<MedicationReminderTimes> reminderTimes = reminderService.getReminderTimes(id);
-            medicationOrder.setMedicationReminderTimes(reminderTimes);
-        }*/
-
-        ArrayList<MedicationReminderTimes> reminderTimes = reminderService.getAllActiveMedicationReminders();
-
-        phrFragment = PhrFragment.newInstance();
-        summaryFragment = SummaryFragment.newInstance(latestEncounter, reminderTimes);
+        phrFragment = PhrFragment.newInstance(encounters);
+        summaryFragment = SummaryFragment.newInstance(latestEncounter, medicationAdminRecords);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -249,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case ADD_CAREPLAN_REQUEST:
                     break;
+                case PRESCRIPTION_CHANGE_REQUEST:
+                    handlePrescriptionChanged(data);
+                    break;
                 default:
                     break;
             }
@@ -297,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         physician.setPhysicianKey(attending_doctor_key);
 
         //Set the value to encounter
-        encounter.setAdmit_date(TimeFormat.format("yyyyMMdd", admit_date));
+        encounter.setAdmit_date(TimeFormat.format(admit_date));
         encounter.setOrg(org);
         encounter.setDepartment(dept);
         //encounter.setPrimaryDiagnosis(primaryDiagnosis);
@@ -332,11 +331,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         encounter.setDiagnosisList(diagnosises);
 
-        if (navigationItemId == R.id.nav_phr) {
+        phrFragment.addEncounter(encounter);
+
+        if (latestEncounter.getAdmit_date().before(encounter.getAdmit_date())){
+            summaryFragment.setLatestEncounter(encounter);
+            latestEncounter = encounter;
+        }
+
+        /*if (navigationItemId == R.id.nav_phr) {
             PhrFragment phrFragment = (PhrFragment) fragment;
             phrFragment.addEncounter(encounter);
-        } else if(navigationItemId == R.id.nav_summary){
-            //TODO add code here to put encounter into summary page
+        }*/
+    }
+
+    private void handlePrescriptionChanged(Intent data){
+        //TODO add code here to refresh the prescription reminder list
+        Bundle bundle = data.getExtras();
+        boolean isChanged = bundle.getBoolean(EncounterDetailActivity.BUNDLE_KEY_PRESCRIPTION_CHANGED);
+
+        if (isChanged){
+            Date currentDate = new Date();
+            String today = TimeFormat.parseDate(currentDate);
+            ArrayList<MedicationAdminRecord> medicationAdminRecords = medicationAdminRecordService.getMARByDate(today);
+            summaryFragment.updateMAR(medicationAdminRecords);
         }
     }
 
@@ -352,9 +369,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onMedicationTaken(MedicationAdminRecord medicationAdminRecord) {
-        //TODO add code here to save the MAR to database
-        int id = medicationAdminRecordService.takenMedication(medicationAdminRecord);
-        medicationAdminRecord.set_id(id);
+        int id = medicationAdminRecord.get_id();
+        if (id<=0){
+            id = medicationAdminRecordService.addNewMAR(medicationAdminRecord);
+            medicationAdminRecord.set_id(id);
+        } else {
+            medicationAdminRecordService.takenMedication(id);
+        }
     }
 
     @Override
@@ -369,6 +390,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bundle.putSerializable(OPEN_ENT_KEY, encounter);
         intent.putExtras(bundle);
 
-        startActivity(intent);
+        startActivityForResult(intent, PRESCRIPTION_CHANGE_REQUEST);
     }
 }

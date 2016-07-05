@@ -209,7 +209,7 @@ public class LabReportDetailActivity extends AppCompatActivity implements LabRep
 
             diagnosticImage.setCaptureImageUri(currentImageFilePath);
             diagnosticImage.setThumbnailImageUri(thumFile.getAbsolutePath());
-            diagnosticImage.setCreatingDate(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+            diagnosticImage.setCreatingDate(TimeFormat.parseDate(new Date()));
             diagnosticImage.setThumbnailImage(FileUtil.decodeBitmapToBytes(bitmap));
 
             labReportDetailFragment.addRefImage(diagnosticImage);
@@ -242,7 +242,7 @@ public class LabReportDetailActivity extends AppCompatActivity implements LabRep
 
             diagnosticImage.setThumbnailImageUri(thumFile.getAbsolutePath());
             diagnosticImage.setCaptureImageUri(currentImageFilePath);
-            diagnosticImage.setCreatingDate(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+            diagnosticImage.setCreatingDate(TimeFormat.parseDate(new Date()));
             diagnosticImage.setThumbnailImage(FileUtil.decodeBitmapToBytes(bm));
 
             labReportDetailFragment.addRefImage(diagnosticImage);

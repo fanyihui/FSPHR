@@ -8,13 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
-import com.fansen.phr.activities.ImageViewActivity;
 import com.fansen.phr.entity.DiagnosticImage;
 import com.fansen.phr.entity.LabReport;
 import com.fansen.phr.utils.FileUtil;
 import com.fansen.phr.utils.TimeFormat;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +79,7 @@ public class LabReportListAdapter extends RecyclerView.Adapter<LabReportListAdap
 
         holder.orderTextView.setText(labReport.getOrderCode().getName());
         holder.specimenTextView.setText(labReport.getSpecimenTypeCode().getName());
-        holder.reportingDateTextView.setText(TimeFormat.parseDate(labReport.getSpecimenCollectedDate(), "yyyyMMdd"));
+        holder.reportingDateTextView.setText(TimeFormat.parseDate(labReport.getSpecimenCollectedDate()));
     }
 
     @Override

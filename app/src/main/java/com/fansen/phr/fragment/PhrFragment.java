@@ -1,8 +1,6 @@
 package com.fansen.phr.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 //simport android.app.Fragment;
 import android.support.v4.app.Fragment;
@@ -12,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fansen.phr.PhrSchemaContract;
 import com.fansen.phr.R;
-import com.fansen.phr.activities.EncounterDetailActivity;
 import com.fansen.phr.adapter.MedicalRecordListAdapter;
 import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.Organization;
@@ -31,11 +27,13 @@ import java.util.List;
 
 public class PhrFragment extends Fragment implements MedicalRecordListAdapter.MedicalRecordItemClickListener{
 
+    public static final String BUNDLE_KEY_ALL_ENCOUNTER = "ALL_ENCOUNTERS";
+
     private Context context;
     private OnPhrFragmentInteractionListener onPhrFragmentInteractionListener;
 
     private RecyclerView phrView = null;
-    private List<Encounter> encounters;
+    private ArrayList<Encounter> encounters;
     private RecyclerView.LayoutManager layoutManager;
     private MedicalRecordListAdapter adapter;
 
@@ -47,15 +45,21 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
 
     public static final String OPEN_ENT_KEY = "open_encounter";
 
-    public static PhrFragment newInstance(){
+    public static PhrFragment newInstance(ArrayList<Encounter> encounters){
         PhrFragment phrFragment = new PhrFragment();
+
+        if (encounters != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(BUNDLE_KEY_ALL_ENCOUNTER, encounters);
+
+            phrFragment.setArguments(bundle);
+        }
 
         return phrFragment;
     }
 
     public PhrFragment() {
         // Required empty public constructor
-        encounters = new ArrayList<>();
     }
 
 
@@ -63,8 +67,16 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
     @Override
     public void onCreate(Bundle savedInstanceState) {
         context = getActivity();
-        encounterService = new EncounterServiceLocalImpl(getActivity());
-        encounters = encounterService.getAllEncounters();
+
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            this.encounters = (ArrayList<Encounter>) bundle.getSerializable(BUNDLE_KEY_ALL_ENCOUNTER);
+        }
+
+        if (encounters == null){
+            encounters = new ArrayList<>();
+        }
+
         adapter = new MedicalRecordListAdapter(encounters);
         adapter.setItemClickListener(this);
         super.onCreate(savedInstanceState);
@@ -101,7 +113,15 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
     }
 
     public void addEncounter(Encounter encounter){
-        adapter.addEncounter(encounter);
+        if (adapter == null){
+            Bundle bundle = getArguments();
+            if (bundle != null){
+                ((ArrayList<Encounter>) bundle.getSerializable(BUNDLE_KEY_ALL_ENCOUNTER)).add(encounter);
+            }
+        } else {
+            adapter.addEncounter(encounter);
+        }
+        //adapter.addEncounter(encounter);
     }
 
     /*
@@ -111,12 +131,12 @@ public class PhrFragment extends Fragment implements MedicalRecordListAdapter.Me
         encounters = new ArrayList<>();
 
         Encounter ent = new Encounter();
-        ent.setAdmit_date(TimeFormat.format("yyyyMMdd", "20150921"));
+        ent.setAdmit_date(TimeFormat.format("20150921"));
         ent.setOrg(new Organization("复旦大学附属眼耳鼻喉医院"));
         encounters.add(ent);
 
         ent = new Encounter();
-        ent.setAdmit_date(TimeFormat.format("yyyyMMdd", "20150920"));
+        ent.setAdmit_date(TimeFormat.format("20150920"));
         ent.setOrg(new Organization("虹梅路社区卫生服务中心"));
         encounters.add(ent);
 

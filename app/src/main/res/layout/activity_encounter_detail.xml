@@ -18,7 +18,7 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <include layout="@layout/patient_bar_layout" />
+        <!--include layout="@layout/patient_bar_layout" /-->
 
         <android.support.design.widget.TabLayout android:id="@+id/tabs"
             android:layout_width="match_parent" android:layout_height="40dp" />

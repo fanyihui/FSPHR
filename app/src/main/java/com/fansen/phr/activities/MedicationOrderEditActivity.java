@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.fansen.phr.R;
 import com.fansen.phr.adapter.MedicationReminderAdapter;
-import com.fansen.phr.entity.MedicationAdminRecord;
 import com.fansen.phr.entity.MedicationOrder;
 import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.fragment.details.PrescriptionFragment;
@@ -151,7 +150,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
         prnCheckBox = (CheckBox) findViewById(R.id.id_med_order_edit_prn);
 
         startTimeTextView = (TextView) findViewById(R.id.id_med_order_edit_start_time);
-        startTimeTextView.setText(TimeFormat.parseDate(new Date(), "yyyyMMdd"));
+        startTimeTextView.setText(TimeFormat.parseDate(new Date()));
         startTimeTextView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new DatePickerDialog(MedicationOrderEditActivity.this, listener,
@@ -238,7 +237,7 @@ public class MedicationOrderEditActivity extends AppCompatActivity {
     }
 
     private void updateDate(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimeFormat.DATEFORMAT);
         startTimeTextView.setText(simpleDateFormat.format(cal.getTime()));
     }
 }
