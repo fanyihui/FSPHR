@@ -13,13 +13,19 @@ import com.fansen.phr.PhrSchemaContract;
  */
 public class FsPhrDB extends SQLiteOpenHelper{
     private final static String DATABASE_NAME = "FSPHR.db";
-    private final static int DATABASE_VERSION = 27;
+    private final static int DATABASE_VERSION = 1;
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
-    private static final String LONG_TYPE = " LONG";
     private static final String REAL_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
     private SQLiteDatabase database = null;
+
+    //sql for create assigned authority table
+    private final static String SQL_CREATE_ASSIGNED_AUTHORITY = "CREATE TABLE "+PhrSchemaContract.AssignedAuthorityTable.TABLE_NAME + "(" +
+            PhrSchemaContract.AssignedAuthorityTable._ID + "" + COMMA_SEP +
+            PhrSchemaContract.AssignedAuthorityTable.COLUMN_NAME_AA_ID + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.AssignedAuthorityTable.COLUMN_NAME_AA_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.AssignedAuthorityTable.COLUMN_NAME_AA_ORG_KEY + INT_TYPE  + ")";
 
     //sql for create person table
     private final static String SQL_CREATE_PERSON = "CREATE TABLE " + PhrSchemaContract.PersonTable.TABLE_NAME + "(" +
@@ -27,6 +33,28 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.PersonTable.COLUMN_NAME_PERSON_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.PersonTable.COLUMN_NAME_PERSON_BIRDAY + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.PersonTable.COLUMN_NAME_PERSON_GENDER + TEXT_TYPE + ")";
+
+    //sql for create PersonID table
+    private final static String SQL_CREATE_PERSON_ID = "CREATE TABLE "+PhrSchemaContract.PersonIDTable.TABLE_NAME + "(" +
+            PhrSchemaContract.PersonIDTable._ID + "" + COMMA_SEP +
+            PhrSchemaContract.PersonIDTable.COLUMN_NAME_PERSON_ID + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PersonIDTable.COLUMN_NAME_PERSON_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PersonIDTable.COLUMN_NAME_AA_KEY + INT_TYPE  + ")";
+
+
+    //sql for create patient table
+    private final static String SQL_CREATE_PATIENT = "CREATE TABLE " + PhrSchemaContract.PatientTable.TABLE_NAME + "(" +
+            PhrSchemaContract.PatientTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.PatientTable.COLUMN_NAME_PERSON_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PatientTable.COLUMN_NAME_ORG_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PatientTable.COLUMN_NAME_VIP + TEXT_TYPE + ")";
+
+    //sql for create PatientID table
+    private final static String SQL_CREATE_PATIENT_ID = "CREATE TABLE "+PhrSchemaContract.PatientIDTable.TABLE_NAME + "(" +
+            PhrSchemaContract.PatientIDTable._ID + "" + COMMA_SEP +
+            PhrSchemaContract.PatientIDTable.COLUMN_NAME_PATIENT_ID + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PatientIDTable.COLUMN_NAME_PATIENT_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.PatientIDTable.COLUMN_NAME_AA_KEY + INT_TYPE  + ")";
 
     //sql for create encounter table
     private final static String SQL_CREATE_ENCOUNTER = "CREATE TABLE " + PhrSchemaContract.EncounterTable.TABLE_NAME + "(" +
@@ -38,14 +66,14 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + INT_TYPE + COMMA_SEP +
-            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PERSON_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY + INT_TYPE + ")";
 
     private final static String SQL_CREATE_MEDICATION_ORDER = "CREATE TABLE " + PhrSchemaContract.MedicationOrderTable.TABLE_NAME + "(" +
             PhrSchemaContract.MedicationOrderTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ENT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY + REAL_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_QUANTITY_UNIT + TEXT_TYPE + COMMA_SEP +
@@ -72,21 +100,21 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     private final static String SQL_CREATE_DIAGNOSIS = "CREATE TABLE " + PhrSchemaContract.DiagnosisTable.TABLE_NAME + "(" +
             PhrSchemaContract.DiagnosisTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-            PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_ENT_KEY + LONG_TYPE + COMMA_SEP +
-            PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY + LONG_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_ENT_KEY + INT_TYPE + COMMA_SEP +
+            PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_DICT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_PRIMARY_INDICATOR + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.DiagnosisTable.COLUMN_NAME_DIG_STATUS + TEXT_TYPE + ")";
 
     private final static String SQL_CREATE_CHIEF_COMPLAINTS = "CREATE TABLE " + PhrSchemaContract.ChiefComplaintTable.TABLE_NAME + "(" +
             PhrSchemaContract.ChiefComplaintTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-            PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_COMPLAINT_ENT_KEY + LONG_TYPE + COMMA_SEP +
+            PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_COMPLAINT_ENT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_SYMPTOM + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_DURATION + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ChiefComplaintTable.COLUMN_NAME_DURATION_UNIT + TEXT_TYPE + ")";
 
     private final static String SQL_CREATE_CLINICAL_DOCUMENT = "CREATE TABLE " + PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME + "(" +
             PhrSchemaContract.ClinicalDocumentTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
-            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_ENT_KEY + LONG_TYPE + COMMA_SEP +
+            PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_ENT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_AUTHENTICATION_DATE + TEXT_TYPE + COMMA_SEP +
@@ -103,8 +131,8 @@ public class FsPhrDB extends SQLiteOpenHelper{
     //sql for create department
     private final static String SQL_CREATE_DEPARTMENT = "CREATE TABLE " + PhrSchemaContract.DepartmentTable.TABLE_NAME + "(" +
             PhrSchemaContract.DepartmentTable._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
+            PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_ORG_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME + TEXT_TYPE + ")";
-
 
 
     private final static String SQL_CREATE_DICT_DIAGNOSIS = "CREATE TABLE " + PhrSchemaContract.DictDiagnosisTable.TABLE_NAME + "(" +
@@ -117,13 +145,15 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.MedicationDictTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_CODE + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_GENERAL_NAME + TEXT_TYPE + COMMA_SEP +
+            PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_MANUFACTURER + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.MedicationDictTable.COLUMN_NAME_DICT_MED_SPEC + TEXT_TYPE + ")";
 
     private final static String SQL_CREATE_PHYSICIAN = "CREATE TABLE " + PhrSchemaContract.PhysicianTable.TABLE_NAME + "(" +
             PhrSchemaContract.PhysicianTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_DEPT_KEY + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_ID + TEXT_TYPE + ")";
-
 
     //start for version 18
     private final static String SQL_CREATE_DI_REPORT = "CREATE TABLE "+ PhrSchemaContract.DiagnosticImagingReportTable.TABLE_NAME + "(" +
@@ -166,9 +196,6 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_CODE_SYSTEM_NAME + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_CODE_SYSTEM_OID + TEXT_TYPE +")";
 
-    //end of version 18
-
-    //version 19
     private final static String SQL_CREATE_BODY_PART_DEF = "CREATE TABLE " + PhrSchemaContract.BodypartDefTable.TABLE_NAME + "("+
             PhrSchemaContract.BodypartDefTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_CODE + TEXT_TYPE + COMMA_SEP +
@@ -186,7 +213,6 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.CodeSystemTable.COLUMN_NAME_CODE_SYSTEM_OID + COMMA_SEP + PhrSchemaContract.CodeSystemTable.COLUMN_NAME_CODE_SYSTEM_NAME+")" +
             " VALUES('1.2.84.2344223l323.22333.2333','凡森健康')";
 
-    //version 22
     private final static String SQL_CREATE_ORDER_CODE_DEF = "CREATE TABLE " + PhrSchemaContract.OrderCodeDefTable.TABLE_NAME + "("+
             PhrSchemaContract.OrderCodeDefTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
             PhrSchemaContract.OrderCodeDefTable.COLUMN_NAME_ORDER_CODE_DEF_CODE + TEXT_TYPE + COMMA_SEP +
@@ -227,32 +253,6 @@ public class FsPhrDB extends SQLiteOpenHelper{
             PhrSchemaContract.MARScheduledTimeTable.COLUMN_NAME_SEQUENCE_NUMBER + INT_TYPE + COMMA_SEP +
             PhrSchemaContract.MARScheduledTimeTable.COLUMN_NAME_SCHEDULED_TIME + TEXT_TYPE + ")";
 
-    /*
-    * Following SQL scripts are used for upgrading db schema
-    * */
-    /*
-    private final static String SQL_ADD_HISTORICAL_PROBLEMS_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
-            " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_HISTORICAL_PROBLEMS + TEXT_TYPE;
-    private final static String SQL_ADD_PHYSICAL_EXAM_COLUMN = "alter table "+PhrSchemaContract.EncounterTable.TABLE_NAME +
-            " add "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PHYSICAL_EXAM + TEXT_TYPE;
-    */
-
-
-    /**
-     * version 19 add a column in diagnostic imaging report to refer to bodypart definition table.
-     * Add a new table for the body part definition
-     * */
-
-
-
-    /*
-    private final static String SQL_ADD_BODY_PART_DEF_KEY = "alter table "+PhrSchemaContract.DiagnosticImagingReportTable.TABLE_NAME +
-            " add "+PhrSchemaContract.DiagnosticImagingReportTable.COLUMN_NAME_DI_BODY_PART_DEF_KEY + INT_TYPE;
-
-    private final static String SQL_ADD_DIAGNOSTIC_IMAGE_DIR_KEY = "alter table "+PhrSchemaContract.DiagnosticImageTable.TABLE_NAME +
-            " add "+PhrSchemaContract.DiagnosticImageTable.COLUMN_NAME_DI_DIR_KEY + INT_TYPE;
-    */
-
     private static FsPhrDB instance = null;
 
     private FsPhrDB(Context context){
@@ -269,8 +269,11 @@ public class FsPhrDB extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //TODO add code here to create database tables and their relationships
         db.execSQL(SQL_CREATE_PERSON);
+        db.execSQL(SQL_CREATE_PERSON_ID);
+        db.execSQL(SQL_CREATE_PATIENT);
+        db.execSQL(SQL_CREATE_PATIENT_ID);
+        db.execSQL(SQL_CREATE_ASSIGNED_AUTHORITY);
         db.execSQL(SQL_CREATE_ENCOUNTER);
         db.execSQL(SQL_CREATE_ORGANIZATION);
         db.execSQL(SQL_CREATE_DEPARTMENT);
@@ -296,51 +299,32 @@ public class FsPhrDB extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_SPECIMEN_TYPE_DEF);
         db.execSQL(SQL_CREATE_MAR);
         db.execSQL(SQL_CREATE_MAR_SCHEDULED_TIME);
+
+        //create index
+        db.execSQL("CREATE UNIQUE INDEX DICT_DIAGNOSIS_NAME ON "+PhrSchemaContract.DictDiagnosisTable.TABLE_NAME +"("+PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DICT_OBR_NAME ON "+PhrSchemaContract.ObservationDefTable.TABLE_NAME +"("+PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DICT_RP_NAME ON "+PhrSchemaContract.RequestedProcedureTypeDefTable.TABLE_NAME +"("+PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DICT_BODY_NAME ON "+PhrSchemaContract.BodypartDefTable.TABLE_NAME +"("+PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DICT_ORDER_NAME ON "+PhrSchemaContract.OrderCodeDefTable.TABLE_NAME +"("+PhrSchemaContract.OrderCodeDefTable.COLUMN_NAME_ORDER_CODE_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DICT_SPECIMEN_NAME ON "+PhrSchemaContract.SpecimenTypeCodeDefTable.TABLE_NAME +"("+PhrSchemaContract.SpecimenTypeCodeDefTable.COLUMN_NAME_SPECIMEN_CODE_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX ORG_NAME ON "+PhrSchemaContract.OrganizationTable.TABLE_NAME +"("+PhrSchemaContract.OrganizationTable.COLUMN_NAME_ORG_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX DEPT_NAME ON "+PhrSchemaContract.DepartmentTable.TABLE_NAME +"("+PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME+","+PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_ORG_KEY+")");
+        db.execSQL("CREATE UNIQUE INDEX PHYSICIAN_NAME ON "+PhrSchemaContract.PhysicianTable.TABLE_NAME +"("+PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME+","+PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_DEPT_KEY+")");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("alter table "+PhrSchemaContract.MARTable.TABLE_NAME + " add "+PhrSchemaContract.MARTable.COLUMN_NAME_MAR_SCHEDULED_TIME_KEY + INT_TYPE);
-        //db.execSQL("alter table "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
-        //        " add "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_NOTES + TEXT_TYPE);
-
-        //db.execSQL(SQL_CREATE_MAR_SCHEDULED_TIME);
-        //db.execSQL("update "+ PhrSchemaContract.MedicationOrderTable.TABLE_NAME +
-        //        " set " + PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS+"='"+ OrderStatus.ACTIVE.getName()+"'");
-        //db.execSQL(SQL_CREATE_MAR);
-        //upgrade for version 19
-        //db.execSQL(SQL_CREATE_BODY_PART_DEF);
-        //db.execSQL(SQL_ADD_BODY_PART_DEF_KEY);
-        //version 20
-        //db.execSQL(SQL_ADD_DIAGNOSTIC_IMAGE_DIR_KEY);
-
-        //version 21
-        //TODO
-
-        /*upgrade for version 18
-        db.execSQL(SQL_CREATE_DIAGNOSTIC_IMAGE);
-        db.execSQL(SQL_CREATE_DI_REPORT);
-        db.execSQL(SQL_CREATE_IMAGING_OBR);
-        db.execSQL(SQL_OBR_DEF);
-        db.execSQL(SQL_CREATE_RP_TYPE_DEF);
-        end of version 18*/
-
-        //db.execSQL(SQL_ADD_HISTORICAL_PROBLEMS_COLUMN);
-        //db.execSQL(SQL_ADD_PHYSICAL_EXAM_COLUMN);
-
-        /*db.execSQL("DROP TABLE "+PhrSchemaContract.PersonTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.EncounterTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.OrganizationTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.DepartmentTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.DiagnosisTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.DictDiagnosisTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.PhysicianTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.ChiefComplaintTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.MedicationDictTable.TABLE_NAME);
-        db.execSQL("DROP TABLE "+PhrSchemaContract.ClinicalDocumentTable.TABLE_NAME);
-
-        onCreate(db);*/
+        /*
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_DIAGNOSIS_NAME ON "+PhrSchemaContract.DictDiagnosisTable.TABLE_NAME +"("+PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_OBR_NAME ON "+PhrSchemaContract.ObservationDefTable.TABLE_NAME +"("+PhrSchemaContract.ObservationDefTable.COLUMN_NAME_OBR_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_RP_NAME ON "+PhrSchemaContract.RequestedProcedureTypeDefTable.TABLE_NAME +"("+PhrSchemaContract.RequestedProcedureTypeDefTable.COLUMN_NAME_RP_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_BODY_NAME ON "+PhrSchemaContract.BodypartDefTable.TABLE_NAME +"("+PhrSchemaContract.BodypartDefTable.COLUMN_NAME_BODY_PART_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_ORDER_NAME ON "+PhrSchemaContract.OrderCodeDefTable.TABLE_NAME +"("+PhrSchemaContract.OrderCodeDefTable.COLUMN_NAME_ORDER_CODE_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DICT_SPECIMEN_NAME ON "+PhrSchemaContract.SpecimenTypeCodeDefTable.TABLE_NAME +"("+PhrSchemaContract.SpecimenTypeCodeDefTable.COLUMN_NAME_SPECIMEN_CODE_DEF_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS ORG_NAME ON "+PhrSchemaContract.OrganizationTable.TABLE_NAME +"("+PhrSchemaContract.OrganizationTable.COLUMN_NAME_ORG_NAME+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS DEPT_NAME ON "+PhrSchemaContract.DepartmentTable.TABLE_NAME +"("+PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME+","+PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_ORG_KEY+")");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS PHYSICIAN_NAME ON "+PhrSchemaContract.PhysicianTable.TABLE_NAME +"("+PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME+","+PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_DEPT_KEY+")");
+        */
     }
 
     public long insert(String table, ContentValues values){

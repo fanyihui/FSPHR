@@ -271,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ArrayList<String> diagnosisTextList = (ArrayList) bundle.getSerializable(EncounterCoreInfoActivity.KEY_DIAG);
 
-        //String diagnosis = bundle.getString(EncounterCoreInfoActivity.KEY_DIAG);
         String admit_date = bundle.getString(EncounterCoreInfoActivity.KEY_DATE);
         String attending_doctor = bundle.getString(EncounterCoreInfoActivity.KEY_DOCTOR);
 
@@ -280,26 +279,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Initial Organization
         Organization org = new Organization(organization);
-        long org_key = organizationService.addOrganization(org);
-        org.setOrg_key(org_key);
+        org.setOrg_name(organization);
+        //long org_key = organizationService.addOrganization(org);
+        //org.setOrg_key(org_key);
 
         //Initial department
         Department dept = new Department();
         dept.setName(department);
-        long dept_key = departmentService.addDepartment(dept);
-        dept.setDepartment_key(dept_key);
+        //long dept_key = departmentService.addDepartment(dept);
+        //dept.setDepartment_key(dept_key);
 
         //Add new physician to database if not exist
         Physician physician = new Physician();
         physician.setPhysicianName(attending_doctor);
-        int attending_doctor_key = physicianService.addPhysician(physician);
-        physician.setPhysicianKey(attending_doctor_key);
+        //int attending_doctor_key = physicianService.addPhysician(physician);
+        //physician.setPhysician_key(attending_doctor_key);
 
         //Set the value to encounter
         encounter.setAdmit_date(TimeFormat.format(admit_date));
         encounter.setOrg(org);
         encounter.setDepartment(dept);
-        //encounter.setPrimaryDiagnosis(primaryDiagnosis);
         encounter.setAttendingDoctor(physician);
 
         // add the encounter to database, and return the key of that encounter
@@ -310,7 +309,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //add diagnosis list to an Encounter
         if (diagnosisTextList != null && diagnosisTextList.size()>0){
-            for (int i=0; i<diagnosisTextList.size(); i++){
+            diagnosises = diagnosisService.addDiagnosisList(encounter_key, diagnosisTextList);
+            /*for (int i=0; i<diagnosisTextList.size(); i++){
                 String diagnosisValue = diagnosisTextList.get(i);
                 //Add new Dict to database if not exist
                 DictDiagnosis dictDiagnosis = new DictDiagnosis();
@@ -326,14 +326,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 diagnosis.setDiagnosis_key(diag_key);
 
                 diagnosises.add(diagnosis);
-            }
+            }*/
         }
 
         encounter.setDiagnosisList(diagnosises);
 
         phrFragment.addEncounter(encounter);
 
-        if (latestEncounter.getAdmit_date().before(encounter.getAdmit_date())){
+        if (latestEncounter == null || latestEncounter.getAdmit_date().before(encounter.getAdmit_date())){
             summaryFragment.setLatestEncounter(encounter);
             latestEncounter = encounter;
         }

@@ -46,7 +46,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
                 " where " +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ENT_KEY +"="+ent_key +
                 " and "+
-                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY +
                 "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID;
 
         List<MedicationOrder> medicationOrders = new ArrayList<>();
@@ -94,7 +94,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
 
         ContentValues values = new ContentValues();
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_ENT_KEY, ent_key);
-        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY, medicationOrder.getMedication().get_id());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY, medicationOrder.getMedication().get_id());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE, medicationOrder.getDosage());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT, medicationOrder.getDosage_unit());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL, medicationOrder.getFrequency_interval());
@@ -118,7 +118,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
     @Override
     public void updateMedicationOrder(MedicationOrder medicationOrder) {
         ContentValues values = new ContentValues();
-        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY, medicationOrder.getMedication().get_id());
+        values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY, medicationOrder.getMedication().get_id());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE, medicationOrder.getDosage());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_DOSAGE_UNIT, medicationOrder.getDosage_unit());
         values.put(PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_FREQUENCY_INTERVAL, medicationOrder.getFrequency_interval());
@@ -161,7 +161,7 @@ public class MedicationOrderServiceLocalImpl extends BaseServiceLocal implements
                 " where " +
                 PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS +"='"+ OrderStatus.ACTIVE.getName() +
                 "' and "+
-                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY +
                 "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID;
 
         ArrayList<MedicationOrder> medicationOrders = new ArrayList<>();

@@ -115,6 +115,8 @@ public class EncounterDetailActivity extends AppCompatActivity implements Diagno
         Bundle bundle = intent.getExtras();
         selectedEncounter = (Encounter) bundle.getSerializable(PhrFragment.OPEN_ENT_KEY);
 
+        getSupportActionBar().setTitle(selectedEncounter.getOrg().getOrg_name() + "(" + TimeFormat.parseDate(selectedEncounter.getAdmit_date()) +")");
+
         terminologyService = new TermilologyServiceLocalImpl(this);
         diagnosticImagingReportService = new DiagnosticImagingReportServiceLocalImpl(this);
         diagnosticImageService = new DiagnosticImageServiceLocalImpl(this);

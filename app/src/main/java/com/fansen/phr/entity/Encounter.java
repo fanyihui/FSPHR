@@ -1,5 +1,6 @@
 package com.fansen.phr.entity;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,8 +10,6 @@ import java.util.List;
  * Created by Yihui on 2015/9/22.
  */
 public class Encounter implements Serializable{
-
-
     private long encounter_key;
     private String encounter_number;
     private Organization org;

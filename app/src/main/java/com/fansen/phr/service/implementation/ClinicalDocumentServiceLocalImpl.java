@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.fansen.phr.PhrSchemaContract;
-import com.fansen.phr.db.FsPhrDB;
 import com.fansen.phr.entity.ClinicalDocument;
 import com.fansen.phr.entity.Physician;
 import com.fansen.phr.service.IClinicalDocumentService;
@@ -40,7 +39,7 @@ public class ClinicalDocumentServiceLocalImpl extends BaseServiceLocal implement
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_THUMBNAIL_IMAGE_URI, thumbnailImagePath);
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_TYPE, type);
         if(authentication != null){
-            values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY, authentication.getPhysicianKey());
+            values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_LEGAL_AUTHENTICATION_KEY, authentication.getPhysician_key());
             values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_AUTHENTICATION_DATE, authDate);
         }
         values.put(PhrSchemaContract.ClinicalDocumentTable.COLUMN_NAME_DOC_CREATING_DATE, creatingDate);

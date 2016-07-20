@@ -59,12 +59,16 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
     public static SummaryFragment newInstance(Encounter encounter, ArrayList<MedicationAdminRecord> medicationAdminRecords){
         SummaryFragment summaryFragment = new SummaryFragment();
 
+        Bundle bundle = new Bundle();
         if(encounter != null) {
-            Bundle bundle = new Bundle();
             bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, encounter);
-            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST, medicationAdminRecords);
-            summaryFragment.setArguments(bundle);
         }
+
+        if (medicationAdminRecords != null){
+            bundle.putSerializable(BUNDLE_KEY_MED_ORDER_REMINDER_LIST, medicationAdminRecords);
+        }
+
+        summaryFragment.setArguments(bundle);
 
         return summaryFragment;
     }
@@ -176,12 +180,12 @@ public class SummaryFragment extends Fragment implements MarListAdapter.OnMarSta
     }
 
     public void setLatestEncounter(Encounter latestEncounter){
-        this.latestEncounter = latestEncounter;
-
         Bundle bundle = getArguments();
-        bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, latestEncounter);
-
-        updateView(latestEncounter);
+        if (bundle !=null) {
+            bundle.putSerializable(BUNDLE_KEY_LATEST_ENCOUNTER, latestEncounter);
+            this.latestEncounter = latestEncounter;
+            updateView(latestEncounter);
+        }
     }
 
     public void updateMAR(ArrayList<MedicationAdminRecord> medicationAdminRecords){

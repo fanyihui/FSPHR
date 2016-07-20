@@ -118,7 +118,7 @@ public class MedicationAdminRecordServiceLocalImpl extends BaseServiceLocal impl
                 " JOIN "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME + " ON "+
                 PhrSchemaContract.MedicationOrderTable.TABLE_NAME+"."+PhrSchemaContract.MedicationOrderTable._ID +"="+PhrSchemaContract.MARScheduledTimeTable.COLUMN_NAME_MED_ORDER_KEY +
                 " JOIN "+ PhrSchemaContract.MedicationDictTable.TABLE_NAME + " ON " +
-                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY + "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY + "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID +
                 " LEFT OUTER JOIN "+PhrSchemaContract.MARTable.TABLE_NAME+" ON "+ PhrSchemaContract.MARTable.COLUMN_NAME_MAR_SCHEDULED_TIME_KEY +"="+PhrSchemaContract.MARScheduledTimeTable.TABLE_NAME+"."+PhrSchemaContract.MARScheduledTimeTable._ID +
                 " where "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS +"='"+ OrderStatus.ACTIVE.getName()+"'" +
                 " and "+PhrSchemaContract.MARTable.COLUMN_NAME_MAR_DT +"='" +date+ "'"+

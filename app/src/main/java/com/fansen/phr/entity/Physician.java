@@ -8,7 +8,8 @@ import java.io.Serializable;
 public class Physician implements Serializable{
     private String physicianName;
     private String employeeNo;
-    private int physicianKey;
+    private long physician_key;
+    private Department department;
 
     public String getPhysicianName() {
         return physicianName;
@@ -26,11 +27,19 @@ public class Physician implements Serializable{
         this.employeeNo = employeeNo;
     }
 
-    public int getPhysicianKey() {
-        return physicianKey;
+    public long getPhysician_key() {
+        return physician_key;
     }
 
-    public void setPhysicianKey(int physicianKey) {
-        this.physicianKey = physicianKey;
+    public void setPhysician_key(long physician_key) {
+        this.physician_key = physician_key;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

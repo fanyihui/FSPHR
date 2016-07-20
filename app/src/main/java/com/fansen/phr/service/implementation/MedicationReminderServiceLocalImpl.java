@@ -9,7 +9,6 @@ import com.fansen.phr.entity.MedicationDict;
 import com.fansen.phr.entity.MedicationOrder;
 import com.fansen.phr.entity.MedicationReminderTimes;
 import com.fansen.phr.entity.OrderStatus;
-import com.fansen.phr.entity.Physician;
 import com.fansen.phr.service.IMedicationReminderService;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class MedicationReminderServiceLocalImpl extends BaseServiceLocal impleme
                 " JOIN "+PhrSchemaContract.MedicationOrderTable.TABLE_NAME + " ON "+
                 PhrSchemaContract.MedicationOrderTable.TABLE_NAME+"."+PhrSchemaContract.MedicationOrderTable._ID +"="+PhrSchemaContract.MARScheduledTimeTable.COLUMN_NAME_MED_ORDER_KEY +
                 " JOIN "+ PhrSchemaContract.MedicationDictTable.TABLE_NAME + " ON " +
-                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_KEY + "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID +
+                PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_MED_DICT_KEY + "=" + PhrSchemaContract.MedicationDictTable.TABLE_NAME +"."+PhrSchemaContract.MedicationDictTable._ID +
                 " where "+PhrSchemaContract.MedicationOrderTable.COLUMN_NAME_MED_ORDER_STATUS +"='"+ OrderStatus.ACTIVE.getName()+"'" +
                 " order by "+PhrSchemaContract.MARScheduledTimeTable.COLUMN_NAME_SCHEDULED_TIME;
 

@@ -9,14 +9,14 @@ public class DictDiagnosis implements Serializable {
     private String code;
     private String name;
     private String description;
-    private int key;
+    private long key;
 
 
-    public int getKey() {
+    public long getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(long key) {
         this.key = key;
     }
 

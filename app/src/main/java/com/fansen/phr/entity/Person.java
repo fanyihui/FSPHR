@@ -2,22 +2,26 @@ package com.fansen.phr.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by 310078142 on 2015/9/22.
+ * Created by Yihui Fan on 2015/9/22.
  */
+
+
 public class Person implements Serializable{
-    private long person_key;
+    private long id;
     private String person_name;
     private String gender_code;
     private Date birthday;
+    private List<PersonID> personIDs;
 
-    public long getPerson_key() {
-        return person_key;
+    public long getId() {
+        return id;
     }
 
-    public void setPerson_key(long person_key) {
-        this.person_key = person_key;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getPerson_name() {

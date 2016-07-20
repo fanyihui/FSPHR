@@ -3,6 +3,8 @@ package com.fansen.phr.service.implementation;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.fansen.phr.PhrSchemaContract;
 import com.fansen.phr.entity.Department;
@@ -15,7 +17,6 @@ import com.fansen.phr.service.IEncounterService;
 import com.fansen.phr.utils.TimeFormat;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 310078142 on 2015/10/12.
@@ -49,8 +50,8 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
                 PhrSchemaContract.OrganizationTable.TABLE_NAME + "," +
                 PhrSchemaContract.PhysicianTable.TABLE_NAME + "," +
                 PhrSchemaContract.DepartmentTable.TABLE_NAME +
-                " where encounter.org_key=organization._id and " +
-                "encounter.dpt_key=department._id and "+
+                " where encounter.fk_ent_org_key=organization._id and " +
+                "encounter.fk_ent_dpt_key=department._id and "+
                 "encounter.attending_doctor_key=physician._id" +
                 " order by "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE +" desc";
 
@@ -77,7 +78,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             //dictDiagnosis.setCode(c.getString(c.getColumnIndex(PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_CODE)));
             //dictDiagnosis.setName(c.getString(c.getColumnIndex(PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME)));
 
-            physician.setPhysicianKey(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
+            physician.setPhysician_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
             physician.setPhysicianName(c.getString(c.getColumnIndex(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME)));
 
             encounter.setProblem_description(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC)));
@@ -106,14 +107,67 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
 
     @Override
     public long addNewEncounter(Encounter encounter) {
+        SQLiteDatabase db = fsPhrDB.getWritableDatabase();
+        db.beginTransaction();
+
+        ContentValues orgValues = new ContentValues();
+        orgValues.put(PhrSchemaContract.OrganizationTable.COLUMN_NAME_ORG_NAME, encounter.getOrg().getOrg_name());
+
+        long org_key = db.insertWithOnConflict(PhrSchemaContract.OrganizationTable.TABLE_NAME, null, orgValues, SQLiteDatabase.CONFLICT_IGNORE);
+        if(org_key == -1){
+            String query_org = "select _id from "+PhrSchemaContract.OrganizationTable.TABLE_NAME +
+                    " where "+PhrSchemaContract.OrganizationTable.COLUMN_NAME_ORG_NAME+"='" +encounter.getOrg().getOrg_name()+ "'";
+
+            Cursor c = db.rawQuery(query_org, null);
+            c.moveToFirst();
+            org_key = c.getLong(c.getColumnIndex("_id"));
+            c.close();
+        }
+
+        ContentValues departmentValues = new ContentValues();
+        departmentValues.put(PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME, encounter.getDepartment().getName());
+        departmentValues.put(PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_ORG_KEY, org_key);
+        long dept_key = db.insertWithOnConflict(PhrSchemaContract.DepartmentTable.TABLE_NAME, null, departmentValues, SQLiteDatabase.CONFLICT_IGNORE);
+        if (dept_key == -1){
+            String query = "select _id from "+PhrSchemaContract.DepartmentTable.TABLE_NAME +
+                    " where "+PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME+"='" +encounter.getDepartment().getName()+ "' and "+
+                    PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_ORG_KEY + "=" + org_key;
+
+            Cursor c = db.rawQuery(query, null);
+            c.moveToFirst();
+            dept_key = c.getLong(c.getColumnIndex("_id"));
+            c.close();
+        }
+
+        ContentValues physicianValues = new ContentValues();
+        physicianValues.put(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME, encounter.getAttendingDoctor().getPhysicianName());
+        physicianValues.put(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_DEPT_KEY, dept_key);
+        long physician_key = db.insertWithOnConflict(PhrSchemaContract.PhysicianTable.TABLE_NAME, null, physicianValues, SQLiteDatabase.CONFLICT_IGNORE);
+        if (physician_key == -1){
+            String query = "select _id from "+PhrSchemaContract.PhysicianTable.TABLE_NAME +
+                    " where "+PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME+"='" +encounter.getAttendingDoctor().getPhysicianName()+ "' and "+
+                    PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_DEPT_KEY + "=" + dept_key;
+
+            Cursor c = db.rawQuery(query, null);
+            c.moveToFirst();
+            physician_key = c.getLong(c.getColumnIndex("_id"));
+
+            c.close();
+        }
+
+
         ContentValues values = new ContentValues();
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE, TimeFormat.parseDate(encounter.getAdmit_date()));
-        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY, encounter.getOrg().getOrg_key());
-        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY, encounter.getDepartment().getDepartment_key());
-        //values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY, encounter.getPrimaryDiagnosis().getKey());
-        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY, encounter.getAttendingDoctor().getPhysicianKey());
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY, org_key);
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY, dept_key);
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY, physician_key);
 
-        long encounter_key = fsPhrDB.insert(PhrSchemaContract.EncounterTable.TABLE_NAME, values);
+        long encounter_key = db.insert(PhrSchemaContract.EncounterTable.TABLE_NAME, null, values);
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        db.close();
 
         return encounter_key;
     }
@@ -261,8 +315,8 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
                 PhrSchemaContract.OrganizationTable.TABLE_NAME + "," +
                 PhrSchemaContract.PhysicianTable.TABLE_NAME + "," +
                 PhrSchemaContract.DepartmentTable.TABLE_NAME +
-                " where encounter.org_key=organization._id and " +
-                "encounter.dpt_key=department._id and "+
+                " where encounter.fk_ent_org_key=organization._id and " +
+                "encounter.fk_ent_dpt_key=department._id and "+
                 "encounter.attending_doctor_key=physician._id"+
                 " order by "+PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE +" desc LIMIT 1";
 
@@ -287,7 +341,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         dept.setDepartment_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY)));
         dept.setName(c.getString(c.getColumnIndex(PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME)));
 
-        physician.setPhysicianKey(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
+        physician.setPhysician_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
         physician.setPhysicianName(c.getString(c.getColumnIndex(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME)));
 
         encounter.setProblem_description(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC)));
