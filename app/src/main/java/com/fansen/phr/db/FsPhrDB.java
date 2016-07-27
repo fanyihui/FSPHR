@@ -59,6 +59,7 @@ public class FsPhrDB extends SQLiteOpenHelper{
     //sql for create encounter table
     private final static String SQL_CREATE_ENCOUNTER = "CREATE TABLE " + PhrSchemaContract.EncounterTable.TABLE_NAME + "(" +
             PhrSchemaContract.EncounterTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" + COMMA_SEP +
+            PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + TEXT_TYPE + COMMA_SEP +
             PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + TEXT_TYPE + COMMA_SEP +

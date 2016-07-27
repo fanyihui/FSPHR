@@ -13,6 +13,13 @@
         <item>盒</item>
     </string-array>
 
+    <string-array name="patient_class">
+        <item>@string/patient_class_outpatient</item>
+        <item>@string/patient_class_inpatient</item>
+        <item>@string/patient_class_emergency</item>
+        <item>@string/patient_class_checkup</item>
+    </string-array>
+
     <string-array name="dosage_unit">
         <item>ml</item>
         <item>mg</item>

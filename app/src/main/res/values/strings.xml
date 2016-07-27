@@ -15,7 +15,9 @@
     <string name="label_chief_complaint">主诉</string>
     <string name="label_diagnosis">诊断：</string>
     <string name="label_physician">医生：</string>
-    <string name="label_outpatient_date">日期</string>
+    <string name="label_ent_admit_date">日期</string>
+    <string name="label_ent_discharge_date">出院日期</string>
+    <string name="label_ent_patient_class">类型</string>
     <string name="label_diagnostic_imaging_detail_date">检查日期</string>
     <string name="label_diagnostic_imaging_detail_modality">检查设备</string>
     <string name="label_diagnostic_imaging_detail_requested_procedure">检查方法</string>
@@ -60,6 +62,7 @@
     <string name="tip_for_empty_lab_report">当前没有检验报告，请通过右下角的按钮添加一个新的检验报告</string>
     <string name="tip_for_empty_list">列表为空</string>
     <string name="tip_for_empty_medicine">当前没有正在服用的药物，如果有，请在病历中的处方页面添加药品</string>
+    <string name="tip_for_empty_record">当前没有任何病历记录，您可以通过点击右下角的按钮添加一个门诊或住院记录</string>
 
     <string name="title_activity_imaging_report_detail">医学影像报告编辑</string>
     <string name="action_submit">提交</string>
@@ -115,5 +118,10 @@
     <string name="lab_item_list_header_column_name_range">参考值</string>
     <string name="title_activity_lab_result_item_editing">编辑检验项目</string>
     <string name="title_activity_simple_list">简单列表编辑</string>
+
+    <string name="patient_class_inpatient">住院</string>
+    <string name="patient_class_outpatient">门诊</string>
+    <string name="patient_class_emergency">急诊</string>
+    <string name="patient_class_checkup">体检</string>
 
 </resources>

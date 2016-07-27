@@ -29,52 +29,53 @@
             android:name=".activities.EncounterCoreInfoActivity"
             android:label="@string/title_activity_new_outpatient"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.EncounterDetailActivity"
             android:label="@string/title_activity_outpatient_detail"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ChiefComplaintEditActivity"
             android:label="@string/title_activity_chief_complaint_edit"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.EncounterProblemEditActivity"
             android:label="@string/title_activity_encounter_problem_current"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MedicationOrderEditActivity"
             android:label="@string/title_activity_medication_order_edit"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ImageViewActivity"
             android:label="@string/title_activity_image_view"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ImagingReportDetailActivity"
             android:label="@string/title_activity_imaging_report_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.FreeTextEditActivity"
             android:label="@string/title_activity_free_text_edit"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.LabReportDetailActivity"
             android:label="@string/title_activity_lab_report_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.LabResultItemEditingActivity"
             android:label="@string/title_activity_lab_result_item_editing"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SimpleListActivity"
             android:label="@string/title_activity_simple_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.FirstInstallActivity"></activity>
     </application>
 
 </manifest>

@@ -1,59 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/id_latest_ent_seperate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorSeperateBackground"
         android:padding="@dimen/seperate_padding_margin"
+        android:gravity="center"
         android:text="@string/seperate_name_latest_encounter"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/id_seperate_latest_ent_bracket_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSeperateBackground"
-        android:paddingTop="@dimen/seperate_padding_margin"
-        android:paddingBottom="@dimen/seperate_padding_margin"
-        android:text="("
-        android:layout_toRightOf="@+id/id_latest_ent_seperate"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/id_latest_ent_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSeperateBackground"
-        android:paddingTop="@dimen/seperate_padding_margin"
-        android:paddingBottom="@dimen/seperate_padding_margin"
-        android:layout_toRightOf="@+id/id_seperate_latest_ent_bracket_left"
-        android:textStyle="bold"
-        android:text="20151210"/>
-
-    <TextView
-        android:id="@+id/id_seperate_latest_ent_bracket_right"
+        android:id="@+id/id_tips_for_empty_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorSeperateBackground"
-        android:paddingTop="@dimen/seperate_padding_margin"
-        android:paddingBottom="@dimen/seperate_padding_margin"
-        android:text=")"
-        android:layout_toRightOf="@+id/id_latest_ent_date"/>
+        android:layout_below="@+id/id_latest_ent_seperate"
+        android:padding="@dimen/seperate_padding_margin"
+        android:text="@string/tip_for_empty_record"/>
 
-    <android.support.v7.widget.CardView
+    <include layout="@layout/ent_cardview_layout"
+        android:id="@+id/id_latest_ent_card_view"/>
+
+    <!--android.support.v7.widget.CardView
         android:id="@+id/id_latest_ent_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/cardviewBackgroundLight"
-        android:layout_below="@+id/id_latest_ent_seperate"
+        android:layout_below="@+id/id_tips_for_empty_record"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:cardCornerRadius="4dp">
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <RelativeLayout
             android:id="@+id/id_latest_ent_card_view_layout"
@@ -61,20 +40,54 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/id_latest_ent_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="20160725"/>
+
+            <TextView
+                android:id="@+id/id_latest_ent_patient_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="3dp"
+                android:text="门诊"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/shape_line"
+                android:layout_below="@+id/id_latest_ent_date"/>
+
+            <TextView
+                android:id="@+id/id_latest_ent_diagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_below="@+id/id_latest_ent_date"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/hightlight"
+                android:text="心悸"/>
+
+            <TextView
                 android:id="@+id/id_latest_ent_dept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="3dp"
                 android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/id_latest_ent_diagnosis"
+                android:layout_below="@+id/id_latest_ent_date"
                 android:text="心内科"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/id_latest_ent_org"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:paddingTop="5dp"
+                android:padding="3dp"
                 android:layout_below="@+id/id_latest_ent_dept"
                 android:text="上海复旦大学附属中山医院"/>
 
@@ -82,9 +95,9 @@
                 android:id="@+id/id_latest_ent_section_physician"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/id_latest_ent_org"
-                android:layout_marginRight="5dp"
-                android:paddingTop="5dp">
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/id_latest_ent_dept"
+                android:padding="3dp">
 
                 <TextView
                     android:id="@+id/id_latest_ent_label_doctor"
@@ -100,35 +113,13 @@
                     android:text="范益辉"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/id_latest_ent_section_diagnosis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/id_latest_ent_section_physician"
-                android:layout_marginRight="5dp"
-                android:paddingTop="5dp">
-
-                <TextView
-                    android:id="@+id/label_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/label_diagnosis"/>
-
-                <TextView
-                    android:id="@+id/id_latest_ent_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="心悸"/>
-            </LinearLayout>
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView-->
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/id_latest_ent_card_view">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/id_mar_datetime_layout"
@@ -137,13 +128,13 @@
             android:background="@color/colorSeperateBackground"
             android:gravity="start">
 
-            <Button
+            <!--Button
                 android:id="@+id/id_mar_back_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentStart="true"
                 android:drawableRight="@drawable/ic_keyboard_arrow_left_black_24dp"
-                android:background="#00000000" />
+                android:background="#00000000" /-->
 
             <TextView
                 android:id="@+id/id_mar_datetime_slot"
@@ -152,13 +143,13 @@
                 android:gravity="center"
                 android:text="@string/seperate_name_medicine_reminder"/>
 
-            <Button
+            <!--Button
                 android:id="@+id/id_mar_forward_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
-                android:background="#00000000" />
+                android:background="#00000000" /-->
         </RelativeLayout>
 
         <TextView
@@ -176,4 +167,4 @@
             android:layout_below="@id/id_tips_for_empty_medicine" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

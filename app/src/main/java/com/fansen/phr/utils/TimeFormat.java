@@ -35,7 +35,7 @@ public class TimeFormat {
     }
 
     public static String parseDate(Date date){
-        if(date == null){
+        if(date == null || date.equals("")){
             return "";
         }
 

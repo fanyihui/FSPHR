@@ -36,6 +36,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         ArrayList<Encounter> encounters = new ArrayList<Encounter>();
 
         String ent_sql = "select " + PhrSchemaContract.EncounterTable.TABLE_NAME+"."+PhrSchemaContract.EncounterTable._ID + "," +
+                PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + "," +
@@ -65,7 +66,6 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             Organization org = new Organization();
             Department dept = new Department();
             Encounter encounter = new Encounter();
-            //DictDiagnosis dictDiagnosis = new DictDiagnosis();
             Physician physician = new Physician();
 
             org.setOrg_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY)));
@@ -73,10 +73,6 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
 
             dept.setDepartment_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY)));
             dept.setName(c.getString(c.getColumnIndex(PhrSchemaContract.DepartmentTable.COLUMN_NAME_DEPT_NAME)));
-
-            //dictDiagnosis.setKey(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY)));
-            //dictDiagnosis.setCode(c.getString(c.getColumnIndex(PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_CODE)));
-            //dictDiagnosis.setName(c.getString(c.getColumnIndex(PhrSchemaContract.DictDiagnosisTable.COLUMN_NAME_DICT_NAME)));
 
             physician.setPhysician_key(c.getInt(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY)));
             physician.setPhysicianName(c.getString(c.getColumnIndex(PhrSchemaContract.PhysicianTable.COLUMN_NAME_PHYSICIAN_NAME)));
@@ -86,9 +82,10 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
             encounter.setDepartment(dept);
             encounter.setOrg(org);
             encounter.setAdmit_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
+            encounter.setDischarge_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE))));
             encounter.setEncounter_key(ent_key);
-            //encounter.setPrimaryDiagnosis(dictDiagnosis);
             encounter.setAttendingDoctor(physician);
+            encounter.setPatientClass(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS)));
 
             ArrayList<Diagnosis> diagnosises = diagnosisService.getDiagnosis(ent_key);
             encounter.setDiagnosisList(diagnosises);
@@ -158,9 +155,11 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
 
         ContentValues values = new ContentValues();
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE, TimeFormat.parseDate(encounter.getAdmit_date()));
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE, TimeFormat.parseDate(encounter.getDischarge_date()));
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ORG_KEY, org_key);
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DPT_KEY, dept_key);
         values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY, physician_key);
+        values.put(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS, encounter.getPatientClass());
 
         long encounter_key = db.insert(PhrSchemaContract.EncounterTable.TABLE_NAME, null, values);
 
@@ -303,6 +302,7 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         String ent_sql = "select " + PhrSchemaContract.EncounterTable.TABLE_NAME+"."+PhrSchemaContract.EncounterTable._ID + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE + "," +
+                PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PROBLEMS_DESC + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_CHIEF_COMPLAINT + "," +
                 PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ATTENDING_DOCTOR_KEY + "," +
@@ -349,8 +349,10 @@ public class EncounterServiceLocalImpl extends BaseServiceLocal implements IEnco
         encounter.setDepartment(dept);
         encounter.setOrg(org);
         encounter.setAdmit_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_ADMIT_DATE))));
+        encounter.setDischarge_date(TimeFormat.format(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_DISCHARGE_DATE))));
         encounter.setEncounter_key(ent_key);
         encounter.setAttendingDoctor(physician);
+        encounter.setPatientClass(c.getString(c.getColumnIndex(PhrSchemaContract.EncounterTable.COLUMN_NAME_ENT_PATIENT_CLASS)));
 
         ArrayList<Diagnosis> diagnosises = diagnosisService.getDiagnosis(ent_key);
         encounter.setDiagnosisList(diagnosises);

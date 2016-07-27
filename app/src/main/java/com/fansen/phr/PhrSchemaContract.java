@@ -52,6 +52,7 @@ public final class PhrSchemaContract {
 
     public static abstract class EncounterTable implements BaseColumns{
         public static final String TABLE_NAME = "encounter";
+        public static final String COLUMN_NAME_ENT_PATIENT_CLASS = "patient_class";
         public static final String COLUMN_NAME_ENT_ADMIT_DATE = "ent_admit_date";
         public static final String COLUMN_NAME_ENT_DISCHARGE_DATE = "ent_discharge_date";
         public static final String COLUMN_NAME_ENT_PRIMARY_DIAGNOSIS_KEY = "primary_diagnosis_key";

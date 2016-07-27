@@ -273,6 +273,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         String admit_date = bundle.getString(EncounterCoreInfoActivity.KEY_DATE);
         String attending_doctor = bundle.getString(EncounterCoreInfoActivity.KEY_DOCTOR);
+        String patientClass = bundle.getString(EncounterCoreInfoActivity.KEY_PATIENT_CLASS);
+        String discharge_date = bundle.getString(EncounterCoreInfoActivity.KEY_DISCHARGE_DATE);
 
         //Initial Encounter
         Encounter encounter = new Encounter();
@@ -300,6 +302,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         encounter.setOrg(org);
         encounter.setDepartment(dept);
         encounter.setAttendingDoctor(physician);
+        encounter.setPatientClass(patientClass);
+        if (discharge_date != null || (!discharge_date.equals(""))){
+            encounter.setDischarge_date(TimeFormat.format(discharge_date));
+        }
 
         // add the encounter to database, and return the key of that encounter
         long encounter_key = encounterService.addNewEncounter(encounter);

@@ -16,6 +16,8 @@ import com.fansen.phr.entity.Encounter;
 import com.fansen.phr.entity.sort.EncounterSort;
 import com.fansen.phr.utils.TimeFormat;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -43,7 +45,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
     @Override
     public MedicalRecordListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encounter_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.ent_cardview_layout, parent, false);
         return new MedicalRecordListViewHolder(itemView);
     }
 
@@ -60,7 +62,7 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
             }
         }
 
-        Context context = holder.rootViewLayout.getContext();
+        Context context = holder.cardView.getContext();
         if(position % 2 != 0){
             holder.cardViewLayout.setBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundDark));
@@ -69,25 +71,26 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.cardviewBackgroundLight));
         }
 
-        Date date = encounter.getAdmit_date();
-        String dateString = TimeFormat.parseDate(date);
-        if(!dateString.equals(priorDate)){
-            holder.vDateYear.setText(TimeFormat.getYear(date));
-            holder.vDateDayMonth.setText(TimeFormat.getDay(date)+"/"+TimeFormat.getMonth(date));
-            priorDate = dateString;
-            holder.dotView.setVisibility(View.VISIBLE);
-            holder.vDateYear.setVisibility(View.VISIBLE);
-            holder.vDateDayMonth.setVisibility(View.VISIBLE);
-        } else{
-            holder.dotView.setVisibility(View.GONE);
-            holder.vDateYear.setVisibility(View.GONE);
-            holder.vDateDayMonth.setVisibility(View.GONE);
-        }
+        Date dateAdmit = encounter.getAdmit_date();
+        Date dateDischarge = encounter.getDischarge_date();
+        String admitDateString = TimeFormat.parseDate(dateAdmit);
+        String dischargeDateString = TimeFormat.parseDate(dateDischarge);
 
         holder.vHospital.setText(encounter.getOrg().getOrg_name());
         holder.vDept.setText(encounter.getDepartment().getName());
         holder.vDiagnosis.setText(stringBuffer.toString());
         holder.vAttendingDoctor.setText(encounter.getAttendingDoctor().getPhysicianName());
+        holder.vPatientClass.setText(encounter.getPatientClass());
+        holder.vAdmitDate.setText(admitDateString);
+
+        if (dischargeDateString == null || dischargeDateString.equals("")){
+            holder.vDischargeDate.setVisibility(View.GONE);
+            holder.vDash.setVisibility(View.GONE);
+        } else {
+            holder.vDischargeDate.setVisibility(View.VISIBLE);
+            holder.vDash.setVisibility(View.VISIBLE);
+            holder.vDischargeDate.setText(dischargeDateString);
+        }
     }
 
     @Override
@@ -113,30 +116,38 @@ public class MedicalRecordListAdapter extends RecyclerView.Adapter<MedicalRecord
 
     public class MedicalRecordListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected CardView cardView;
-        protected RelativeLayout rootViewLayout;
+        //protected RelativeLayout rootViewLayout;
         protected RelativeLayout cardViewLayout;
-        protected View dotView;
-        protected TextView vDateYear;
-        protected TextView vDateDayMonth;
+        //protected View dotView;
+        //protected TextView vDateYear;
+        //protected TextView vDateDayMonth;
         protected TextView vHospital;
         protected TextView vDept;
         protected TextView vDiagnosis;
         protected TextView vAttendingDoctor;
+        protected TextView vAdmitDate;
+        protected TextView vDischargeDate;
+        protected TextView vPatientClass;
+        protected TextView vDash;
 
         public MedicalRecordListViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
-            rootViewLayout = (RelativeLayout)itemView;
-            cardView = (CardView) itemView.findViewById(R.id.id_ent_card_view);
+            //rootViewLayout = (RelativeLayout)itemView;
+            cardView = (CardView) itemView;
             cardViewLayout = (RelativeLayout) itemView.findViewById(R.id.id_ent_card_view_layout);
-            dotView = itemView.findViewById(R.id.id_ent_item_dot);
-            vDateYear = (TextView) itemView.findViewById(R.id.ent_date_year);
-            vDateDayMonth = (TextView) itemView.findViewById(R.id.ent_date_month);
-            vHospital = (TextView) itemView.findViewById(R.id.ent_org);
-            vDept = (TextView) itemView.findViewById(R.id.ent_dept);
-            vDiagnosis = (TextView) itemView.findViewById(R.id.ent_diagnosis);
-            vAttendingDoctor = (TextView) itemView.findViewById(R.id.ent_attending_doctor);
+            //dotView = itemView.findViewById(R.id.id_ent_item_dot);
+            //vDateYear = (TextView) itemView.findViewById(R.id.ent_date_year);
+            //vDateDayMonth = (TextView) itemView.findViewById(R.id.ent_date_month);
+            vHospital = (TextView) itemView.findViewById(R.id.id_ent_org);
+            vDept = (TextView) itemView.findViewById(R.id.id_ent_dept);
+            vDiagnosis = (TextView) itemView.findViewById(R.id.id_ent_diagnosis);
+            vAttendingDoctor = (TextView) itemView.findViewById(R.id.id_ent_attending_doctor);
+            vAdmitDate = (TextView) itemView.findViewById(R.id.id_ent_admit_date);
+            vDischargeDate = (TextView) itemView.findViewById(R.id.id_ent_discharge_date);
+            vPatientClass = (TextView) itemView.findViewById(R.id.id_ent_patient_class);
+            vDash = (TextView) itemView.findViewById(R.id.id_ent_date_dash);
         }
 
         @Override

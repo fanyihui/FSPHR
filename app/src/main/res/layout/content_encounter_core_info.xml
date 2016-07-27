@@ -24,6 +24,28 @@
         android:showDividers="middle|end"
         android:dividerPadding="1dp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/id_label_ent_patient_class"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:text="@string/label_ent_patient_class"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/id_new_ent_patient_class"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/id_label_ent_patient_class"
+                android:gravity="center"
+                android:entries="@array/patient_class"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
-                android:text="@string/label_outpatient_date"
+                android:text="@string/label_ent_admit_date"
                 android:gravity="center" />
 
             <TextView
@@ -43,6 +65,33 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="30dp"
                 android:layout_toRightOf="@+id/id_label_op_date"
+                android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+                android:gravity="center|left"
+                android:hint="必填"
+                android:textColorHint="#e5e5e5"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/id_new_ent_discharge_date_section"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/id_label_new_ent_discharge_date"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:text="@string/label_ent_discharge_date"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/id_new_ent_discharge_date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/id_label_new_ent_discharge_date"
                 android:drawableRight="@drawable/ic_chevron_right_black_24dp"
                 android:gravity="center|left"
                 android:hint="必填"

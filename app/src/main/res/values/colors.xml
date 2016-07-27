@@ -8,4 +8,5 @@
     <!--color name="colorSeperateBackground">#cdb7b5</color-->
     <color name="cardviewBackgroundDark">#d5e1d3</color>
     <color name="cardviewBackgroundLight">#ebf0ea</color>
+    <color name="hightlight">#FFA54F</color>
 </resources>

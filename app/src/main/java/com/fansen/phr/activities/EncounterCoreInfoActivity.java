@@ -8,8 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fansen.phr.R;
@@ -26,10 +29,15 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
     public static final String DELIMITER = "，";
 
     private TextView textViewEntDate = null;
+    private TextView textViewEntDischargeDate = null;
     private EditText editTextHospital = null;
     private EditText editTextDept = null;
     private TextView textViewDiagnosis = null;
     private EditText editTextDoctor = null;
+    private Spinner patientClassSpinner = null;
+
+    private RelativeLayout dischargeSectionLayout = null;
+
     private Calendar cal = Calendar.getInstance();
 
     private ArrayList<String> diagnosisList = new ArrayList<>();
@@ -45,12 +53,24 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
         }
     };
 
+    private DatePickerDialog.OnDateSetListener dischargeDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.MONTH, monthOfYear);
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDischargeDate();
+        }
+    };
+
     public static final String ENT_KEY = "com.fansen.phr.entity.encounter";
     public static final String KEY_ORG = "organization";
     public static final String KEY_DEPT = "department";
     public static final String KEY_DIAG = "diagnosis";
     public static final String KEY_DATE = "date";
     public static final String KEY_DOCTOR = "attending_doctor";
+    public static final String KEY_PATIENT_CLASS = "patient_class";
+    public static final String KEY_DISCHARGE_DATE = "discharge_date";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +99,18 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
             }
         });
 
+        textViewEntDischargeDate = (TextView) findViewById(R.id.id_new_ent_discharge_date);
+        textViewEntDischargeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(EncounterCoreInfoActivity.this, dischargeDateListener,
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                ).show();
+            }
+        });
+
         editTextHospital = (EditText) findViewById(R.id.id_op_org);
         editTextDept = (EditText) findViewById(R.id.id_op_dept);
 
@@ -91,6 +123,30 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
         });
 
         editTextDoctor = (EditText) findViewById(R.id.id_bar_attending_doct);
+
+        dischargeSectionLayout = (RelativeLayout) findViewById(R.id.id_new_ent_discharge_date_section);
+
+        patientClassSpinner = (Spinner) findViewById(R.id.id_new_ent_patient_class);
+        patientClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String patientClass = parent.getItemAtPosition(position).toString();
+                if (patientClass.equals(view.getContext().getResources().getString(R.string.patient_class_inpatient))){
+                    dischargeSectionLayout.setVisibility(View.VISIBLE);
+                    textViewEntDischargeDate.setText(TimeFormat.parseDate(new Date()));
+                } else{
+                    dischargeSectionLayout.setVisibility(View.GONE);
+                    textViewEntDischargeDate.setText("");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -106,6 +162,8 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
             String dept = editTextDept.getText().toString();
             String date = textViewEntDate.getText().toString();
             String doctor = editTextDoctor.getText().toString();
+            String patientClass = patientClassSpinner.getSelectedItem().toString();
+            String dischargeDate = textViewEntDischargeDate.getText().toString();
 
             Intent data = new Intent();
 
@@ -115,6 +173,9 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
             bundle.putSerializable(KEY_DIAG, diagnosisList);
             bundle.putString(KEY_DATE, date);
             bundle.putString(KEY_DOCTOR, doctor);
+            bundle.putString(KEY_PATIENT_CLASS, patientClass);
+            bundle.putString(KEY_DISCHARGE_DATE, dischargeDate);
+
 
             data.putExtras(bundle);
 
@@ -172,5 +233,10 @@ public class EncounterCoreInfoActivity extends AppCompatActivity {
     private void updateDate(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         textViewEntDate.setText(simpleDateFormat.format(cal.getTime()));
+    }
+
+    private void updateDischargeDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        textViewEntDischargeDate.setText(simpleDateFormat.format(cal.getTime()));
     }
 }

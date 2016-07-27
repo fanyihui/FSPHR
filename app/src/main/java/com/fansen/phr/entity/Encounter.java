@@ -24,6 +24,7 @@ public class Encounter implements Serializable{
     private String historicalProblems;
     private String physicalExam;
     private String chiefComplaint;
+    private String patientClass;
 
     public Date getDischarge_date() {
         return discharge_date;
@@ -135,5 +136,13 @@ public class Encounter implements Serializable{
 
     public void setChiefComplaint(String chiefComplaint) {
         this.chiefComplaint = chiefComplaint;
+    }
+
+    public String getPatientClass() {
+        return patientClass;
+    }
+
+    public void setPatientClass(String patientClass) {
+        this.patientClass = patientClass;
     }
 }

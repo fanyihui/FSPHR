@@ -13,5 +13,6 @@
     <dimen name="seperate_padding_margin">5dp</dimen>
     <dimen name="edit_text_height">35dp</dimen>
     <dimen name="font_size">14dp</dimen>
+    <dimen name="small_font_size">12dp</dimen>
     <dimen name="font_size_big">20dp</dimen>
 </resources>
